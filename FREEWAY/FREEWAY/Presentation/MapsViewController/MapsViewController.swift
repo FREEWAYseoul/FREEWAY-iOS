@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MapsViewController.swift
 //  FREEWAY
 //
 //  Created by 한택환 on 2023/08/04.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MapsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
