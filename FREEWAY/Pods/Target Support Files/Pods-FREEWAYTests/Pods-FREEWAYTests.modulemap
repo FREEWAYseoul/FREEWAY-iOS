@@ -1,0 +1,6 @@
+framework module Pods_FREEWAYTests {
+  umbrella header "Pods-FREEWAYTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

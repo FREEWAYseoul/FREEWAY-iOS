@@ -1,0 +1,21 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'FREEWAY' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for FREEWAY
+  pod 'NMapsMap'
+
+  target 'FREEWAYTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'FREEWAYUITests' do
+    # Pods for testing
+  end
+
+
+end

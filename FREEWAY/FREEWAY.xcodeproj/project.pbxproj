@@ -21,6 +21,9 @@
 		2AC7554E2A7BFEA100099C2A /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC7554D2A7BFEA100099C2A /* Then */; };
 		2AC755512A7BFEED00099C2A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC755502A7BFEED00099C2A /* Alamofire */; };
 		2AC755542A7C004B00099C2A /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2AC755532A7C004B00099C2A /* RxSwift */; };
+		355FFDDE0953D5A7C4435244 /* Pods_FREEWAY.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10CC25F152549A99084FF2F4 /* Pods_FREEWAY.framework */; };
+		38D8CA7A641B41DE66FBAF6D /* Pods_FREEWAYTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8CCA570A4E0238769A7DFB /* Pods_FREEWAYTests.framework */; };
+		4CEE460C0F7448316E492A83 /* Pods_FREEWAY_FREEWAYUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B019DCAF33D6AEE416BE0D /* Pods_FREEWAY_FREEWAYUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +44,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10CC25F152549A99084FF2F4 /* Pods_FREEWAY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E8CCA570A4E0238769A7DFB /* Pods_FREEWAYTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAYTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		23B019DCAF33D6AEE416BE0D /* Pods_FREEWAY_FREEWAYUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY_FREEWAYUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC755132A7BFD2F00099C2A /* FREEWAY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FREEWAY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC755162A7BFD2F00099C2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +61,12 @@
 		2AC755362A7BFD3000099C2A /* FREEWAYUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FREEWAYUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC7553A2A7BFD3000099C2A /* FREEWAYUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FREEWAYUITests.swift; sourceTree = "<group>"; };
 		2AC7553C2A7BFD3000099C2A /* FREEWAYUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FREEWAYUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		405CEC980582C220BE9AD944 /* Pods-FREEWAY.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREEWAY.debug.xcconfig"; path = "Target Support Files/Pods-FREEWAY/Pods-FREEWAY.debug.xcconfig"; sourceTree = "<group>"; };
+		4DD3EE17AB16279366251FBC /* Pods-FREEWAY-FREEWAYUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREEWAY-FREEWAYUITests.release.xcconfig"; path = "Target Support Files/Pods-FREEWAY-FREEWAYUITests/Pods-FREEWAY-FREEWAYUITests.release.xcconfig"; sourceTree = "<group>"; };
+		5D86110CB70C588D09E5C6C6 /* Pods-FREEWAYTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREEWAYTests.debug.xcconfig"; path = "Target Support Files/Pods-FREEWAYTests/Pods-FREEWAYTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5EB048FDC1971FFA28440C3C /* Pods-FREEWAYTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREEWAYTests.release.xcconfig"; path = "Target Support Files/Pods-FREEWAYTests/Pods-FREEWAYTests.release.xcconfig"; sourceTree = "<group>"; };
+		C450B74EF358CD51D3924392 /* Pods-FREEWAY.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREEWAY.release.xcconfig"; path = "Target Support Files/Pods-FREEWAY/Pods-FREEWAY.release.xcconfig"; sourceTree = "<group>"; };
+		E3DCD479589F5C0BFD27BAAE /* Pods-FREEWAY-FREEWAYUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREEWAY-FREEWAYUITests.debug.xcconfig"; path = "Target Support Files/Pods-FREEWAY-FREEWAYUITests/Pods-FREEWAY-FREEWAYUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +78,7 @@
 				2AC7554B2A7BFE6000099C2A /* SnapKit in Frameworks */,
 				2AC755542A7C004B00099C2A /* RxSwift in Frameworks */,
 				2AC7554E2A7BFEA100099C2A /* Then in Frameworks */,
+				355FFDDE0953D5A7C4435244 /* Pods_FREEWAY.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38D8CA7A641B41DE66FBAF6D /* Pods_FREEWAYTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CEE460C0F7448316E492A83 /* Pods_FREEWAY_FREEWAYUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +108,8 @@
 				2AC7552F2A7BFD3000099C2A /* FREEWAYTests */,
 				2AC755392A7BFD3000099C2A /* FREEWAYUITests */,
 				2AC755142A7BFD2F00099C2A /* Products */,
+				4B62E5981B9E18A4D88ECAD6 /* Pods */,
+				7F8CA3D6DE445B9CBB4E81C5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,6 +155,30 @@
 			path = FREEWAYUITests;
 			sourceTree = "<group>";
 		};
+		4B62E5981B9E18A4D88ECAD6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				405CEC980582C220BE9AD944 /* Pods-FREEWAY.debug.xcconfig */,
+				C450B74EF358CD51D3924392 /* Pods-FREEWAY.release.xcconfig */,
+				E3DCD479589F5C0BFD27BAAE /* Pods-FREEWAY-FREEWAYUITests.debug.xcconfig */,
+				4DD3EE17AB16279366251FBC /* Pods-FREEWAY-FREEWAYUITests.release.xcconfig */,
+				5D86110CB70C588D09E5C6C6 /* Pods-FREEWAYTests.debug.xcconfig */,
+				5EB048FDC1971FFA28440C3C /* Pods-FREEWAYTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		7F8CA3D6DE445B9CBB4E81C5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				10CC25F152549A99084FF2F4 /* Pods_FREEWAY.framework */,
+				23B019DCAF33D6AEE416BE0D /* Pods_FREEWAY_FREEWAYUITests.framework */,
+				1E8CCA570A4E0238769A7DFB /* Pods_FREEWAYTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -145,9 +186,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2AC755402A7BFD3000099C2A /* Build configuration list for PBXNativeTarget "FREEWAY" */;
 			buildPhases = (
+				0FDFF334103FF1B90D103802 /* [CP] Check Pods Manifest.lock */,
 				2AC7550F2A7BFD2F00099C2A /* Sources */,
 				2AC755102A7BFD2F00099C2A /* Frameworks */,
 				2AC755112A7BFD2F00099C2A /* Resources */,
+				5FB61E5E5E702FD0F3A3FF00 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -168,6 +211,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2AC755432A7BFD3000099C2A /* Build configuration list for PBXNativeTarget "FREEWAYTests" */;
 			buildPhases = (
+				6DB6532BF7C991C60114A6C7 /* [CP] Check Pods Manifest.lock */,
 				2AC755282A7BFD3000099C2A /* Sources */,
 				2AC755292A7BFD3000099C2A /* Frameworks */,
 				2AC7552A2A7BFD3000099C2A /* Resources */,
@@ -186,9 +230,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2AC755462A7BFD3000099C2A /* Build configuration list for PBXNativeTarget "FREEWAYUITests" */;
 			buildPhases = (
+				F51F8A93C0D98FD747CC110B /* [CP] Check Pods Manifest.lock */,
 				2AC755322A7BFD3000099C2A /* Sources */,
 				2AC755332A7BFD3000099C2A /* Frameworks */,
 				2AC755342A7BFD3000099C2A /* Resources */,
+				B8833992E5C1A9B24D4324CD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -235,8 +281,8 @@
 			packageReferences = (
 				2AC755492A7BFE6000099C2A /* XCRemoteSwiftPackageReference "SnapKit" */,
 				2AC7554C2A7BFEA100099C2A /* XCRemoteSwiftPackageReference "Then" */,
-				2AC7554F2A7BFEED00099C2A /* XCRemoteSwiftPackageReference "Alamofire" */,
-				2AC755522A7C004B00099C2A /* XCRemoteSwiftPackageReference "RxSwift" */,
+				2AC7554F2A7BFEED00099C2A /* XCRemoteSwiftPackageReference "Alamofire#swift-package-manager" */,
+				2AC755522A7C004B00099C2A /* XCRemoteSwiftPackageReference "RxSwift.git" */,
 			);
 			productRefGroup = 2AC755142A7BFD2F00099C2A /* Products */;
 			projectDirPath = "";
@@ -275,6 +321,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0FDFF334103FF1B90D103802 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FREEWAY-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5FB61E5E5E702FD0F3A3FF00 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREEWAY/Pods-FREEWAY-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREEWAY/Pods-FREEWAY-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FREEWAY/Pods-FREEWAY-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6DB6532BF7C991C60114A6C7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FREEWAYTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8833992E5C1A9B24D4324CD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREEWAY-FREEWAYUITests/Pods-FREEWAY-FREEWAYUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREEWAY-FREEWAYUITests/Pods-FREEWAY-FREEWAYUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FREEWAY-FREEWAYUITests/Pods-FREEWAY-FREEWAYUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F51F8A93C0D98FD747CC110B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FREEWAY-FREEWAYUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2AC7550F2A7BFD2F00099C2A /* Sources */ = {
@@ -456,6 +605,7 @@
 		};
 		2AC755412A7BFD3000099C2A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 405CEC980582C220BE9AD944 /* Pods-FREEWAY.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -484,6 +634,7 @@
 		};
 		2AC755422A7BFD3000099C2A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C450B74EF358CD51D3924392 /* Pods-FREEWAY.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -512,6 +663,7 @@
 		};
 		2AC755442A7BFD3000099C2A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D86110CB70C588D09E5C6C6 /* Pods-FREEWAYTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -532,6 +684,7 @@
 		};
 		2AC755452A7BFD3000099C2A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5EB048FDC1971FFA28440C3C /* Pods-FREEWAYTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -552,6 +705,7 @@
 		};
 		2AC755472A7BFD3000099C2A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E3DCD479589F5C0BFD27BAAE /* Pods-FREEWAY-FREEWAYUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -570,6 +724,7 @@
 		};
 		2AC755482A7BFD3000099C2A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DD3EE17AB16279366251FBC /* Pods-FREEWAY-FREEWAYUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -644,7 +799,7 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		2AC7554F2A7BFEED00099C2A /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		2AC7554F2A7BFEED00099C2A /* XCRemoteSwiftPackageReference "Alamofire#swift-package-manager" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire#swift-package-manager";
 			requirement = {
@@ -652,7 +807,7 @@
 				kind = branch;
 			};
 		};
-		2AC755522A7C004B00099C2A /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		2AC755522A7C004B00099C2A /* XCRemoteSwiftPackageReference "RxSwift.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -675,12 +830,12 @@
 		};
 		2AC755502A7BFEED00099C2A /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2AC7554F2A7BFEED00099C2A /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 2AC7554F2A7BFEED00099C2A /* XCRemoteSwiftPackageReference "Alamofire#swift-package-manager" */;
 			productName = Alamofire;
 		};
 		2AC755532A7C004B00099C2A /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 2AC755522A7C004B00099C2A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = 2AC755522A7C004B00099C2A /* XCRemoteSwiftPackageReference "RxSwift.git" */;
 			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
