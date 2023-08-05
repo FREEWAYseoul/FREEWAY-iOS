@@ -155,7 +155,7 @@
 		016CB6372A7D486B005C4882 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				016CB64A2A7D4B13005C4882 /* MapsViewController */,
+				016CB64A2A7D4B13005C4882 /* MapsView */,
 				2AC755242A7BFD3000099C2A /* LaunchScreen.storyboard */,
 			);
 			path = Presentation;
@@ -201,14 +201,14 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
-		016CB64A2A7D4B13005C4882 /* MapsViewController */ = {
+		016CB64A2A7D4B13005C4882 /* MapsView */ = {
 			isa = PBXGroup;
 			children = (
 				2AC7551A2A7BFD2F00099C2A /* MapsViewController.swift */,
 				016CB64B2A7D4B23005C4882 /* MapsViewModel.swift */,
 				016CB64D2A7D4B4D005C4882 /* MapsView.swift */,
 			);
-			path = MapsViewController;
+			path = MapsView;
 			sourceTree = "<group>";
 		};
 		2AC7550A2A7BFD2F00099C2A = {
