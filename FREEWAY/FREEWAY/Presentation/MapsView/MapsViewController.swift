@@ -33,14 +33,15 @@ class MapsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
-        configurecurrentLocation()
+        configure()
+        configureCurrentLocation()
     }
 }
 
 //MARK: SetMapsViewComponent
 private extension MapsViewController {
     
-    func configurecurrentLocation() {
+    func configureCurrentLocation() {
         currentLocation.delegate = self
         currentLocation.desiredAccuracy = kCLLocationAccuracyBest
         currentLocation.requestWhenInUseAuthorization()
@@ -75,11 +76,30 @@ private extension MapsViewController {
         stationMarker.mapView = mapsView
     }
     
+    func configure() {
+        mapsView.addCameraDelegate(delegate: self)
+    }
+    
     func setupLayout() {
         self.view.addSubview(mapsView)
         mapsView.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
         }
+    }
+}
+
+extension MapsViewController: NMFMapViewCameraDelegate {
+    func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
+        let markerZoomLevel: Double = 14.5
+
+        if mapView.zoomLevel >= markerZoomLevel {
+            stationMarker.hidden = false
+        } else {
+            stationMarker.hidden = true
+        }
+    }
+    
+    func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
     }
 }
 
