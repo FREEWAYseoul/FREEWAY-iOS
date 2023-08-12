@@ -13,8 +13,7 @@ import CoreLocation
 
 class MapsViewController: UIViewController {
     
-    private var location = CLLocationManager()
-    private let locationMarker = NMFMarker()
+    private var currentLocation = CLLocationManager()
     private var locationOverlay: NMFLocationOverlay?
     
     private lazy var mapsView = NMFMapView().then {
@@ -24,29 +23,37 @@ class MapsViewController: UIViewController {
         locationOverlay = $0.locationOverlay
     }
     
+    let stationMarker = NMFMarker().then {
+        $0.position = NMGLatLng(lat: 37.496, lng: 127.028)
+        $0.iconImage = NMFOverlayImage(name: "GangnamStation")
+        $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
+        $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
-        configureLocation()
+        configurecurrentLocation()
     }
 }
 
+//MARK: SetMapsViewComponent
 private extension MapsViewController {
     
-    func configureLocation() {
-        location.delegate = self
-        location.desiredAccuracy = kCLLocationAccuracyBest
-        location.requestWhenInUseAuthorization()
+    func configurecurrentLocation() {
+        currentLocation.delegate = self
+        currentLocation.desiredAccuracy = kCLLocationAccuracyBest
+        currentLocation.requestWhenInUseAuthorization()
     }
     
-    func setLocation() {
-        let latitude = location.location?.coordinate.latitude ?? 0
-        let longitude = location.location?.coordinate.longitude ?? 0
+    func setcurrentLocation() {
+        let latitude = currentLocation.location?.coordinate.latitude ?? 0
+        let longitude = currentLocation.location?.coordinate.longitude ?? 0
         
         if CLLocationManager.locationServicesEnabled() {
             //TODO: 테스트 구문
             print("위치 서비스 On 상태")
-            location.startUpdatingLocation()
+            currentLocation.startUpdatingLocation()
             print(latitude, longitude)
             
             let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 15)
@@ -59,8 +66,13 @@ private extension MapsViewController {
             
         } else {
             //TODO: 테스트 구문
+            //위치 서비스가 Off일 시에 예외처리가 필요 -> 앱 내 Alert 띄워주고 터치해서 위치 정보 접근 허용으로 이동하는 알림이면 좋을 듯
             print("위치 서비스 Off 상태")
         }
+    }
+    
+    func setStationMarker() {
+        stationMarker.mapView = mapsView
     }
     
     func setupLayout() {
@@ -76,7 +88,8 @@ extension MapsViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            setLocation()
+            setcurrentLocation()
+            setStationMarker()
         case .restricted, .notDetermined:
             print("GPS 권한 설정되지 않음")
         case .denied:
