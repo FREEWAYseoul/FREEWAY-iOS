@@ -24,6 +24,8 @@ class MapsViewController: UIViewController {
     }
     
     let stationMarker = NMFMarker().then {
+        //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
+        //TODO: 임시 marker icon 후에 UIView로 구현 예정
         $0.position = NMGLatLng(lat: 37.496, lng: 127.028)
         $0.iconImage = NMFOverlayImage(name: "GangnamStation")
         $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
@@ -90,9 +92,9 @@ private extension MapsViewController {
 
 extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
-        let markerZoomLevel: Double = 14.5
+        
 
-        if mapView.zoomLevel >= markerZoomLevel {
+        if mapView.zoomLevel >= MapsLiteral.markerZoomLevel {
             stationMarker.hidden = false
         } else {
             stationMarker.hidden = true
