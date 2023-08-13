@@ -12,9 +12,13 @@ import SnapKit
 import CoreLocation
 
 class MapsViewController: UIViewController {
-    
     private var currentLocation = CLLocationManager()
     private var locationOverlay: NMFLocationOverlay?
+    
+    private lazy var bottomSheet = UIView().then {
+        $0.backgroundColor = .lightGray
+    }
+    private var bottomSheetState = false
     
     private lazy var mapsView = NMFMapView().then {
         $0.allowsZooming = true
@@ -37,6 +41,20 @@ class MapsViewController: UIViewController {
         setupLayout()
         configure()
         configureCurrentLocation()
+    }
+}
+//MARK: Set MapsView
+private extension MapsViewController {
+    func configure() {
+        mapsView.addCameraDelegate(delegate: self)
+        mapsView.touchDelegate = self
+    }
+    
+    func setupLayout() {
+        self.view.addSubview(mapsView)
+        mapsView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
 }
 
@@ -63,9 +81,9 @@ private extension MapsViewController {
             cameraUpdate.animation = .easeIn
             mapsView.moveCamera(cameraUpdate)
             guard let locationOverlay = locationOverlay else { return }
-                    locationOverlay.hidden = false
-                    locationOverlay.location = NMGLatLng(lat: latitude, lng: longitude)
-                    locationOverlay.circleOutlineWidth = 10
+            locationOverlay.hidden = false
+            locationOverlay.location = NMGLatLng(lat: latitude, lng: longitude)
+            locationOverlay.circleOutlineWidth = 10
             
         } else {
             //TODO: 테스트 구문
@@ -76,32 +94,59 @@ private extension MapsViewController {
     
     func setStationMarker() {
         stationMarker.mapView = mapsView
-    }
-    
-    func configure() {
-        mapsView.addCameraDelegate(delegate: self)
-    }
-    
-    func setupLayout() {
-        self.view.addSubview(mapsView)
-        mapsView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+        stationMarker.touchHandler = { (overlay: NMFOverlay ) -> Bool in
+            self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
+            return true
         }
     }
 }
 
+//MARK: SetBottomSheet
+private extension MapsViewController {
+    func showBottomSheet() {
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        else { fatalError() }
+        let bottomSheetHeight = (scene.screen.bounds.height - 233)
+        bottomSheet.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
+        view.addSubview(bottomSheet)
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.bottomSheet.frame.origin.y = bottomSheetHeight
+        }
+        bottomSheetState = true
+    }
+    
+    func hideBottomSheet() {
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        else { fatalError() }
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            self?.bottomSheet.frame.origin.y = scene.screen.bounds.height
+        }) { [weak self] _ in
+            self?.bottomSheet.removeFromSuperview()
+        }
+        bottomSheetState = false
+    }
+}
+
+
+//MARK: MapsViewDelegate
 extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
         
-
-        if mapView.zoomLevel >= MapsLiteral.markerZoomLevel {
-            stationMarker.hidden = false
-        } else {
-            stationMarker.hidden = true
-        }
+        
+//        if mapView.zoomLevel >= MapsLiteral.markerZoomLevel {
+//            stationMarker.hidden = false
+//        } else {
+//            stationMarker.hidden = true
+//        }
     }
     
     func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
+    }
+}
+
+extension MapsViewController: NMFMapViewTouchDelegate {
+    func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
+        if bottomSheetState { self.hideBottomSheet() }
     }
 }
 
