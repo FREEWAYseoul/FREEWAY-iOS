@@ -77,7 +77,7 @@ private extension MapsViewController {
             currentLocation.startUpdatingLocation()
             print(latitude, longitude)
             
-            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 15)
+            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
             cameraUpdate.animation = .easeIn
             mapsView.moveCamera(cameraUpdate)
             guard let locationOverlay = locationOverlay else { return }
@@ -132,12 +132,12 @@ private extension MapsViewController {
 extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
         
-        
-//        if mapView.zoomLevel >= MapsLiteral.markerZoomLevel {
-//            stationMarker.hidden = false
-//        } else {
-//            stationMarker.hidden = true
-//        }
+        //TODO: 현재 zoom 정도에 따라서 stationMarker를 표시할지 말지에 대한 로직 추후 논의 필요
+        //        if mapView.zoomLevel >= MapsLiteral.markerZoomLevel {
+        //            stationMarker.hidden = false
+        //        } else {
+        //            stationMarker.hidden = true
+        //        }
     }
     
     func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
@@ -155,8 +155,13 @@ extension MapsViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            setcurrentLocation()
-            setStationMarker()
+            DispatchQueue.main.async { [weak self] in
+                if let self = self {
+                    self.setcurrentLocation()
+                    self.setStationMarker()
+                }
+            }
+            
         case .restricted, .notDetermined:
             print("GPS 권한 설정되지 않음")
         case .denied:
@@ -166,4 +171,3 @@ extension MapsViewController: CLLocationManagerDelegate {
         }
     }
 }
-
