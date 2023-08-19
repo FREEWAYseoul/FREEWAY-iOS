@@ -10,7 +10,7 @@ import Then
 import SnapKit
 
 final class SearchHistoryView: UIView {
-    
+    //MARK: Model로 추후 변경 필요
     struct StationInfo {
         let stationName: String
 //        let stationId: String
