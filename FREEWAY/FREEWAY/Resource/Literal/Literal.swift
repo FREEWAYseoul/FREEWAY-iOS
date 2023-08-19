@@ -10,6 +10,10 @@ import UIKit
 
 enum MapsLiteral {
     static let markerZoomLevel: Double = 14.5
+    
+    //MARK: Marker UI
+    static let markerRadius: CGFloat = 21
+    static let markerBorderWidth: CGFloat = 3.15
 }
 
 enum bottomSheetLiteral {

@@ -14,6 +14,10 @@ import CoreLocation
 class MapsViewController: UIViewController {
     private var currentLocation = CLLocationManager()
     private var locationOverlay: NMFLocationOverlay?
+    //TODO: 임시 강남역 마커로 설정 추후 배열로 변경 예정
+    private var stationMarkerView = StationMarkerView(lineImageName: "two", stationColor: .green, stationName: "강남역").then {
+        $0.frame = CGRect(x: 0, y: 0, width: 88, height: 50.5)
+    }
     
     private lazy var bottomSheet = UIView().then {
         $0.backgroundColor = .lightGray
@@ -27,11 +31,12 @@ class MapsViewController: UIViewController {
         locationOverlay = $0.locationOverlay
     }
     
-    let stationMarker = NMFMarker().then {
+    private lazy var stationMarker = NMFMarker().then {
         //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
         //TODO: 임시 marker icon 후에 UIView로 구현 예정
         $0.position = NMGLatLng(lat: 37.496, lng: 127.028)
-        $0.iconImage = NMFOverlayImage(name: "GangnamStation")
+        
+        $0.iconImage = NMFOverlayImage(image: self.stationMarkerView.toImage()!)
         $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
