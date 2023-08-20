@@ -23,6 +23,10 @@ final class SearchHistoryViewCell: UITableViewCell {
     
     private let stationLineImage = UIImageView()
     
+    private let divider = UIView().then {
+        $0.backgroundColor = .darkGray
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupLayout()
@@ -48,20 +52,30 @@ extension SearchHistoryViewCell {
         
         self.addSubview(stationStateImage)
         stationStateImage.snp.makeConstraints { make in
-            make.leading.equalTo(stationTitleLabel).offset(6)
-            make.top.bottom.equalToSuperview()
+            make.leading.equalTo(stationTitleLabel.snp.trailing).offset(6)
+            make.centerY.equalTo(stationTitleLabel)
+            make.height.equalTo(21)
+            make.width.equalTo(57)
         }
         
         self.addSubview(stationLineImage)
         stationLineImage.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-20)
-            make.top.bottom.equalToSuperview()
+            make.centerY.equalTo(stationTitleLabel)
+            make.height.width.equalTo(28)
+        }
+        
+        self.addSubview(divider)
+        divider.snp.makeConstraints { make in
+            make.bottom.equalTo(stationTitleLabel.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
         }
     }
     
     func configure(_ title: String, _ status: String, _ line: String) {
         stationTitleLabel.text = title
-        stationStateImage.image = UIImage(systemName: status)
-        stationLineImage.image = UIImage(systemName: line)
+        stationStateImage.image = UIImage(named: status)
+        stationLineImage.image = UIImage(named: line)
     }
 }

@@ -25,7 +25,7 @@ final class SearchHistoryView: UIView {
             let longitude: String
     }
     
-    private var searchHistorys: [StationInfo] = [StationInfo(stationName: "강남역", lineId: "2", stationStatus: "possible")]
+    private var searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
     
     private let searchHistoryTableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear
@@ -35,13 +35,20 @@ final class SearchHistoryView: UIView {
     
     private let searchHistoryLabel = UILabel().then {
         //변경 필요
-        $0.textColor = .gray
+        $0.textColor = .darkGray
+        $0.text = "최근 검색"
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 16)
+    }
+    
+    private let divider = UIView().then {
+        $0.backgroundColor = .darkGray
     }
     
     init() {
         super.init(frame: .zero)
-        
+        self.backgroundColor = .lightGray
+        configure()
+        setupLayout()
         
     }
     required init?(coder: NSCoder) {
@@ -60,13 +67,20 @@ private extension SearchHistoryView {
     func setupLayout() {
         self.addSubview(searchHistoryLabel)
         searchHistoryLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(13)
             make.leading.equalToSuperview().offset(17)
+        }
+        
+        self.addSubview(divider)
+        divider.snp.makeConstraints { make in
+            make.top.equalTo(searchHistoryLabel.snp.bottom).offset(13)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
         }
         
         self.addSubview(searchHistoryTableView)
         searchHistoryTableView.snp.makeConstraints { make in
-            make.top.equalTo(searchHistoryLabel).offset(13)
+            make.top.equalTo(searchHistoryLabel.snp.bottom).offset(13)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
