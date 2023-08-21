@@ -9,10 +9,26 @@ import UIKit
 import SnapKit
 import Then
 
+//MARK: Model로 추후 변경 필요
+struct StationInfo {
+    let stationName: String
+//        let stationId: String
+    let lineId: String
+//        let lineName: String
+//        let stationCoordinate: StationCoordinate
+    let stationStatus: String
+}
+
+struct StationCoordinate {
+        let latitude: String
+        let longitude: String
+}
+
 final class SearchViewController: UIViewController {
     
+    let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
     lazy var searchTextFieldView = SearchTextfieldView()
-    lazy var searchHistoryView = SearchHistoryView()
+    lazy var searchHistoryView = searchHistorys.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: searchHistorys)
     
     init() {
         super.init(nibName: nil, bundle: nil)

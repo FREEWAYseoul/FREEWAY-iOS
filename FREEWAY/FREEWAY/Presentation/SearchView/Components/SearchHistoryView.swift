@@ -10,22 +10,8 @@ import Then
 import SnapKit
 
 final class SearchHistoryView: UIView {
-    //MARK: Model로 추후 변경 필요
-    struct StationInfo {
-        let stationName: String
-//        let stationId: String
-        let lineId: String
-//        let lineName: String
-//        let stationCoordinate: StationCoordinate
-        let stationStatus: String
-    }
     
-    struct StationCoordinate {
-            let latitude: String
-            let longitude: String
-    }
-    
-    private var searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
+    private var searchHistorys: [StationInfo]!
     
     private let searchHistoryTableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear
@@ -44,8 +30,9 @@ final class SearchHistoryView: UIView {
         $0.backgroundColor = .darkGray
     }
     
-    init() {
+    init(searchHistorys: [StationInfo]) {
         super.init(frame: .zero)
+        self.searchHistorys = searchHistorys
         self.backgroundColor = .lightGray
         configure()
         setupLayout()
