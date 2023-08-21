@@ -25,6 +25,7 @@ final class EmptyHistoryView: UIView {
     
     init() {
         super.init(frame: .zero)
+        self.backgroundColor = .gray
         setupLayout()
     }
     

@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-//MARK: Model로 추후 변경 필요
+//TODO: Model로 추후 변경 필요
 struct StationInfo {
     let stationName: String
 //        let stationId: String
@@ -25,7 +25,7 @@ struct StationCoordinate {
 }
 
 final class SearchViewController: UIViewController {
-    
+    //TODO: 추후 userdefaults 변수로 변경 필요
     let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
     lazy var searchTextFieldView = SearchTextfieldView()
     lazy var searchHistoryView = searchHistorys.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: searchHistorys)
@@ -42,10 +42,7 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupLayout()
-        searchTextFieldView.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        searchTextFieldView.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
-        searchTextFieldView.searchTextfield.delegate = self
-        
+        configure()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -77,12 +74,19 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
+        //TODO: 음성 인식 액션 필요
         print("음성 인식 기능")
     }
     
 }
 
 private extension SearchViewController {
+    func configure() {
+        searchTextFieldView.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        searchTextFieldView.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
+        searchTextFieldView.searchTextfield.delegate = self
+    }
+    
     func setupLayout() {
         view.addSubview(searchTextFieldView)
         searchTextFieldView.snp.makeConstraints { make in
@@ -101,14 +105,12 @@ private extension SearchViewController {
 extension SearchViewController: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // 백스페이스 실행가능하게 하게하기
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
             if (isBackSpace == -92) {
                 return true
             }
         }
-        // 숫자만 && 글자수 제한
         guard textField.text!.count < 10 else { return false }
 
         return true
