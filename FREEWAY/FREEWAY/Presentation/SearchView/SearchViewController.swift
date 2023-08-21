@@ -48,6 +48,11 @@ final class SearchViewController: UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchTextFieldView.searchTextfield.becomeFirstResponder()
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         if #available(iOS 13, *) {
             return .darkContent
