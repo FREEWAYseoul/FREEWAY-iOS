@@ -15,7 +15,7 @@ final class SearchTextfieldView: UIView {
         $0.borderStyle = .none
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
         $0.textColor = Pallete.customBlack.color
-        $0.attributedPlaceholder = NSAttributedString(string: "역 이름을 입력해주세요", attributes: [NSAttributedString.Key.foregroundColor : Pallete.customGray.color?.withAlphaComponent(0.5) ?? UIColor.gray, NSAttributedString.Key.font: UIFont(name: "Pretendard-SemiBold", size: 18)])
+        $0.attributedPlaceholder = NSAttributedString(string: "역 이름을 입력해주세요", attributes: [NSAttributedString.Key.foregroundColor : Pallete.customGray.color?.withAlphaComponent(0.5) ?? UIColor.gray, NSAttributedString.Key.font: UIFont(name: "Pretendard-SemiBold", size: 18) ?? UIFont.systemFont(ofSize: 18)])
     }
     
     private let voiceRecognitionImage = UIImageView(frame: .zero).then {
