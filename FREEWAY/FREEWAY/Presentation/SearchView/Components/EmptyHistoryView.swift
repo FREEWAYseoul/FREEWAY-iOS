@@ -12,7 +12,7 @@ import Then
 final class EmptyHistoryView: UIView {
     
     private let emptyTitleLabel = UILabel().then {
-        $0.textColor = .darkGray
+        $0.textColor = Pallete.customGray.color
         $0.text = "궁금한 역을 검색할 수 있어요"
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 20)
     }
@@ -20,12 +20,12 @@ final class EmptyHistoryView: UIView {
     private let emptyImage = UIImageView().then {
         $0.image = UIImage(systemName: "magnifyingglass")
         $0.contentMode = .scaleAspectFill
-        $0.tintColor = .darkGray
+        $0.tintColor = Pallete.customGray.color
     }
     
     init() {
         super.init(frame: .zero)
-        self.backgroundColor = .gray
+        self.backgroundColor = Pallete.backgroundGray.color
         setupLayout()
     }
     

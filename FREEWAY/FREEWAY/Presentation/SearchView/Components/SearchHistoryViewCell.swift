@@ -15,7 +15,7 @@ final class SearchHistoryViewCell: UITableViewCell {
     
     private let stationTitleLabel = UILabel().then {
         //변경 필요
-        $0.textColor = .black
+        $0.textColor = Pallete.customBlack.color
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
     }
     
@@ -24,7 +24,7 @@ final class SearchHistoryViewCell: UITableViewCell {
     private let stationLineImage = UIImageView()
     
     private let divider = UIView().then {
-        $0.backgroundColor = .darkGray
+        $0.backgroundColor = Pallete.dividerGray.color
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
