@@ -13,6 +13,7 @@
 		016CB6492A7D4AFD005C4882 /* MapsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6482A7D4AFD005C4882 /* MapsRepository.swift */; };
 		016CB64C2A7D4B23005C4882 /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB64B2A7D4B23005C4882 /* MapsViewModel.swift */; };
 		016CB64E2A7D4B4D005C4882 /* MapsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB64D2A7D4B4D005C4882 /* MapsView.swift */; };
+		2A2F696D2A96470D00B07652 /* Pallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F696C2A96470D00B07652 /* Pallete.swift */; };
 		2AC755172A7BFD2F00099C2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755162A7BFD2F00099C2A /* AppDelegate.swift */; };
 		2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */; };
 		2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7551A2A7BFD2F00099C2A /* MapsViewController.swift */; };
@@ -58,6 +59,7 @@
 		10CC25F152549A99084FF2F4 /* Pods_FREEWAY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8CCA570A4E0238769A7DFB /* Pods_FREEWAYTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAYTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B019DCAF33D6AEE416BE0D /* Pods_FREEWAY_FREEWAYUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY_FREEWAYUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A2F696C2A96470D00B07652 /* Pallete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pallete.swift; sourceTree = "<group>"; };
 		2AC755132A7BFD2F00099C2A /* FREEWAY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FREEWAY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC755162A7BFD2F00099C2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				2AC755272A7BFD3000099C2A /* Info.plist */,
+				2A2F696C2A96470D00B07652 /* Pallete.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */,
 				016CB64E2A7D4B4D005C4882 /* MapsView.swift in Sources */,
 				016CB63B2A7D493D005C4882 /* NetworkError.swift in Sources */,
+				2A2F696D2A96470D00B07652 /* Pallete.swift in Sources */,
 				016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */,
 				016CB6462A7D4A4C005C4882 /* MapsUseCase.swift in Sources */,
 				2AC755212A7BFD2F00099C2A /* FREEWAY.xcdatamodeld in Sources */,
