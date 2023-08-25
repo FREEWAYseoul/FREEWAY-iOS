@@ -16,6 +16,7 @@ final class RecentSearchView: SearchHistoryBaseView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
         configure()
         setupLayout()
     }
@@ -30,6 +31,7 @@ private extension RecentSearchView {
     func configure() {
         searchHistoryTableView.delegate = self
         searchHistoryTableView.dataSource = self
+        searchHistoryTableView.register(SearchHistoryBaseViewCell.self, forCellReuseIdentifier: SearchHistoryBaseViewCell.searchHistoryViewCellId)
     }
     
     func setupLayout() {
@@ -54,7 +56,7 @@ extension RecentSearchView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchHistoryBaseViewCell.searchHistoryViewCellId) as? SearchHistoryBaseViewCell else { return UITableViewCell() }
         let searchHistory = searchHistorys[indexPath.row]
-        cell.configure(searchHistory.stationName, searchHistory.stationStatus, searchHistory.lineId)
+        cell.configure(searchHistory.stationName, searchHistory.stationStatus, searchHistory.lineId, false, 0)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell

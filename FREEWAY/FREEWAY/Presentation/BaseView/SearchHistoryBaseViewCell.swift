@@ -11,6 +11,8 @@ import Then
 
 final class SearchHistoryBaseViewCell: UITableViewCell {
     
+    private var horizontalOffset = 20
+    
     static let searchHistoryViewCellId = "SearchHistoryViewCell"
     
     private let stationTitleLabel = UILabel().then {
@@ -47,7 +49,7 @@ extension SearchHistoryBaseViewCell {
         self.addSubview(stationTitleLabel)
         stationTitleLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(horizontalOffset)
         }
         
         self.addSubview(stationStateImage)
@@ -60,7 +62,7 @@ extension SearchHistoryBaseViewCell {
         
         self.addSubview(stationLineImage)
         stationLineImage.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-20)
+            make.trailing.equalToSuperview().offset(-horizontalOffset)
             make.centerY.equalTo(stationTitleLabel)
             make.height.width.equalTo(28)
         }
@@ -73,9 +75,22 @@ extension SearchHistoryBaseViewCell {
         }
     }
     
-    func configure(_ title: String, _ status: String, _ line: String) {
+    func configure(_ title: String, _ status: String, _ line: String, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
         stationTitleLabel.text = title
         stationStateImage.image = UIImage(named: status)
         stationLineImage.image = UIImage(named: line)
+        if horizontalOffset == 0 {
+            stationTitleLabel.snp.updateConstraints { make in
+                make.leading.equalToSuperview().offset(horizontalOffset ?? 20)
+            }
+            stationStateImage.snp.updateConstraints { make in
+                make.leading.equalTo(stationTitleLabel.snp.trailing).offset(6)
+            }
+            stationLineImage.snp.updateConstraints { make in
+                make.trailing.equalToSuperview().offset(-(horizontalOffset ?? 20))
+            }
+        }
+        
+        if separaterState == false { divider.isHidden = true }
     }
 }
