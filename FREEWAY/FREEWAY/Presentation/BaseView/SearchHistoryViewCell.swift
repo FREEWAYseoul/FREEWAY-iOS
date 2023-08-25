@@ -1,5 +1,5 @@
 //
-//  SearchHistoryViewCell.swift
+//  SearchHistoryBaseViewCell.swift
 //  FREEWAY
 //
 //  Created by 한택환 on 2023/08/20.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class SearchHistoryViewCell: UITableViewCell {
+final class SearchHistoryBaseViewCell: UITableViewCell {
     
     static let searchHistoryViewCellId = "SearchHistoryViewCell"
     
@@ -41,7 +41,7 @@ final class SearchHistoryViewCell: UITableViewCell {
     }
 }
 
-extension SearchHistoryViewCell {
+extension SearchHistoryBaseViewCell {
     
     private func setupLayout() {
         self.addSubview(stationTitleLabel)
