@@ -1,24 +1,26 @@
 //
-//  EmptyHistoryView.swift
+//  EmptySearchView.swift
 //  FREEWAY
 //
-//  Created by 한택환 on 2023/08/21.
+//  Created by 한택환 on 2023/08/25.
 //
 
 import UIKit
-import SnapKit
 import Then
+import SnapKit
 
-final class EmptyHistoryView: UIView {
+final class EmptySearchView: UIView {
+    //추후에 TextField와 데이터 바인딩 필요
+    var searchText: String = "강남"
     
-    private let emptyTitleLabel = UILabel().then {
+    private lazy var emptySearchTitleLabel = UILabel().then {
         $0.textColor = Pallete.customGray.color
-        $0.text = "궁금한 역을 검색할 수 있어요"
+        $0.text = "\"\(searchText)\" 검색 결과가 없습니다."
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 20)
     }
     
-    private let emptyImage = UIImageView().then {
-        $0.image = UIImage(systemName: "magnifyingglass")
+    private let emptySearchImage = UIImageView().then {
+        $0.image = UIImage(named: "error")
         $0.contentMode = .scaleAspectFill
         $0.tintColor = Pallete.customGray.color
     }
@@ -34,20 +36,21 @@ final class EmptyHistoryView: UIView {
     }
 }
 
-private extension EmptyHistoryView {
+private extension EmptySearchView {
     
     func setupLayout() {
-        self.addSubview(emptyImage)
-        emptyImage.snp.makeConstraints { make in
+        self.addSubview(emptySearchImage)
+        emptySearchImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(147.4)
             make.centerX.equalToSuperview()
             make.height.equalTo(60)
         }
         
-        self.addSubview(emptyTitleLabel)
-        emptyTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(emptyImage.snp.bottom).offset(19.6)
+        self.addSubview(emptySearchTitleLabel)
+        emptySearchTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(emptySearchImage.snp.bottom).offset(19.6)
             make.centerX.equalToSuperview()
         }
     }
 }
+

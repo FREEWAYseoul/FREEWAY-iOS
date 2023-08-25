@@ -13,7 +13,9 @@ final class SearchTextfieldView: UIView {
     
     let searchTextfield = UITextField().then {
         $0.borderStyle = .none
-        $0.attributedPlaceholder = NSAttributedString(string: "역 이름을 입력해주세요", attributes: [NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
+        $0.textColor = Pallete.customBlack.color
+        $0.attributedPlaceholder = NSAttributedString(string: "역 이름을 입력해주세요", attributes: [NSAttributedString.Key.foregroundColor : Pallete.customGray.color?.withAlphaComponent(0.5) ?? UIColor.gray, NSAttributedString.Key.font: UIFont(name: "Pretendard-SemiBold", size: 18) ?? UIFont.systemFont(ofSize: 18)])
     }
     
     private let voiceRecognitionImage = UIImageView(frame: .zero).then {
@@ -26,8 +28,8 @@ final class SearchTextfieldView: UIView {
     }
     
     private let backButtonImage = UIImageView(frame: .zero).then {
-        $0.image = UIImage(named: "chevron.right")
-        $0.tintColor = .gray
+        $0.image = UIImage(named: "icon-arrow-right")
+        $0.tintColor = Pallete.customGray.color
     }
     
     lazy var backButton = UIButton(frame: .zero).then {
@@ -59,7 +61,7 @@ private extension SearchTextfieldView {
         
         backButton.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.trailing.equalTo(searchTextfield).offset(-17)
+            make.trailing.equalTo(searchTextfield.snp.leading).offset(-17)
         }
         
         backButton.addSubview(backButtonImage)

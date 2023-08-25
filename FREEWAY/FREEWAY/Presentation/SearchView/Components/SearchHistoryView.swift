@@ -17,23 +17,24 @@ final class SearchHistoryView: UIView {
         $0.backgroundColor = .clear
         $0.rowHeight = 57
         $0.isScrollEnabled = true
+        $0.separatorStyle = .none
     }
     
     private let searchHistoryLabel = UILabel().then {
         //변경 필요
-        $0.textColor = .darkGray
+        $0.textColor = Pallete.customGray.color
         $0.text = "최근 검색"
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 16)
     }
     
     private let divider = UIView().then {
-        $0.backgroundColor = .darkGray
+        $0.backgroundColor = Pallete.dividerGray.color
     }
     
     init(searchHistorys: [StationInfo]) {
         super.init(frame: .zero)
         self.searchHistorys = searchHistorys
-        self.backgroundColor = .lightGray
+        self.backgroundColor = Pallete.backgroundGray.color
         configure()
         setupLayout()
         
