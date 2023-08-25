@@ -11,6 +11,8 @@ import Then
 
 final class HomeViewController: UIViewController {
     
+    private let alertButton = InAppAlertButtonView()
+    
     private let homeTitle = HomeTitleView()
     
     private let textField = HomeSearchTextfieldView()
@@ -36,6 +38,13 @@ final class HomeViewController: UIViewController {
 private extension HomeViewController {
     
     func setupLayout() {
+        view.addSubview(alertButton)
+        alertButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 32.09)
+            make.trailing.equalToSuperview().offset(-20)
+            make.width.equalTo(29)
+        }
+        
         view.addSubview(homeTitle)
         homeTitle.snp.makeConstraints { make in
             make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 162)
