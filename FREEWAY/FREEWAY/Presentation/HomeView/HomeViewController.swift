@@ -12,11 +12,8 @@ import Then
 final class HomeViewController: UIViewController {
     
     private let alertButton = InAppAlertButtonView()
-    
     private let homeTitle = HomeTitleView()
-    
     private let textField = HomeSearchTextfieldView()
-    
     private let recentSearchView = RecentSearchView()
     
     override func viewDidLoad() {
