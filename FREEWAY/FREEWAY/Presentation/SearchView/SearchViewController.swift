@@ -59,9 +59,12 @@ final class SearchViewController: UIViewController {
     }
     
     private func safeAreaTopInset() -> CGFloat? {
-        let window = UIApplication.shared.windows.first
-        guard let topArea = window?.safeAreaInsets.top else { return nil }
-        return topArea
+        if #available(iOS 15.0, *) {
+            let topArea = UIApplication.shared.windows.first?.safeAreaInsets.top
+            return topArea
+        } else {
+            return nil
+        }
     }
     
     private func setDefaultNavigationBar() {
