@@ -15,6 +15,7 @@ final class HomeSearchTextfieldView: UIView {
         $0.font = UIFont(name: "Pretendard-Medium", size: 18)
         $0.textColor = Pallete.customBlack.color
         $0.text = "역이름을 입력해주세요"
+        $0.layer.opacity = 0.5
     }
     
     private let voiceRecognitionImage = UIImageView(frame: .zero).then {
