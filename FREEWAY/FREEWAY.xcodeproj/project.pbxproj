@@ -35,6 +35,10 @@
 		2A7A8BB92A96517C00D0FFC2 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */; };
 		2A7A8BBA2A96517C00D0FFC2 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */; };
 		2AB2850C2A98B0370077ED7C /* EmptySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2850B2A98B0370077ED7C /* EmptySearchView.swift */; };
+		2AB285202A9B29BF0077ED7C /* StationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2851F2A9B29BF0077ED7C /* StationDTO.swift */; };
+		2AB285222A9B2CB20077ED7C /* AlertDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285212A9B2CB20077ED7C /* AlertDTO.swift */; };
+		2AB285242A9B2F080077ED7C /* StationDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285232A9B2F080077ED7C /* StationDetailDTO.swift */; };
+		2AB285272A9B36280077ED7C /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285262A9B36280077ED7C /* MockData.swift */; };
 		2AC755172A7BFD2F00099C2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755162A7BFD2F00099C2A /* AppDelegate.swift */; };
 		2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */; };
 		2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7551A2A7BFD2F00099C2A /* MapsViewController.swift */; };
@@ -92,6 +96,10 @@
 		2A7A8BAA2A96517C00D0FFC2 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2AB2850B2A98B0370077ED7C /* EmptySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySearchView.swift; sourceTree = "<group>"; };
+		2AB2851F2A9B29BF0077ED7C /* StationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDTO.swift; sourceTree = "<group>"; };
+		2AB285212A9B2CB20077ED7C /* AlertDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDTO.swift; sourceTree = "<group>"; };
+		2AB285232A9B2F080077ED7C /* StationDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailDTO.swift; sourceTree = "<group>"; };
+		2AB285262A9B36280077ED7C /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		2AC755132A7BFD2F00099C2A /* FREEWAY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FREEWAY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC755162A7BFD2F00099C2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -166,6 +174,8 @@
 		016CB6342A7D4856005C4882 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				2AB285252A9B2F700077ED7C /* Mock */,
+				2AB2851E2A9B29A90077ED7C /* DTO */,
 				016CB6472A7D4AEF005C4882 /* Repository */,
 			);
 			path = Data;
@@ -279,6 +289,24 @@
 				2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		2AB2851E2A9B29A90077ED7C /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				2AB2851F2A9B29BF0077ED7C /* StationDTO.swift */,
+				2AB285212A9B2CB20077ED7C /* AlertDTO.swift */,
+				2AB285232A9B2F080077ED7C /* StationDetailDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		2AB285252A9B2F700077ED7C /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				2AB285262A9B36280077ED7C /* MockData.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		2AC7550A2A7BFD2F00099C2A = {
@@ -633,13 +661,17 @@
 				2A26EA2E2A9200E700FA355B /* SearchTextfieldView.swift in Sources */,
 				2A2F696B2A93A50300B07652 /* EmptyHistoryView.swift in Sources */,
 				2A26EA2A2A9120F100FA355B /* SearchHistoryView.swift in Sources */,
+				2AB285242A9B2F080077ED7C /* StationDetailDTO.swift in Sources */,
 				2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */,
 				2AB2850C2A98B0370077ED7C /* EmptySearchView.swift in Sources */,
 				016CB64E2A7D4B4D005C4882 /* MapsView.swift in Sources */,
 				016CB63B2A7D493D005C4882 /* NetworkError.swift in Sources */,
 				016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */,
+				2AB285222A9B2CB20077ED7C /* AlertDTO.swift in Sources */,
 				016CB6462A7D4A4C005C4882 /* MapsUseCase.swift in Sources */,
 				2AC755212A7BFD2F00099C2A /* FREEWAY.xcdatamodeld in Sources */,
+				2AB285202A9B29BF0077ED7C /* StationDTO.swift in Sources */,
+				2AB285272A9B36280077ED7C /* MockData.swift in Sources */,
 				2A7A8B7B2A964EAB00D0FFC2 /* Pallete.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
