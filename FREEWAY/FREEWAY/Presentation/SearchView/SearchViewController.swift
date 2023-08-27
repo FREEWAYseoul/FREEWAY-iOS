@@ -77,7 +77,7 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-        //TODO: 음성 인식 액션 필요
+        VoiceRecognitionManager().startRecognition()
         print("음성 인식 기능")
     }
     
