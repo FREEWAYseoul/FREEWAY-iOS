@@ -11,11 +11,12 @@ import Then
 
 final class HomeSearchTextfieldView: UIView {
     
-    private let placeholderLabel = UILabel().then {
+    lazy var placeholderLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Medium", size: 18)
         $0.textColor = Pallete.customBlack.color
         $0.text = "역이름을 입력해주세요"
         $0.layer.opacity = 0.5
+        $0.isUserInteractionEnabled = true
     }
     
     private let voiceRecognitionImage = UIImageView(frame: .zero).then {

@@ -11,6 +11,8 @@ import Then
 
 final class HomeViewController: UIViewController {
     
+    private let voiceRecognitionManager = VoiceRecognitionManager.shared
+    
     private let alertButton = InAppAlertButtonView()
     private let homeTitle = HomeTitleView()
     private let textField = HomeSearchTextfieldView()
@@ -19,6 +21,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        configure()
         setupLayout()
     }
     
@@ -30,9 +33,32 @@ final class HomeViewController: UIViewController {
             return nil
         }
     }
+    
+    @objc func voiceButtonPressed(_ sender: UIButton) {
+        if voiceRecognitionManager.isRecognizing {
+            voiceRecognitionManager.stopRecognition()
+        } else {
+            voiceRecognitionManager.startRecognition()
+        }
+    }
+    
+    @objc func tabPlaceholderLabel(sender: UITapGestureRecognizer){
+        //let searchViewController = SearchViewController()
+        //searchViewController.modalPresentationStyle = .fullScreen
+        //self.present(searchViewController, animated: true, completion: nil)
+        self.navigationController?.pushViewController(SearchViewController(), animated: true)
+        print("hi")
+    }
 }
 
 private extension HomeViewController {
+    
+    func configure() {
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        textField.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
+        let placeHolderGesture = UITapGestureRecognizer(target: self, action: #selector(tabPlaceholderLabel))
+        textField.placeholderLabel.addGestureRecognizer(placeHolderGesture)
+    }
     
     func setupLayout() {
         view.addSubview(alertButton)
