@@ -16,14 +16,19 @@ protocol VoiceRecognitionDelegate: AnyObject {
 class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     weak var delegate: VoiceRecognitionDelegate?
     
+    var isRecognizing = false
+    var resultText = ""
     private let audioEngine = AVAudioEngine()
     private var speechRecognizer: SFSpeechRecognizer?
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     
+    private var audioRecorder: AVAudioRecorder?
+    private let silenceThreshold: TimeInterval = 1.0 // 1초간 무응답인 경우 자동 종료
+    
     override init() {
         super.init()
-        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR"))
+        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR")) //한국어
         speechRecognizer?.delegate = self
     }
     
@@ -37,6 +42,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         guard let request = request else {
             return
         }
+        isRecognizing = true
         
         let inputNode = audioEngine.inputNode
         recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
@@ -45,9 +51,11 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             
             if let result = result {
                 isFinal = result.isFinal
-                let recognizedText = result.bestTranscription.formattedString
+                self.resultText = result.bestTranscription.formattedString
+            
+                print(self.resultText)
                 if isFinal {
-                    self.delegate?.didRecognizeVoice(text: recognizedText)
+                    self.delegate?.didRecognizeVoice(text: self.resultText)
                 }
             }
             
@@ -68,14 +76,68 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         
         do {
             try audioEngine.start()
+            startRecordingSilenceDetection()
         } catch {
             print("Audio Engine start error: \(error)")
         }
     }
     
     func stopRecognition() {
+        isRecognizing = false
         audioEngine.stop()
         recognitionTask?.cancel()
+        stopRecordingSilenceDetection()
+        print("음성 인식을 종료합니다.")
+    }
+    
+    private func startRecordingSilenceDetection() {
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.record)
+            try audioSession.setActive(true)
+            
+            let audioURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("silence.caf")
+            let audioSettings: [String: Any] = [
+                AVFormatIDKey: Int(kAudioFormatAppleIMA4),
+                AVSampleRateKey: 44100.0,
+                AVNumberOfChannelsKey: 1,
+                AVEncoderBitRateKey: 12800,
+                AVLinearPCMBitDepthKey: 16,
+                AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
+            ]
+            
+            audioRecorder = try AVAudioRecorder(url: audioURL, settings: audioSettings)
+            audioRecorder?.delegate = self
+            audioRecorder?.isMeteringEnabled = true
+            audioRecorder?.record()
+        } catch {
+            print("Error starting audio recorder: \(error)")
+        }
+    }
+    
+    private func stopRecordingSilenceDetection() {
+        audioRecorder?.stop()
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setActive(false)
+        } catch {
+            print("Error stopping audio recorder: \(error)")
+        }
+        audioRecorder = nil
     }
 }
 
+extension VoiceRecognitionManager: AVAudioRecorderDelegate {
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        if flag {
+            let averagePower = recorder.averagePower(forChannel: 0)
+            if averagePower < -30.0 { // Assuming -30 dB as silence threshold
+                stopRecognition()
+            } else {
+                startRecordingSilenceDetection()
+            }
+        } else {
+            print("Audio recording failed.")
+        }
+    }
+}

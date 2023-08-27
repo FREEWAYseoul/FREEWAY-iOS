@@ -25,6 +25,9 @@ struct StationCoordinate {
 }
 
 final class SearchViewController: UIViewController {
+    
+    private let voiceRecognitionManager = VoiceRecognitionManager()
+    
     //TODO: 추후 userdefaults 변수로 변경 필요
     let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
     lazy var searchTextFieldView = SearchTextfieldView()
@@ -77,8 +80,12 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-        VoiceRecognitionManager().startRecognition()
-        print("음성 인식 기능")
+        if voiceRecognitionManager.isRecognizing {
+            voiceRecognitionManager.stopRecognition()
+            searchTextFieldView.searchTextfield.text = voiceRecognitionManager.resultText
+        } else {
+            voiceRecognitionManager.startRecognition()
+        }
     }
     
 }
