@@ -26,7 +26,7 @@ struct StationCoordinate {
 
 final class SearchViewController: UIViewController {
     
-    private let voiceRecognitionManager = VoiceRecognitionManager()
+    private let voiceRecognitionManager = VoiceRecognitionManager.shared
     
     //TODO: 추후 userdefaults 변수로 변경 필요
     let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]

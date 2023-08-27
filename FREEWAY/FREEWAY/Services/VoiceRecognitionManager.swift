@@ -14,6 +14,8 @@ protocol VoiceRecognitionDelegate: AnyObject {
 }
 
 class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
+    static let shared = VoiceRecognitionManager()
+    
     weak var delegate: VoiceRecognitionDelegate?
     
     var isRecognizing = false
@@ -26,7 +28,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     private var audioRecorder: AVAudioRecorder?
     private let silenceThreshold: TimeInterval = 1.0 // 1초간 무응답인 경우 자동 종료
     
-    override init() {
+    private override init() {
         super.init()
         speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR")) //한국어
         speechRecognizer?.delegate = self
