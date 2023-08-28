@@ -48,6 +48,8 @@
 		2AB285272A9B36280077ED7C /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285262A9B36280077ED7C /* MockData.swift */; };
 		2AB2852A2A9B40350077ED7C /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285292A9B40350077ED7C /* SearchViewModel.swift */; };
 		2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */; };
+		2AB2852E2A9B5E140077ED7C /* VoiceSearchLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */; };
+		2AB285322A9B5F150077ED7C /* VoiceLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AB285312A9B5F150077ED7C /* VoiceLottie.json */; };
 		2AC755172A7BFD2F00099C2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755162A7BFD2F00099C2A /* AppDelegate.swift */; };
 		2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */; };
 		2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7551A2A7BFD2F00099C2A /* MapsViewController.swift */; };
@@ -118,6 +120,8 @@
 		2AB285262A9B36280077ED7C /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		2AB285292A9B40350077ED7C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecognitionManager.swift; sourceTree = "<group>"; };
+		2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSearchLottieView.swift; sourceTree = "<group>"; };
+		2AB285312A9B5F150077ED7C /* VoiceLottie.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoiceLottie.json; sourceTree = "<group>"; };
 		2AC755132A7BFD2F00099C2A /* FREEWAY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FREEWAY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC755162A7BFD2F00099C2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 			children = (
 				2A7A8BA62A96516A00D0FFC2 /* Font */,
 				2AC755222A7BFD3000099C2A /* Assets.xcassets */,
+				2AB285312A9B5F150077ED7C /* VoiceLottie.json */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -336,6 +341,7 @@
 		2AB285132A98F06E0077ED7C /* BaseView */ = {
 			isa = PBXGroup;
 			children = (
+				2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */,
 				2AB285142A98F07D0077ED7C /* SearchHistoryBaseView.swift */,
 				2A26EA2B2A91244F00FA355B /* SearchHistoryBaseViewCell.swift */,
 			);
@@ -566,6 +572,7 @@
 				2A7A8BAC2A96517C00D0FFC2 /* Pretendard-Bold.otf in Resources */,
 				2AC755232A7BFD3000099C2A /* Assets.xcassets in Resources */,
 				2A7A8BB52A96517C00D0FFC2 /* Pretendard-Light.otf in Resources */,
+				2AB285322A9B5F150077ED7C /* VoiceLottie.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,6 +726,7 @@
 				2A2F696B2A93A50300B07652 /* EmptyHistoryView.swift in Sources */,
 				2A26EA2A2A9120F100FA355B /* SearchHistoryView.swift in Sources */,
 				2AB285242A9B2F080077ED7C /* StationDetailDTO.swift in Sources */,
+				2AB2852E2A9B5E140077ED7C /* VoiceSearchLottieView.swift in Sources */,
 				2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */,
 				2AB2850C2A98B0370077ED7C /* EmptySearchView.swift in Sources */,
 				2AB2852A2A9B40350077ED7C /* SearchViewModel.swift in Sources */,

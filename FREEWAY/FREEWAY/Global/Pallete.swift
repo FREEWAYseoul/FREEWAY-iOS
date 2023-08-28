@@ -16,6 +16,7 @@ enum Pallete: String {
     case alertBackgroundRed
     case alertIconGray
     case alertDotRed
+    case voiceTextBackground
 }
 
 enum LinePallete: String {

@@ -32,6 +32,7 @@ final class SearchViewController: UIViewController {
     let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
     lazy var searchTextFieldView = SearchTextfieldView()
     lazy var searchHistoryView = searchHistorys.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: searchHistorys)
+    lazy var voiceSearchLottieView = VoiceSearchLottieView()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -82,10 +83,20 @@ final class SearchViewController: UIViewController {
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
         if voiceRecognitionManager.isRecognizing {
+            searchHistoryView.isHidden = false
             voiceRecognitionManager.stopRecognition()
+            voiceSearchLottieView.removeFromSuperview()
             searchTextFieldView.searchTextfield.text = voiceRecognitionManager.resultText
+            
         } else {
+            searchHistoryView.isHidden = true
+            searchTextFieldView.searchTextfield.resignFirstResponder()
+            setupLottieLayout()
+            voiceSearchLottieView.voiceLottieView.play()
+            voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
             voiceRecognitionManager.startRecognition()
+            //TODO: 추후 Rxswift를 활용한 ViewModel 연동 시에 수정될 부분
+            //voiceSearchLottieView.updateResultText("강남역")
         }
     }
     
@@ -109,6 +120,14 @@ private extension SearchViewController {
         searchHistoryView.snp.makeConstraints { make in
             make.top.equalTo(searchTextFieldView.snp.bottom).offset(22)
             make.bottom.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    func setupLottieLayout() {
+        view.addSubview(voiceSearchLottieView)
+        voiceSearchLottieView.snp.makeConstraints { make in
+            make.top.equalTo(searchTextFieldView.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
