@@ -26,7 +26,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     private var recognitionTask: SFSpeechRecognitionTask?
     
     private var audioRecorder: AVAudioRecorder?
-    private let silenceThreshold: TimeInterval = 1.0 // 1초간 무응답인 경우 자동 종료
+    private let silenceThreshold: TimeInterval = 5.0 // 1초간 무응답인 경우 자동 종료
     
     private override init() {
         super.init()
@@ -112,6 +112,10 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             audioRecorder?.delegate = self
             audioRecorder?.isMeteringEnabled = true
             audioRecorder?.record()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + silenceThreshold) { [weak self] in
+                self?.stopRecognition()
+            }
         } catch {
             print("Error starting audio recorder: \(error)")
         }
