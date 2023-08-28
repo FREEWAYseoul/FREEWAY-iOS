@@ -19,7 +19,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     weak var delegate: VoiceRecognitionDelegate?
     
     var isRecognizing = false
-    var resultText = ""
+    var resultText: String?
     private let audioEngine = AVAudioEngine()
     private var speechRecognizer: SFSpeechRecognizer?
     private var request: SFSpeechAudioBufferRecognitionRequest?
@@ -57,7 +57,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             
                 print(self.resultText)
                 if isFinal {
-                    self.delegate?.didRecognizeVoice(text: self.resultText)
+                    self.delegate?.didRecognizeVoice(text: self.resultText ?? "")
                 }
             }
             

@@ -60,7 +60,7 @@ private extension VoiceSearchLottieView {
     func setupLayout() {
         self.addSubview(voiceLottieView)
         voiceLottieView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
         
         voiceLottieView.addSubview(voiceRecognitionImage)

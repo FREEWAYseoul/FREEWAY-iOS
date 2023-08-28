@@ -126,7 +126,7 @@ private extension SearchViewController {
     func setupLottieLayout() {
         view.addSubview(voiceSearchLottieView)
         voiceSearchLottieView.snp.makeConstraints { make in
-            make.top.equalTo(searchTextFieldView.snp.bottom)
+            make.top.equalTo(searchTextFieldView.snp.bottom).offset(91)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
