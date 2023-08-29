@@ -25,7 +25,7 @@ final class HomeViewController: UIViewController {
         configure()
         setupLayout()
     }
-    
+    //TODO: BaseViewController 구현 후에 옮기기
     private func safeAreaTopInset() -> CGFloat? {
         if #available(iOS 15.0, *) {
             let topArea = UIApplication.shared.windows.first?.safeAreaInsets.top
@@ -60,11 +60,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func tabPlaceholderLabel(sender: UITapGestureRecognizer){
-        //let searchViewController = SearchViewController()
-        //searchViewController.modalPresentationStyle = .fullScreen
-        //self.present(searchViewController, animated: true, completion: nil)
         self.navigationController?.pushViewController(SearchViewController(), animated: true)
-        print("hi")
     }
 }
 

@@ -54,8 +54,6 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             if let result = result {
                 isFinal = result.isFinal
                 self.resultText = result.bestTranscription.formattedString
-            
-                print(self.resultText)
                 if isFinal {
                     self.delegate?.didRecognizeVoice(text: self.resultText ?? "")
                 }
@@ -89,7 +87,6 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         audioEngine.stop()
         recognitionTask?.cancel()
         stopRecordingSilenceDetection()
-        print("음성 인식을 종료합니다.")
     }
     
     private func startRecordingSilenceDetection() {
