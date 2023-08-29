@@ -23,6 +23,7 @@ final class StationMarkerView: UIView {
     
     private lazy var lineImage = UIImageView().then {
         $0.image = UIImage(named: lineImageName)
+        $0.contentMode = .scaleAspectFit
     }
     private lazy var stationLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Regular", size: 18)
@@ -30,13 +31,13 @@ final class StationMarkerView: UIView {
         $0.textColor = .black
     }
     
-    override func setNeedsDisplay(_ rect: CGRect) {
+    override func draw(_ rect: CGRect) {
 
         // Draw balloon shape
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: rect.width / 2, y: 0))
-        path.addLine(to: CGPoint(x: rect.width / 2 + 10, y: 10))
-        path.addLine(to: CGPoint(x: rect.width / 2 - 10, y: 10))
+        path.move(to: CGPoint(x: rect.width / 2 - 9, y: 40.3))
+        path.addLine(to: CGPoint(x: rect.width / 2, y: 49.3))
+        path.addLine(to: CGPoint(x: rect.width / 2 + 9, y: 40.3))
         path.close()
 
         stationColor.setFill() // 배경 색상 설정
@@ -70,20 +71,20 @@ extension StationMarkerView {
      
      private func setupLayout() {
          stationMarkerBackground.snp.makeConstraints { make in
-             make.width.equalTo(88)
-             make.height.equalTo(34)
+             make.width.equalTo(94.5)
+             make.height.equalTo(40.3)
              make.center.equalToSuperview()
          }
          
          lineImage.snp.makeConstraints { make in
              make.centerY.equalToSuperview()
              make.leading.equalToSuperview().offset(6)
-             // 이미지 크기 설정 등 필요한 제약 추가
+             make.width.height.equalTo(20)
          }
          
          stationLabel.snp.makeConstraints { make in
              make.centerY.equalToSuperview()
-             make.trailing.equalToSuperview().offset(-9)
+             make.leading.equalTo(lineImage.snp.trailing).offset(6)
          }
      }
 }

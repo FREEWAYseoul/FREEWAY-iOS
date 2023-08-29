@@ -16,7 +16,7 @@ class MapsViewController: UIViewController {
     private var locationOverlay: NMFLocationOverlay?
     //TODO: 임시 강남역 마커로 설정 추후 배열로 변경 예정
     private var stationMarkerView = StationMarkerView(lineImageName: "two", stationColor: .green, stationName: "강남역").then {
-        $0.frame = CGRect(x: 0, y: 0, width: 88, height: 50.5)
+        $0.frame = CGRect(x: 0, y: 0, width: 94.5, height: 49.3)
     }
     
     private lazy var bottomSheet = UIView().then {
