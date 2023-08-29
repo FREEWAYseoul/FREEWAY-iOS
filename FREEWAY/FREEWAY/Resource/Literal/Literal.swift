@@ -13,6 +13,7 @@ enum MapsLiteral {
     
     //MARK: Marker UI
     static let markerRadius: CGFloat = 40.3 / 2
+    static let elevatorMarkerRadius: CGFloat = 15
     static let markerBorderWidth: CGFloat = 3.15
 }
 
