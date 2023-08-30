@@ -25,10 +25,14 @@ struct StationCoordinate {
 }
 
 final class SearchViewController: UIViewController {
+    
+    private let voiceRecognitionManager = VoiceRecognitionManager.shared
+    
     //TODO: 추후 userdefaults 변수로 변경 필요
     let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
     lazy var searchTextFieldView = SearchTextfieldView()
     lazy var searchHistoryView = searchHistorys.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: searchHistorys)
+    lazy var voiceSearchLottieView = VoiceSearchLottieView()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -41,6 +45,7 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setDefaultNavigationBar()
         setupLayout()
         configure()
     }
@@ -77,8 +82,22 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-        //TODO: 음성 인식 액션 필요
-        print("음성 인식 기능")
+        if voiceRecognitionManager.isRecognizing {
+            searchHistoryView.isHidden = false
+            voiceRecognitionManager.stopRecognition()
+            voiceSearchLottieView.removeFromSuperview()
+            searchTextFieldView.searchTextfield.text = voiceRecognitionManager.resultText
+            
+        } else {
+            searchHistoryView.isHidden = true
+            searchTextFieldView.searchTextfield.resignFirstResponder()
+            setupLottieLayout()
+            voiceSearchLottieView.voiceLottieView.play()
+            voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
+            voiceRecognitionManager.startRecognition()
+            //TODO: 추후 Rxswift를 활용한 ViewModel 연동 시에 수정될 부분
+            //voiceSearchLottieView.updateResultText("강남역")
+        }
     }
     
 }
@@ -101,6 +120,14 @@ private extension SearchViewController {
         searchHistoryView.snp.makeConstraints { make in
             make.top.equalTo(searchTextFieldView.snp.bottom).offset(22)
             make.bottom.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    func setupLottieLayout() {
+        view.addSubview(voiceSearchLottieView)
+        voiceSearchLottieView.snp.makeConstraints { make in
+            make.top.equalTo(searchTextFieldView.snp.bottom).offset(91)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
