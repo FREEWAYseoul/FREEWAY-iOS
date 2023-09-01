@@ -24,6 +24,8 @@ class MapsViewController: UIViewController {
     }
     private var bottomSheetState = false
     
+    private var currentLocationButton = CurrentLocationButton()
+    
     private lazy var mapsView = NMFMapView().then {
         $0.allowsZooming = true
         $0.logoInteractionEnabled = false
@@ -47,18 +49,62 @@ class MapsViewController: UIViewController {
         configure()
         configureCurrentLocation()
     }
+    
+    @objc func currentLocationButtonDidTap() {
+        let status = CLLocationManager.authorizationStatus()
+        if status == .denied {
+            let alert = UIAlertController(title: "현재 위치 설정", message: "현재 위치를 찾기 위해서 권한이 필요해요.\n설정에서 위치 권한을 허용해주세요.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            let settingAction = UIAlertAction(title: "설정", style: .default) {  _ in
+                
+                let settingsURLScheme = "App-Prefs:"
+                
+                if let url = URL(string: settingsURLScheme) {
+                    if UIApplication.shared.canOpenURL(url) {
+                        if #available(iOS 10.0, *) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        } else {
+                            UIApplication.shared.openURL(url)
+                        }
+                    } else {
+                        // 해당 URL을 열 수 없는 경우 처리
+                        print("설정 창을 열 수 없습니다.")
+                    }
+                } else {
+                    // 잘못된 URL 처리
+                    print("잘못된 URL입니다.")
+                }
+            }
+            alert.addAction(okAction)
+            alert.addAction(settingAction)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        else {
+            setcurrentLocation()
+        }
+    }
 }
 //MARK: Set MapsView
 private extension MapsViewController {
+    
     func configure() {
         mapsView.addCameraDelegate(delegate: self)
         mapsView.touchDelegate = self
+        currentLocationButton.addTarget(self, action: #selector(currentLocationButtonDidTap), for: .touchUpInside)
     }
     
     func setupLayout() {
         self.view.addSubview(mapsView)
         mapsView.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        self.view.addSubview(currentLocationButton)
+        currentLocationButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16.17)
+            make.bottom.equalTo(-260)
+            make.height.width.equalTo(36.67)
         }
     }
 }

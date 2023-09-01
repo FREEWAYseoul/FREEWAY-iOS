@@ -17,7 +17,8 @@ final class CurrentLocationButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        configure()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -40,6 +41,6 @@ private extension CurrentLocationButton {
             make.width.height.equalTo(16.67)
         }
         
-        iconView.adjustsImageSizeForAccessibilityContentSizeCategory = false
+        iconView.isUserInteractionEnabled = false
     }
 }
