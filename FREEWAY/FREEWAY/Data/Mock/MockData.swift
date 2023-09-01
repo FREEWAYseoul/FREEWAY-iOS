@@ -8,7 +8,7 @@
 import Foundation
 
 struct MockData {
-    let mockStationDetail: StationDetailDTO = {
+    static let mockStationDetail: StationDetailDTO = {
         let coordinate = CoordinateDTO(latitude: "37.5445888153751", longitude: "127.056066999327")
         let nextStation = NextPreviousStationDTO(stationId: "212", stationName: "건대입구")
         let previousStation = NextPreviousStationDTO(stationId: "210", stationName: "뚝섬")
@@ -46,7 +46,7 @@ struct MockData {
         )
     }()
 
-    let mockStationDTOs: [StationDTO] = [
+    static let mockStationDTOs: [StationDTO] = [
         StationDTO(
             stationId: "207",
             stationName: "상왕십리",

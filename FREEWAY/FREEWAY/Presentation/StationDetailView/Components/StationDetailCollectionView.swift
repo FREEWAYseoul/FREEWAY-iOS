@@ -11,11 +11,9 @@ import Then
 
 final class StationDetailCollectionView: UIView {
     
-    private let stationInfoItems: [(String, String)] = [("elevator", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("elevator", "편의시설")]
-    
-    private let collectionView: UICollectionView = {
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = .zero
         layout.minimumLineSpacing = .zero
         layout.sectionInset = .zero
@@ -28,7 +26,8 @@ final class StationDetailCollectionView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        collectionView.register(StationDetailCollectionViewCell.self, forCellWithReuseIdentifier: StationDetailCollectionViewCell.stationDetailCollectionViewCellId)
+        configure()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -38,23 +37,14 @@ final class StationDetailCollectionView: UIView {
 }
 
 private extension StationDetailCollectionView {
+    func configure() {
+
+    }
     func setupLayout() {
         self.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.top.bottom.equalToSuperview()
         }
     }
 }
 
-extension StationDetailCollectionView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stationInfoItems.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StationDetailCollectionViewCell.stationDetailCollectionViewCellId, for: indexPath) as? StationDetailCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.configure(stationInfoItems[indexPath.row].0, stationInfoItems[indexPath.row].1)
-        return cell
-    }
-}

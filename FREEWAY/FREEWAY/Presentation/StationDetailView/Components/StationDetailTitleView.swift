@@ -17,6 +17,7 @@ final class StationDetailTitleView: UIView {
     private let closeButtonImage = UIImageView(frame: .zero).then {
         $0.image = UIImage(systemName: "xmark")
         $0.tintColor = Pallete.customGray.color
+        $0.contentMode = .scaleAspectFit
     }
     
     lazy var backButton = UIButton(frame: .zero).then {
@@ -27,7 +28,7 @@ final class StationDetailTitleView: UIView {
         $0.backgroundColor = Pallete.dividerGray.color
     }
     
-    lazy var lineButtons: [LineButton] = []
+    var lineButtons: [LineButton] = [LineButton("2"), LineButton("K2")]
     
     var lineButtonsStackView = UIStackView().then {
         $0.axis = .horizontal
@@ -66,17 +67,32 @@ private extension StationDetailTitleView {
         lineButtonsStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(13)
             make.leading.equalToSuperview().offset(16)
+            make.height.equalTo(21)
         }
+        
+        self.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(13)
+            make.trailing.equalToSuperview().offset(-24)
+            make.height.equalTo(21)
+        }
+        
+        backButton.addSubview(closeButtonImage)
+        closeButtonImage.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        closeButtonImage.adjustsImageSizeForAccessibilityContentSizeCategory = false
         
         self.addSubview(separator)
         separator.snp.makeConstraints { make in
-            make.top.equalTo(lineButtonsStackView).offset(12)
+            make.top.equalTo(lineButtonsStackView.snp.bottom).offset(12)
+            make.height.equalTo(1)
             make.leading.trailing.equalToSuperview()
         }
         
         self.addSubview(stationTitle)
         stationTitle.snp.makeConstraints { make in
-            make.top.equalTo(separator).offset(14.5)
+            make.top.equalTo(separator.snp.bottom).offset(14.5)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -94,6 +110,7 @@ final class LineButton: UIButton {
     init(_ line: String) {
         self.line = line
         super.init(frame: .zero)
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -117,7 +134,7 @@ final class StationTitle: UIView {
     
     private lazy var stationTitleBackground = UIView().then {
         $0.backgroundColor = .white
-        $0.layer.cornerRadius = self.frame.height / 2
+        $0.layer.cornerRadius = 39 / 2
         $0.layer.borderWidth = 3.15
         $0.layer.borderColor = LinePallete.two.color?.cgColor
     }
@@ -142,8 +159,6 @@ final class StationTitle: UIView {
         self.stationColor = stationColor
         self.stationName = stationName
         super.init(frame: .zero)
-        
-        configure()
         setupLayout()
         self.backgroundColor = .clear
     }
@@ -155,35 +170,30 @@ final class StationTitle: UIView {
 
 
 private extension StationTitle {
-    private func configure() {
-        self.addSubview(prevNextStationTitlebackground)
-        self.addSubview(stationTitleBackground)
-        self.addSubview(lineImage)
-        self.addSubview(stationLabel)
-    }
     
     private func setupLayout() {
+        self.addSubview(prevNextStationTitlebackground)
         prevNextStationTitlebackground.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(28)
         }
-        
+        self.addSubview(stationTitleBackground)
         stationTitleBackground.snp.makeConstraints { make in
             make.centerX.centerY.equalTo(prevNextStationTitlebackground)
             //텍스트 길이에 따라 옵셔널로 들어가야할 부분
-            make.width.equalTo(94.5)
+            make.width.equalTo(122.8)
             make.height.equalTo(39.9)
             make.center.equalToSuperview()
         }
-        
+        stationTitleBackground.addSubview(lineImage)
         lineImage.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(29)
             make.width.height.equalTo(20)
         }
-        
+        stationTitleBackground.addSubview(stationLabel)
         stationLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(lineImage.snp.trailing).offset(2)

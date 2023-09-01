@@ -17,6 +17,8 @@ final class StationDetailCollectionViewCell: UICollectionViewCell {
     
     private var iconView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
+        $0.tintColor = .black
+        $0.layer.opacity = 0.5
     }
     
     private var iconLabel = UILabel().then {
@@ -41,6 +43,7 @@ final class StationDetailCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -52,6 +55,7 @@ extension StationDetailCollectionViewCell {
     func configure(_ imageName: String, _ title: String) {
         image = UIImage(named: imageName)
         iconView.image = image
+        iconView.image?.withRenderingMode(.alwaysTemplate)
         iconLabel.text = title
     }
     
@@ -67,13 +71,13 @@ extension StationDetailCollectionViewCell {
         separator.snp.makeConstraints { make in
             make.width.equalTo(1)
             make.height.equalTo(35)
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(32)
+            make.centerY.equalTo(iconView)
+            make.trailing.equalToSuperview()
         }
         
         self.addSubview(iconLabel)
         iconLabel.snp.makeConstraints { make in
-            make.top.equalTo(iconView).offset(16)
+            make.top.equalTo(iconView.snp.bottom).offset(16)
             make.centerX.equalTo(iconView)
         }
     }
