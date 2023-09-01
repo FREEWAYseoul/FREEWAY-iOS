@@ -13,6 +13,8 @@ final class StationDetailTitleView: UIView {
     var lineImageName: String
     var stationColor: UIColor
     var stationName: String
+    var prevStationName: String
+    var nextStationName: String
     
     private let closeButtonImage = UIImageView(frame: .zero).then {
         $0.image = UIImage(systemName: "xmark")
@@ -36,13 +38,15 @@ final class StationDetailTitleView: UIView {
         $0.spacing = 9
     }
     
-    lazy var stationTitle = StationTitle(lineImageName: lineImageName, stationColor: stationColor, stationName: stationName)
+    lazy var stationTitle = StationTitle(lineImageName: lineImageName, stationColor: stationColor, stationName: stationName, nextStationName: nextStationName, prevStationName: prevStationName)
     
     
-    init(lineImageName: String, stationColor: UIColor, stationName: String) {
+    init(lineImageName: String, stationColor: UIColor, stationName: String, nextStationName: String, prevStationName: String) {
         self.lineImageName = lineImageName
         self.stationColor = stationColor
         self.stationName = stationName
+        self.nextStationName = nextStationName
+        self.prevStationName = prevStationName
         super.init(frame: .zero)
         
         configure()
@@ -81,7 +85,7 @@ private extension StationDetailTitleView {
         closeButtonImage.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        closeButtonImage.adjustsImageSizeForAccessibilityContentSizeCategory = false
+        closeButtonImage.isUserInteractionEnabled = false
         
         self.addSubview(separator)
         separator.snp.makeConstraints { make in
@@ -124,6 +128,77 @@ private extension LineButton {
         lineIcon.snp.makeConstraints { make in
             make.height.equalTo(20)
         }
+        lineIcon.isUserInteractionEnabled = false
+    }
+}
+
+final class PrevNextStationButton: UIButton {
+    var stationName: String
+    var isPrev: Bool
+    
+    init(_ stationName: String, _ isPrev: Bool) {
+        self.stationName = stationName
+        self.isPrev = isPrev
+        super.init(frame: .zero)
+        if isPrev {
+            nextImage.isHidden = true
+        } else {
+            prevImage.isHidden = true
+        }
+        setupLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private lazy var stationLabel = UILabel().then {
+        $0.font = UIFont(name: "Pretendard-Regular", size: 16)
+        $0.text = stationName
+        $0.textColor = .white
+    }
+    
+    private let prevImage = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.left")
+        $0.tintColor = .white
+        $0.contentMode = .scaleAspectFit
+    }
+    
+    private let nextImage = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.right")
+        $0.tintColor = .white
+        $0.contentMode = .scaleAspectFit
+    }
+}
+
+private extension PrevNextStationButton {
+    func setupLayout() {
+            self.addSubview(prevImage)
+            prevImage.snp.makeConstraints { make in
+                make.height.equalTo(18)
+                make.leading.equalToSuperview().offset(8)
+                make.centerY.equalToSuperview()
+            }
+            prevImage.isUserInteractionEnabled = false
+        
+        self.addSubview(stationLabel)
+        stationLabel.snp.makeConstraints { make in
+            make.top.height.equalToSuperview()
+            make.leading.equalTo(prevImage.snp.trailing).offset(5)
+            make.width.equalTo(54)
+        }
+        stationLabel.isUserInteractionEnabled = false
+            
+            stationLabel.snp.updateConstraints { make in
+                make.leading.equalTo(prevImage.snp.trailing).offset(5)
+            }
+            self.addSubview(nextImage)
+            nextImage.snp.makeConstraints { make in
+                make.height.equalTo(18)
+                make.leading.equalTo(stationLabel.snp.trailing).offset(5)
+                make.centerY.equalToSuperview()
+            }
+            nextImage.isUserInteractionEnabled = false
     }
 }
 
@@ -131,6 +206,8 @@ final class StationTitle: UIView {
     var lineImageName: String
     var stationColor: UIColor
     var stationName: String
+    var nextStationName: String
+    var prevStationName: String
     
     private lazy var stationTitleBackground = UIView().then {
         $0.backgroundColor = .white
@@ -152,12 +229,17 @@ final class StationTitle: UIView {
         $0.backgroundColor = LinePallete.two.color
         $0.layer.cornerRadius = 14
     }
-
+    lazy var prevStationTitleButton = PrevNextStationButton(prevStationName, true)
+    lazy var nextStationTitleButton = PrevNextStationButton(nextStationName, false)
     
-    init(lineImageName: String, stationColor: UIColor, stationName: String) {
+    
+    
+    init(lineImageName: String, stationColor: UIColor, stationName: String, nextStationName: String, prevStationName: String) {
         self.lineImageName = lineImageName
         self.stationColor = stationColor
         self.stationName = stationName
+        self.nextStationName = nextStationName
+        self.prevStationName = prevStationName
         super.init(frame: .zero)
         setupLayout()
         self.backgroundColor = .clear
@@ -179,6 +261,19 @@ private extension StationTitle {
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(28)
         }
+        
+        prevNextStationTitlebackground.addSubview(prevStationTitleButton)
+        prevStationTitleButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(8)
+            make.centerY.equalToSuperview()
+        }
+        
+        prevNextStationTitlebackground.addSubview(nextStationTitleButton)
+        nextStationTitleButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-78)
+            make.centerY.equalToSuperview()
+        }
+        
         self.addSubview(stationTitleBackground)
         stationTitleBackground.snp.makeConstraints { make in
             make.centerX.centerY.equalTo(prevNextStationTitlebackground)
