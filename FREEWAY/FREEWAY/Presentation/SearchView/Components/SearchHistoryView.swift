@@ -73,6 +73,4 @@ extension SearchHistoryView: UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
         return cell
     }
-    
-    
 }
