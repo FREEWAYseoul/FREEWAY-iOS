@@ -9,6 +9,19 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>위치정보 권한이 필요합니다.</string>
 	<key>NMFClientId</key>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>FREEWAY</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>test</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Pretendard-Bold.otf</string>
+		<string>Pretendard-Light.otf</string>
+		<string>Pretendard-SemiBold.otf</string>
+		<string>Pretendard-Medium.otf</string>
+		<string>Pretendard-Regular.otf</string>
+	</array>
+	<key>NMFClientsId</key>
 	<string>55zvlyrm0c</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
