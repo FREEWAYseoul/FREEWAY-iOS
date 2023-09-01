@@ -10,6 +10,10 @@ import SnapKit
 import Then
 
 final class StationDetailTitleView: UIView {
+    var lineImageName: String
+    var stationColor: UIColor
+    var stationName: String
+    
     private let closeButtonImage = UIImageView(frame: .zero).then {
         $0.image = UIImage(systemName: "xmark")
         $0.tintColor = Pallete.customGray.color
@@ -22,9 +26,63 @@ final class StationDetailTitleView: UIView {
     private let separator = UIView().then {
         $0.backgroundColor = Pallete.dividerGray.color
     }
+    
+    lazy var lineButtons: [LineButton] = []
+    
+    var lineButtonsStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.distribution = .equalSpacing
+        $0.spacing = 9
+    }
+    
+    lazy var stationTitle = StationTitle(lineImageName: lineImageName, stationColor: stationColor, stationName: stationName)
+    
+    
+    init(lineImageName: String, stationColor: UIColor, stationName: String) {
+        self.lineImageName = lineImageName
+        self.stationColor = stationColor
+        self.stationName = stationName
+        super.init(frame: .zero)
+        
+        configure()
+        setupLayout()
+        self.backgroundColor = .clear
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
-final class lineButton: UIButton {
+private extension StationDetailTitleView {
+    func configure() {
+        for lineButton in lineButtons {
+            lineButtonsStackView.addArrangedSubview(lineButton)
+        }
+    }
+    
+    func setupLayout() {
+        self.addSubview(lineButtonsStackView)
+        lineButtonsStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(13)
+            make.leading.equalToSuperview().offset(16)
+        }
+        
+        self.addSubview(separator)
+        separator.snp.makeConstraints { make in
+            make.top.equalTo(lineButtonsStackView).offset(12)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        self.addSubview(stationTitle)
+        stationTitle.snp.makeConstraints { make in
+            make.top.equalTo(separator).offset(14.5)
+            make.leading.trailing.equalToSuperview()
+        }
+    }
+}
+
+final class LineButton: UIButton {
     
     var line: String
     
@@ -43,7 +101,7 @@ final class lineButton: UIButton {
     }
 }
 
-private extension lineButton {
+private extension LineButton {
     func setupLayout() {
         self.addSubview(lineIcon)
         lineIcon.snp.makeConstraints { make in
