@@ -50,6 +50,10 @@
 		2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */; };
 		2AB2852E2A9B5E140077ED7C /* VoiceSearchLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */; };
 		2AB285322A9B5F150077ED7C /* VoiceLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AB285312A9B5F150077ED7C /* VoiceLottie.json */; };
+		2AB2853B2A9F8A460077ED7C /* StationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853A2A9F8A460077ED7C /* StationDetailViewController.swift */; };
+		2AB2853E2A9F8AAD0077ED7C /* StationDetailCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853D2A9F8AAD0077ED7C /* StationDetailCollectionView.swift */; };
+		2AB285402A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853F2A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift */; };
+		2AB285422A9F8AD50077ED7C /* StationDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285412A9F8AD50077ED7C /* StationDetailTitleView.swift */; };
 		2AC755172A7BFD2F00099C2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755162A7BFD2F00099C2A /* AppDelegate.swift */; };
 		2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */; };
 		2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7551A2A7BFD2F00099C2A /* MapsViewController.swift */; };
@@ -122,6 +126,10 @@
 		2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecognitionManager.swift; sourceTree = "<group>"; };
 		2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSearchLottieView.swift; sourceTree = "<group>"; };
 		2AB285312A9B5F150077ED7C /* VoiceLottie.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoiceLottie.json; sourceTree = "<group>"; };
+		2AB2853A2A9F8A460077ED7C /* StationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailViewController.swift; sourceTree = "<group>"; };
+		2AB2853D2A9F8AAD0077ED7C /* StationDetailCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailCollectionView.swift; sourceTree = "<group>"; };
+		2AB2853F2A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		2AB285412A9F8AD50077ED7C /* StationDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailTitleView.swift; sourceTree = "<group>"; };
 		2AC755132A7BFD2F00099C2A /* FREEWAY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FREEWAY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC755162A7BFD2F00099C2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -223,6 +231,7 @@
 		016CB6372A7D486B005C4882 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2AB285392A9F8A330077ED7C /* StationDetailView */,
 				2AB285132A98F06E0077ED7C /* BaseView */,
 				2AB2850D2A98EF630077ED7C /* HomeView */,
 				2A26EA252A9120BF00FA355B /* SearchView */,
@@ -364,6 +373,25 @@
 				2AB285262A9B36280077ED7C /* MockData.swift */,
 			);
 			path = Mock;
+			sourceTree = "<group>";
+		};
+		2AB285392A9F8A330077ED7C /* StationDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				2AB2853C2A9F8A4F0077ED7C /* Components */,
+				2AB2853A2A9F8A460077ED7C /* StationDetailViewController.swift */,
+			);
+			path = StationDetailView;
+			sourceTree = "<group>";
+		};
+		2AB2853C2A9F8A4F0077ED7C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2AB2853D2A9F8AAD0077ED7C /* StationDetailCollectionView.swift */,
+				2AB2853F2A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift */,
+				2AB285412A9F8AD50077ED7C /* StationDetailTitleView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		2AC7550A2A7BFD2F00099C2A = {
@@ -719,10 +747,12 @@
 				016CB6492A7D4AFD005C4882 /* MapsRepository.swift in Sources */,
 				2AB2851D2A990E070077ED7C /* EmptyRecentSearchView.swift in Sources */,
 				2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */,
+				2AB285422A9F8AD50077ED7C /* StationDetailTitleView.swift in Sources */,
 				2AB2851B2A9909670077ED7C /* InAppAlertButtonView.swift in Sources */,
 				2AB285192A98F8670077ED7C /* HomeTitleView.swift in Sources */,
 				2AC755172A7BFD2F00099C2A /* AppDelegate.swift in Sources */,
 				2A26EA2E2A9200E700FA355B /* SearchTextfieldView.swift in Sources */,
+				2AB2853E2A9F8AAD0077ED7C /* StationDetailCollectionView.swift in Sources */,
 				2A2F696B2A93A50300B07652 /* EmptyHistoryView.swift in Sources */,
 				2A26EA2A2A9120F100FA355B /* SearchHistoryView.swift in Sources */,
 				2AB285242A9B2F080077ED7C /* StationDetailDTO.swift in Sources */,
@@ -731,10 +761,12 @@
 				2AB2850C2A98B0370077ED7C /* EmptySearchView.swift in Sources */,
 				2AB2852A2A9B40350077ED7C /* SearchViewModel.swift in Sources */,
 				016CB64E2A7D4B4D005C4882 /* MapsView.swift in Sources */,
+				2AB2853B2A9F8A460077ED7C /* StationDetailViewController.swift in Sources */,
 				2AB285122A98EFB80077ED7C /* RecentSearchView.swift in Sources */,
 				016CB63B2A7D493D005C4882 /* NetworkError.swift in Sources */,
 				016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */,
 				2AB285222A9B2CB20077ED7C /* AlertDTO.swift in Sources */,
+				2AB285402A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift in Sources */,
 				016CB6462A7D4A4C005C4882 /* MapsUseCase.swift in Sources */,
 				2AC755212A7BFD2F00099C2A /* FREEWAY.xcdatamodeld in Sources */,
 				2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */,
