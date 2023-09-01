@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "elevater.svg",
+      "filename" : "elevater 1.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "elevater 1.svg",
+      "filename" : "elevater 2.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "elevater 2.svg",
+      "filename" : "elevater 3.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
