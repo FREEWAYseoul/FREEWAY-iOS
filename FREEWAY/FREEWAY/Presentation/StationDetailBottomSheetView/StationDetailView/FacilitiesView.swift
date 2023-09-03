@@ -22,13 +22,14 @@ final class FacilitiesView: UIView {
     
     let tableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear
-        $0.rowHeight = 46
+        $0.rowHeight = 53
         $0.isScrollEnabled = true
         $0.separatorStyle = .none
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
         configure()
         setupLayout()
     }
@@ -72,6 +73,4 @@ extension FacilitiesView: UITableViewDataSource {
         cell.selectionStyle = .none
         return cell
     }
-    
-    
 }

@@ -26,6 +26,10 @@ final class FacilitiesTableViewCell: UITableViewCell {
         $0.tintColor = Pallete.customBlack.color
     }
     
+    private var separater = UIView().then {
+        $0.backgroundColor = Pallete.dividerGray.color
+    }
+    
     var status: Bool = false {
         didSet {
             title.layer.opacity = self.status ? 1 : 0.5
@@ -37,6 +41,7 @@ final class FacilitiesTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -70,6 +75,13 @@ extension FacilitiesTableViewCell {
             make.centerY.equalToSuperview()
             make.leading.equalTo(title.snp.trailing).offset(8)
             make.width.equalTo(57)
+        }
+        
+        self.addSubview(separater)
+        separater.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(1)
         }
 
     }

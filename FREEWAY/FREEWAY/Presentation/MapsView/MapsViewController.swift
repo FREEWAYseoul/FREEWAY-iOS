@@ -26,13 +26,14 @@ class MapsViewController: UIViewController {
     private var bottomSheetState = false
     
     private var currentLocationButton = CurrentLocationButton()
-    
     private lazy var mapsView = NMFMapView().then {
         $0.allowsZooming = true
         $0.logoInteractionEnabled = false
         $0.allowsScrolling = true
         locationOverlay = $0.locationOverlay
     }
+    
+    private var facilitiesView = FacilitiesView()
     
     private lazy var stationMarker = NMFMarker().then {
         //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
@@ -157,6 +158,14 @@ private extension MapsViewController {
             make.height.width.equalTo(36.67)
         }
     }
+    func setupStationDetailViewLayout() {
+        view.addSubview(facilitiesView)
+        facilitiesView.snp.makeConstraints { make in
+            make.top.equalTo(searchTextFieldView.snp.bottom)
+            make.leading.bottom.trailing.equalToSuperview()
+        }
+    }
+    
 }
 
 //MARK: SetMapsViewComponent
@@ -223,6 +232,7 @@ private extension MapsViewController {
         let bottomSheetHeight = (scene.screen.bounds.height - 233)
         self.addChild(bottomSheet)
         view.addSubview(bottomSheet.view)
+        bottomSheet.delegate = self
         bottomSheet.didMove(toParent: self)
         bottomSheet.view.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
         bottomSheet.view.layer.cornerRadius = 20
@@ -248,6 +258,14 @@ private extension MapsViewController {
     }
 }
 
+extension MapsViewController: SetStationDetailViewControllerDelegate {
+    func showStationDetailView() {
+        setupStationDetailViewLayout()
+        view.insertSubview(facilitiesView, at: view.subviews.count - 2)
+    }
+    
+    
+}
 
 //MARK: MapsViewDelegate
 extension MapsViewController: NMFMapViewCameraDelegate {
