@@ -19,9 +19,7 @@ class MapsViewController: UIViewController {
         $0.frame = CGRect(x: 0, y: 0, width: 94.5, height: 49.3)
     }
     
-    private lazy var bottomSheet = UIView().then {
-        $0.backgroundColor = .lightGray
-    }
+    private lazy var bottomSheet = StationDetailViewController()
     private var bottomSheetState = false
     
     private var currentLocationButton = CurrentLocationButton()
@@ -43,11 +41,32 @@ class MapsViewController: UIViewController {
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
     
+    private let searchTextFieldView = SearchTextfieldView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupLayout()
+        view.backgroundColor = .white
         configure()
+        setupLayout()
         configureCurrentLocation()
+    }
+    
+    private func safeAreaTopInset() -> CGFloat? {
+        if #available(iOS 15.0, *) {
+            let topArea = UIApplication.shared.windows.first?.safeAreaInsets.top
+            return topArea
+        } else {
+            return nil
+        }
+    }
+    
+    private func setDefaultNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+    }
+    
+    @objc func closeButtonPressed(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func currentLocationButtonDidTap() {
@@ -92,14 +111,26 @@ private extension MapsViewController {
         mapsView.addCameraDelegate(delegate: self)
         mapsView.touchDelegate = self
         currentLocationButton.addTarget(self, action: #selector(currentLocationButtonDidTap), for: .touchUpInside)
+        searchTextFieldView.voiceRecognitionButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        searchTextFieldView.backButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        searchTextFieldView.voiceRecognitionImage.image = UIImage(systemName: "x.circle.fill")
+        searchTextFieldView.voiceRecognitionImage.tintColor = Pallete.customGray.color
     }
     
     func setupLayout() {
         self.view.addSubview(mapsView)
         mapsView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
+            make.bottom.leading.trailing.equalToSuperview()
         }
         
+        view.addSubview(searchTextFieldView)
+        searchTextFieldView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(59)
+        }
+
         self.view.addSubview(currentLocationButton)
         currentLocationButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16.17)
@@ -158,10 +189,15 @@ private extension MapsViewController {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         else { fatalError() }
         let bottomSheetHeight = (scene.screen.bounds.height - 233)
-        bottomSheet.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
-        view.addSubview(bottomSheet)
+        self.addChild(bottomSheet)
+        view.addSubview(bottomSheet.view)
+        bottomSheet.didMove(toParent: self)
+        bottomSheet.view.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
+        bottomSheet.view.layer.cornerRadius = 20
+        bottomSheet.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        bottomSheet.view.layer.masksToBounds = true
         UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.bottomSheet.frame.origin.y = bottomSheetHeight
+            self?.bottomSheet.view.frame.origin.y = bottomSheetHeight
         }
         bottomSheetState = true
     }
@@ -170,9 +206,11 @@ private extension MapsViewController {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         else { fatalError() }
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.bottomSheet.frame.origin.y = scene.screen.bounds.height
+            self?.bottomSheet.view.frame.origin.y = scene.screen.bounds.height
         }) { [weak self] _ in
-            self?.bottomSheet.removeFromSuperview()
+            self?.bottomSheet.view.willMove(toWindow: nil)
+            self?.bottomSheet.view.removeFromSuperview()
+            self?.bottomSheet.removeFromParent()
         }
         bottomSheetState = false
     }
