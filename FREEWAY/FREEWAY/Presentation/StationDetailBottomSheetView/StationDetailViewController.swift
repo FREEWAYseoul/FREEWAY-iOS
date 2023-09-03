@@ -30,6 +30,7 @@ private extension StationDetailViewController {
         stationDetailCollectionView.collectionView.delegate = self
         stationDetailCollectionView.collectionView.register(StationDetailCollectionViewCell.self, forCellWithReuseIdentifier: StationDetailCollectionViewCell.stationDetailCollectionViewCellId)
         stationDetailCollectionView.collectionView.dataSource = self
+        stationDetailCollectionView.collectionView.delegate = self
     }
     
     func setupLayout() {
@@ -45,10 +46,6 @@ private extension StationDetailViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-}
-
-extension StationDetailViewController: UICollectionViewDelegate {
-    
 }
 
 extension StationDetailViewController: UICollectionViewDelegateFlowLayout {
@@ -71,5 +68,31 @@ extension StationDetailViewController: UICollectionViewDataSource {
         
         cell.configure(stationInfoItems[indexPath.row].0, stationInfoItems[indexPath.row].1)
         return cell
+    }
+}
+
+extension StationDetailViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView.cellForItem(at: indexPath) is StationDetailCollectionViewCell {
+            
+            let selectedItem = stationInfoItems[indexPath.row].0
+            switch selectedItem {
+            case "elevater":
+                print("elevator")
+            case "call":
+                let url = "tel://\(data.stationContact)"
+                 
+                if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
+                    UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
+                }
+
+            case "map":
+                print("map")
+            case "convenience":
+                print("hi")
+            default:
+                break
+            }
+        }
     }
 }
