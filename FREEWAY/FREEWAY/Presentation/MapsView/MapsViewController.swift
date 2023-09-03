@@ -15,8 +15,11 @@ class MapsViewController: UIViewController {
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
     //TODO: 임시 강남역 마커로 설정 추후 배열로 변경 예정
-    private var stationMarkerView = StationMarkerView(lineImageName: "two", stationColor: .green, stationName: "강남역").then {
+    private var stationMarkerView = StationMarkerView(lineImageName: "2", stationColor: LinePallete.two.color!, stationName: "강남역").then {
         $0.frame = CGRect(x: 0, y: 0, width: 94.5, height: 49.3)
+    }
+    private var elevatorMarkerView = ElevatorMarker(imageName: "2", stationColor: LinePallete.two.color!, stationName: "강남역", fontSize: 12).then {
+        $0.frame = CGRect(x: 0, y: 0, width: 72, height: 39.74)
     }
     
     private lazy var bottomSheet = StationDetailViewController()
@@ -41,6 +44,16 @@ class MapsViewController: UIViewController {
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
     
+    private lazy var elevatorMarker = NMFMarker().then {
+        //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
+        //TODO: 임시 marker icon 후에 UIView로 구현 예정
+        $0.position = NMGLatLng(lat: 37.496, lng: 127.028)
+        
+        $0.iconImage = NMFOverlayImage(image: self.elevatorMarkerView.toImage()!)
+        $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
+        $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
+    }
+    
     private let searchTextFieldView = SearchTextfieldView()
     
     override func viewDidLoad() {
@@ -51,8 +64,11 @@ class MapsViewController: UIViewController {
         setupLayout()
         configureCurrentLocation()
         setStationMarker()
+        setDefaultNavigationBar()
+        setElevatorMarker()
     }
     
+    //MARK: Contraints
     private func safeAreaTopInset() -> CGFloat? {
         if #available(iOS 15.0, *) {
             let topArea = UIApplication.shared.windows.first?.safeAreaInsets.top
@@ -67,6 +83,7 @@ class MapsViewController: UIViewController {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
+    //MARK: Action
     @objc func closeButtonPressed(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
@@ -187,6 +204,15 @@ private extension MapsViewController {
             }
         }
     }
+    func setElevatorMarker() {
+        DispatchQueue.main.async {
+            self.elevatorMarker.mapView = self.mapsView
+            self.elevatorMarker.touchHandler = { (overlay: NMFOverlay) -> Bool in
+                self.mapsView.zoomLevel = 14
+                return true
+            }
+        }
+    }
 }
 
 //MARK: SetBottomSheet
@@ -227,12 +253,13 @@ private extension MapsViewController {
 extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
         
-        //TODO: 현재 zoom 정도에 따라서 stationMarker를 표시할지 말지에 대한 로직 추후 논의 필요
-        //        if mapView.zoomLevel >= MapsLiteral.markerZoomLevel {
-        //            stationMarker.hidden = false
-        //        } else {
-        //            stationMarker.hidden = true
-        //        }
+                if mapView.zoomLevel >= 14 {
+                    stationMarker.hidden = false
+                    elevatorMarker.hidden = true
+                } else {
+                    stationMarker.hidden = true
+                    elevatorMarker.hidden = false
+                }
     }
     
     func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {

@@ -13,7 +13,7 @@ final class StationDetailViewController: UIViewController {
     var data = MockData.mockStationDetail
     private let stationInfoItems: [(String, String)] = [("elevater", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("convenience", "편의시설")]
     
-    private let stationDetailCollectionView = StationDetailCollectionView()
+    let stationDetailCollectionView = StationDetailCollectionView()
     lazy var stationDetailTitle = StationDetailTitleView(lineImageName: data.lineId, stationColor: (LinePallete(rawValue: data.lineId)?.color!)!, stationName: data.stationName, nextStationName: data.nextStation.stationName, prevStationName: data.previousStation.stationName)
     
     override func viewDidLoad() {

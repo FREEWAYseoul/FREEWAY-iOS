@@ -12,12 +12,10 @@
 		016CB6462A7D4A4C005C4882 /* MapsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6452A7D4A4C005C4882 /* MapsUseCase.swift */; };
 		016CB6492A7D4AFD005C4882 /* MapsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6482A7D4AFD005C4882 /* MapsRepository.swift */; };
 		016CB64C2A7D4B23005C4882 /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB64B2A7D4B23005C4882 /* MapsViewModel.swift */; };
+		016CB64E2A7D4B4D005C4882 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		016CB6562A87DB46005C4882 /* Literal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6552A87DB46005C4882 /* Literal.swift */; };
 		2A26EA202A8E62F900FA355B /* StationMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA1F2A8E62F900FA355B /* StationMarkerView.swift */; };
 		2A26EA232A8E6B6300FA355B /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */; };
-		2AB285362A9E343D0077ED7C /* ElevatorMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285352A9E343D0077ED7C /* ElevatorMarkerView.swift */; };
-		2AB285382A9E36CB0077ED7C /* CurrentLocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285372A9E36CB0077ED7C /* CurrentLocationButton.swift */; };
-		016CB64E2A7D4B4D005C4882 /* MapsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB64D2A7D4B4D005C4882 /* MapsView.swift */; };
 		2A26EA282A9120E000FA355B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA272A9120E000FA355B /* SearchViewController.swift */; };
 		2A26EA2A2A9120F100FA355B /* SearchHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA292A9120F100FA355B /* SearchHistoryView.swift */; };
 		2A26EA2C2A91244F00FA355B /* SearchHistoryBaseViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA2B2A91244F00FA355B /* SearchHistoryBaseViewCell.swift */; };
@@ -55,11 +53,13 @@
 		2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */; };
 		2AB2852E2A9B5E140077ED7C /* VoiceSearchLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */; };
 		2AB285322A9B5F150077ED7C /* VoiceLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AB285312A9B5F150077ED7C /* VoiceLottie.json */; };
+		2AB285362A9E343D0077ED7C /* ElevatorMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285352A9E343D0077ED7C /* ElevatorMarkerView.swift */; };
+		2AB285382A9E36CB0077ED7C /* CurrentLocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285372A9E36CB0077ED7C /* CurrentLocationButton.swift */; };
 		2AB2853B2A9F8A460077ED7C /* StationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853A2A9F8A460077ED7C /* StationDetailViewController.swift */; };
 		2AB2853E2A9F8AAD0077ED7C /* StationDetailCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853D2A9F8AAD0077ED7C /* StationDetailCollectionView.swift */; };
 		2AB285402A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853F2A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift */; };
 		2AB285422A9F8AD50077ED7C /* StationDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285412A9F8AD50077ED7C /* StationDetailTitleView.swift */; };
-		2AB285472AA239680077ED7C /* StationMapWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285462AA239680077ED7C /* StationMapWebViewController.swift */; };
+		2AB285472AA239680077ED7C /* StationMapWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285462AA239680077ED7C /* StationMapWebView.swift */; };
 		2AB2854A2AA23A660077ED7C /* FacilitiesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285492AA23A660077ED7C /* FacilitiesTableViewCell.swift */; };
 		2AB2854C2AA23AE80077ED7C /* FacilitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2854B2AA23AE70077ED7C /* FacilitiesView.swift */; };
 		2AC755172A7BFD2F00099C2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755162A7BFD2F00099C2A /* AppDelegate.swift */; };
@@ -109,8 +109,6 @@
 		23B019DCAF33D6AEE416BE0D /* Pods_FREEWAY_FREEWAYUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY_FREEWAYUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A26EA1F2A8E62F900FA355B /* StationMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationMarkerView.swift; sourceTree = "<group>"; };
 		2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
-		2AB285352A9E343D0077ED7C /* ElevatorMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevatorMarkerView.swift; sourceTree = "<group>"; };
-		2AB285372A9E36CB0077ED7C /* CurrentLocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationButton.swift; sourceTree = "<group>"; };
 		2A26EA272A9120E000FA355B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2A26EA292A9120F100FA355B /* SearchHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryView.swift; sourceTree = "<group>"; };
 		2A26EA2B2A91244F00FA355B /* SearchHistoryBaseViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryBaseViewCell.swift; sourceTree = "<group>"; };
@@ -138,11 +136,13 @@
 		2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecognitionManager.swift; sourceTree = "<group>"; };
 		2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSearchLottieView.swift; sourceTree = "<group>"; };
 		2AB285312A9B5F150077ED7C /* VoiceLottie.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoiceLottie.json; sourceTree = "<group>"; };
+		2AB285352A9E343D0077ED7C /* ElevatorMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevatorMarkerView.swift; sourceTree = "<group>"; };
+		2AB285372A9E36CB0077ED7C /* CurrentLocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationButton.swift; sourceTree = "<group>"; };
 		2AB2853A2A9F8A460077ED7C /* StationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailViewController.swift; sourceTree = "<group>"; };
 		2AB2853D2A9F8AAD0077ED7C /* StationDetailCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailCollectionView.swift; sourceTree = "<group>"; };
 		2AB2853F2A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		2AB285412A9F8AD50077ED7C /* StationDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailTitleView.swift; sourceTree = "<group>"; };
-		2AB285462AA239680077ED7C /* StationMapWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationMapWebViewController.swift; sourceTree = "<group>"; };
+		2AB285462AA239680077ED7C /* StationMapWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationMapWebView.swift; sourceTree = "<group>"; };
 		2AB285492AA23A660077ED7C /* FacilitiesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesTableViewCell.swift; sourceTree = "<group>"; };
 		2AB2854B2AA23AE70077ED7C /* FacilitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesView.swift; sourceTree = "<group>"; };
 		2AC755132A7BFD2F00099C2A /* FREEWAY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FREEWAY.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,12 +247,11 @@
 		016CB6372A7D486B005C4882 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				016CB64A2A7D4B13005C4882 /* MapsView */,
 				2AB285392A9F8A330077ED7C /* StationDetailBottomSheetView */,
 				2AB285132A98F06E0077ED7C /* BaseView */,
 				2AB2850D2A98EF630077ED7C /* HomeView */,
 				2A26EA252A9120BF00FA355B /* SearchView */,
-				016CB64A2A7D4B13005C4882 /* MapsViewController */,
+				016CB64A2A7D4B13005C4882 /* MapsView */,
 				2AC755242A7BFD3000099C2A /* LaunchScreen.storyboard */,
 			);
 			path = Presentation;
@@ -444,7 +443,7 @@
 			children = (
 				2AB285482AA23A490077ED7C /* Components */,
 				2AB2854B2AA23AE70077ED7C /* FacilitiesView.swift */,
-				2AB285462AA239680077ED7C /* StationMapWebViewController.swift */,
+				2AB285462AA239680077ED7C /* StationMapWebView.swift */,
 			);
 			path = StationDetailView;
 			sourceTree = "<group>";
@@ -806,7 +805,7 @@
 				2AB285382A9E36CB0077ED7C /* CurrentLocationButton.swift in Sources */,
 				2A26EA2C2A91244F00FA355B /* SearchHistoryBaseViewCell.swift in Sources */,
 				2AB2850F2A98EF700077ED7C /* HomeViewController.swift in Sources */,
-				2AB285472AA239680077ED7C /* StationMapWebViewController.swift in Sources */,
+				2AB285472AA239680077ED7C /* StationMapWebView.swift in Sources */,
 				016CB64C2A7D4B23005C4882 /* MapsViewModel.swift in Sources */,
 				2A26EA282A9120E000FA355B /* SearchViewController.swift in Sources */,
 				2AB285152A98F07D0077ED7C /* SearchHistoryBaseView.swift in Sources */,
@@ -829,7 +828,7 @@
 				2A26EA232A8E6B6300FA355B /* UIViewExtension.swift in Sources */,
 				2AB2850C2A98B0370077ED7C /* EmptySearchView.swift in Sources */,
 				2AB2852A2A9B40350077ED7C /* SearchViewModel.swift in Sources */,
-				016CB64E2A7D4B4D005C4882 /* MapsView.swift in Sources */,
+				016CB64E2A7D4B4D005C4882 /* (null) in Sources */,
 				2AB2853B2A9F8A460077ED7C /* StationDetailViewController.swift in Sources */,
 				2AB285122A98EFB80077ED7C /* RecentSearchView.swift in Sources */,
 				016CB63B2A7D493D005C4882 /* NetworkError.swift in Sources */,
@@ -840,7 +839,7 @@
 				2AB285402A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift in Sources */,
 				016CB6462A7D4A4C005C4882 /* MapsUseCase.swift in Sources */,
 				2AC755212A7BFD2F00099C2A /* FREEWAY.xcdatamodeld in Sources */,
-        2AB285362A9E343D0077ED7C /* ElevatorMarkerView.swift in Sources */,
+				2AB285362A9E343D0077ED7C /* ElevatorMarkerView.swift in Sources */,
 				2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */,
 				2AB285202A9B29BF0077ED7C /* StationDTO.swift in Sources */,
 				2AB285272A9B36280077ED7C /* MockData.swift in Sources */,
