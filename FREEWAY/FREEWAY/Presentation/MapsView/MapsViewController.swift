@@ -12,7 +12,7 @@ import SnapKit
 import CoreLocation
 
 class MapsViewController: UIViewController {
-    private var currentLocation = CLLocationManager()
+    private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
     //TODO: 임시 강남역 마커로 설정 추후 배열로 변경 예정
     private var stationMarkerView = StationMarkerView(lineImageName: "two", stationColor: .green, stationName: "강남역").then {
@@ -46,9 +46,11 @@ class MapsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        currentLocation = CLLocationManager()
         configure()
         setupLayout()
         configureCurrentLocation()
+        setStationMarker()
     }
     
     private func safeAreaTopInset() -> CGFloat? {
@@ -175,10 +177,14 @@ private extension MapsViewController {
     }
     
     func setStationMarker() {
-        stationMarker.mapView = mapsView
-        stationMarker.touchHandler = { (overlay: NMFOverlay ) -> Bool in
-            self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
-            return true
+        DispatchQueue.main.async { [weak self] in
+            if let self = self {
+                self.stationMarker.mapView = self.mapsView
+                self.stationMarker.touchHandler = { (overlay: NMFOverlay ) -> Bool in
+                    self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
+                    return true
+                }
+            }
         }
     }
 }
@@ -247,7 +253,6 @@ extension MapsViewController: CLLocationManagerDelegate {
             DispatchQueue.main.async { [weak self] in
                 if let self = self {
                     self.setcurrentLocation()
-                    self.setStationMarker()
                 }
             }
             
