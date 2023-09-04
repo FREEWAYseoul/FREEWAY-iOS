@@ -17,7 +17,7 @@ final class ElevatorMarker: UIView {
     
     private lazy var stationMarkerBackground = UIView().then {
         $0.backgroundColor = stationColor
-        $0.layer.cornerRadius = MapsLiteral.markerRadius
+        $0.layer.cornerRadius = 15
     }
     
     private lazy var lineImage = UIImageView().then {
@@ -25,7 +25,7 @@ final class ElevatorMarker: UIView {
         $0.contentMode = .scaleAspectFit
     }
     private lazy var stationLabel = UILabel().then {
-        $0.font = UIFont(name: "Prentendard-SemiBold", size: fontSize)
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: fontSize)
         $0.text = stationName
         $0.textColor = .white
     }
@@ -70,7 +70,7 @@ extension ElevatorMarker {
      
      private func setupLayout() {
          stationMarkerBackground.snp.makeConstraints { make in
-             make.width.equalTo(94.5)
+             make.width.equalToSuperview()
              make.height.equalTo(30)
              make.center.equalToSuperview()
          }

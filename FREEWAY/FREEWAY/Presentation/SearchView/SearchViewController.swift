@@ -145,5 +145,17 @@ extension SearchViewController: UITextFieldDelegate {
 
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            self.navigationController?.pushViewController(MapsViewController(), animated: true)
+        } else {
+            let alert = UIAlertController(title: "역 이름을 다시 한 번 확인해주세요!", message: "", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+        return true
+    }
 
 }

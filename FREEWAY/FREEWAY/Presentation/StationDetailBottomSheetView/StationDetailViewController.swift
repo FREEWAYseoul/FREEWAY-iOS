@@ -9,13 +9,21 @@ import UIKit
 import SnapKit
 import Then
 
+protocol SetStationDetailViewControllerDelegate: AnyObject {
+    func showStationDetailView(_ isFacilities: Bool)
+    func removeStationDetailView()
+}
+
 final class StationDetailViewController: UIViewController {
+    
+    weak var delegate: SetStationDetailViewControllerDelegate?
+    
     var data = MockData.mockStationDetail
     private let stationInfoItems: [(String, String)] = [("elevater", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("convenience", "편의시설")]
     
-    private let stationDetailCollectionView = StationDetailCollectionView()
+    let stationDetailCollectionView = StationDetailCollectionView()
     lazy var stationDetailTitle = StationDetailTitleView(lineImageName: data.lineId, stationColor: (LinePallete(rawValue: data.lineId)?.color!)!, stationName: data.stationName, nextStationName: data.nextStation.stationName, prevStationName: data.previousStation.stationName)
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -30,6 +38,7 @@ private extension StationDetailViewController {
         stationDetailCollectionView.collectionView.delegate = self
         stationDetailCollectionView.collectionView.register(StationDetailCollectionViewCell.self, forCellWithReuseIdentifier: StationDetailCollectionViewCell.stationDetailCollectionViewCellId)
         stationDetailCollectionView.collectionView.dataSource = self
+        stationDetailCollectionView.collectionView.delegate = self
     }
     
     func setupLayout() {
@@ -45,10 +54,6 @@ private extension StationDetailViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-}
-
-extension StationDetailViewController: UICollectionViewDelegate {
-    
 }
 
 extension StationDetailViewController: UICollectionViewDelegateFlowLayout {
@@ -70,6 +75,36 @@ extension StationDetailViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StationDetailCollectionViewCell.stationDetailCollectionViewCellId, for: indexPath) as? StationDetailCollectionViewCell else { return UICollectionViewCell() }
         
         cell.configure(stationInfoItems[indexPath.row].0, stationInfoItems[indexPath.row].1)
+        if indexPath.item == 0 {
+          cell.isSelected = true
+          collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
+        }
         return cell
+    }
+}
+
+extension StationDetailViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView.cellForItem(at: indexPath) is StationDetailCollectionViewCell {
+            
+            let selectedItem = stationInfoItems[indexPath.row].0
+            switch selectedItem {
+            case "elevater":
+                delegate?.removeStationDetailView()
+            case "call":
+                delegate?.removeStationDetailView()
+                let url = "tel://\(data.stationContact)"
+                 
+                if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
+                    UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
+                }
+            case "map":
+                delegate?.showStationDetailView(false)
+            case "convenience":
+                delegate?.showStationDetailView(true)
+            default:
+                break
+            }
+        }
     }
 }

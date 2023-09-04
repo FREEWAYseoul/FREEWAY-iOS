@@ -18,7 +18,6 @@ final class StationDetailCollectionViewCell: UICollectionViewCell {
     private var iconView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.tintColor = .black
-        $0.layer.opacity = 0.5
     }
     
     private var iconLabel = UILabel().then {
@@ -31,13 +30,14 @@ final class StationDetailCollectionViewCell: UICollectionViewCell {
         $0.backgroundColor = Pallete.dividerGray.color
     }
     
-    var selectStatus: Bool = false {
+    override var isSelected: Bool {
         didSet {
-            self.iconView.tintColor = self.selectStatus ? Pallete.customBlue.color : .black
-            self.iconView.layer.opacity = self.selectStatus ? 1.0 : 0.5
+            self.iconView.image = image?.withRenderingMode(.alwaysTemplate)
+            self.iconView.tintColor = self.isSelected ? Pallete.customBlue.color : .black
+            self.iconView.layer.opacity = self.isSelected ? 1.0 : 0.5
             
-            self.iconLabel.textColor = self.selectStatus ? Pallete.customBlue.color : .black
-            self.iconLabel.layer.opacity = self.selectStatus ? 1.0 : 0.5
+            self.iconLabel.textColor = self.isSelected ? Pallete.customBlue.color : .black
+            self.iconLabel.layer.opacity = self.isSelected ? 1.0 : 0.5
         }
     }
     

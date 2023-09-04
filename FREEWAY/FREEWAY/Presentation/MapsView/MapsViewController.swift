@@ -12,20 +12,21 @@ import SnapKit
 import CoreLocation
 
 class MapsViewController: UIViewController {
-    private var currentLocation = CLLocationManager()
+    private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
+    private let data = MockData.mockStationDTOs.first
     //TODO: 임시 강남역 마커로 설정 추후 배열로 변경 예정
-    private var stationMarkerView = StationMarkerView(lineImageName: "two", stationColor: .green, stationName: "강남역").then {
+    private lazy var stationMarkerView = StationMarkerView(lineImageName: self.data!.lineId, stationColor: (LinePallete(rawValue: self.data!.lineId)?.color)!, stationName: self.data!.stationName).then {
         $0.frame = CGRect(x: 0, y: 0, width: 94.5, height: 49.3)
     }
-    
-    private lazy var bottomSheet = UIView().then {
-        $0.backgroundColor = .lightGray
+    private lazy var elevatorMarkerView = ElevatorMarker(imageName: self.data!.lineId, stationColor: (LinePallete(rawValue: self.data!.lineId)?.color)!, stationName: self.data!.stationName, fontSize: 12).then {
+        $0.frame = CGRect(x: 0, y: 0, width: 72, height: 39.74)
     }
+    
+    private lazy var bottomSheet = StationDetailViewController()
     private var bottomSheetState = false
     
     private var currentLocationButton = CurrentLocationButton()
-    
     private lazy var mapsView = NMFMapView().then {
         $0.allowsZooming = true
         $0.logoInteractionEnabled = false
@@ -33,21 +34,62 @@ class MapsViewController: UIViewController {
         locationOverlay = $0.locationOverlay
     }
     
+    private var facilitiesView = FacilitiesView()
+    private var stationMapWebView = StationMapWebView()
+    
     private lazy var stationMarker = NMFMarker().then {
         //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
         //TODO: 임시 marker icon 후에 UIView로 구현 예정
-        $0.position = NMGLatLng(lat: 37.496, lng: 127.028)
+        $0.position = NMGLatLng(lat: CLLocationDegrees((data?.coordinate.latitude)!)!, lng: CLLocationDegrees((data?.coordinate.longitude)!)!)
         
         $0.iconImage = NMFOverlayImage(image: self.stationMarkerView.toImage()!)
         $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
     
+    private lazy var elevatorMarker = NMFMarker().then {
+        //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
+        //TODO: 임시 marker icon 후에 UIView로 구현 예정
+        $0.position = NMGLatLng(lat: CLLocationDegrees((data?.coordinate.latitude)!)!, lng: CLLocationDegrees((data?.coordinate.longitude)!)!)
+        
+        $0.iconImage = NMFOverlayImage(image: self.elevatorMarkerView.toImage()!)
+        $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
+        $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
+    }
+    
+    private let searchTextFieldView = SearchTextfieldView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupLayout()
+        view.backgroundColor = .white
+        currentLocation = CLLocationManager()
         configure()
+        setupLayout()
         configureCurrentLocation()
+        setStationMarker()
+        setDefaultNavigationBar()
+        setElevatorMarker()
+        showBottomSheet()
+    }
+    
+    //MARK: Contraints
+    private func safeAreaTopInset() -> CGFloat? {
+        if #available(iOS 15.0, *) {
+            let topArea = UIApplication.shared.windows.first?.safeAreaInsets.top
+            return topArea
+        } else {
+            return nil
+        }
+    }
+    
+    private func setDefaultNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+    }
+    
+    //MARK: Action
+    @objc func closeButtonPressed(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func currentLocationButtonDidTap() {
@@ -92,14 +134,26 @@ private extension MapsViewController {
         mapsView.addCameraDelegate(delegate: self)
         mapsView.touchDelegate = self
         currentLocationButton.addTarget(self, action: #selector(currentLocationButtonDidTap), for: .touchUpInside)
+        searchTextFieldView.voiceRecognitionButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        searchTextFieldView.backButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        searchTextFieldView.voiceRecognitionImage.image = UIImage(systemName: "x.circle.fill")
+        searchTextFieldView.voiceRecognitionImage.tintColor = Pallete.customGray.color
     }
     
     func setupLayout() {
         self.view.addSubview(mapsView)
         mapsView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
+            make.bottom.leading.trailing.equalToSuperview()
         }
         
+        view.addSubview(searchTextFieldView)
+        searchTextFieldView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(59)
+        }
+
         self.view.addSubview(currentLocationButton)
         currentLocationButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16.17)
@@ -107,6 +161,14 @@ private extension MapsViewController {
             make.height.width.equalTo(36.67)
         }
     }
+    func setupStationDetailViewLayout(_ subView: UIView) {
+        view.addSubview(subView)
+        subView.snp.makeConstraints { make in
+            make.top.equalTo(searchTextFieldView.snp.bottom)
+            make.leading.bottom.trailing.equalToSuperview()
+        }
+    }
+    
 }
 
 //MARK: SetMapsViewComponent
@@ -116,6 +178,12 @@ private extension MapsViewController {
         currentLocation.delegate = self
         currentLocation.desiredAccuracy = kCLLocationAccuracyBest
         currentLocation.requestWhenInUseAuthorization()
+    }
+    
+    func moveLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
+        cameraUpdate.animation = .easeIn
+        mapsView.moveCamera(cameraUpdate)
     }
     
     func setcurrentLocation() {
@@ -128,9 +196,7 @@ private extension MapsViewController {
             currentLocation.startUpdatingLocation()
             print(latitude, longitude)
             
-            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
-            cameraUpdate.animation = .easeIn
-            mapsView.moveCamera(cameraUpdate)
+            moveLocation(latitude: latitude, longitude: longitude)
             guard let locationOverlay = locationOverlay else { return }
             locationOverlay.hidden = false
             locationOverlay.location = NMGLatLng(lat: latitude, lng: longitude)
@@ -144,10 +210,25 @@ private extension MapsViewController {
     }
     
     func setStationMarker() {
-        stationMarker.mapView = mapsView
-        stationMarker.touchHandler = { (overlay: NMFOverlay ) -> Bool in
-            self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
-            return true
+        DispatchQueue.main.async { [weak self] in
+            if let self = self {
+                self.stationMarker.mapView = self.mapsView
+                self.stationMarker.touchHandler = { (overlay: NMFOverlay ) -> Bool in
+                    self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
+                    return true
+                }
+            }
+        }
+    }
+    func setElevatorMarker() {
+        DispatchQueue.main.async {
+            self.elevatorMarker.mapView = self.mapsView
+            self.elevatorMarker.touchHandler = { (overlay: NMFOverlay) -> Bool in
+                self.mapsView.zoomLevel = 14
+                //현재 좌표로 확대하도록 변경되어야할 부분
+                self.moveLocation(latitude: self.elevatorMarker.position.lat, longitude: self.elevatorMarker.position.lng)
+                return true
+            }
         }
     }
 }
@@ -158,10 +239,16 @@ private extension MapsViewController {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         else { fatalError() }
         let bottomSheetHeight = (scene.screen.bounds.height - 233)
-        bottomSheet.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
-        view.addSubview(bottomSheet)
+        self.addChild(bottomSheet)
+        view.addSubview(bottomSheet.view)
+        bottomSheet.delegate = self
+        bottomSheet.didMove(toParent: self)
+        bottomSheet.view.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
+        bottomSheet.view.layer.cornerRadius = 20
+        bottomSheet.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        bottomSheet.view.layer.masksToBounds = true
         UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.bottomSheet.frame.origin.y = bottomSheetHeight
+            self?.bottomSheet.view.frame.origin.y = bottomSheetHeight
         }
         bottomSheetState = true
     }
@@ -170,25 +257,42 @@ private extension MapsViewController {
         guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         else { fatalError() }
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.bottomSheet.frame.origin.y = scene.screen.bounds.height
+            self?.bottomSheet.view.frame.origin.y = scene.screen.bounds.height
         }) { [weak self] _ in
-            self?.bottomSheet.removeFromSuperview()
+            self?.bottomSheet.view.willMove(toWindow: nil)
+            self?.bottomSheet.view.removeFromSuperview()
+            self?.bottomSheet.removeFromParent()
         }
         bottomSheetState = false
     }
 }
 
+extension MapsViewController: SetStationDetailViewControllerDelegate {
+    func removeStationDetailView() {
+        stationMapWebView.removeFromSuperview()
+        facilitiesView.removeFromSuperview()
+    }
+    
+    func showStationDetailView(_ isFacilities: Bool) {
+        let subView = isFacilities ? facilitiesView : stationMapWebView
+        if subView == facilitiesView {
+            stationMapWebView.removeFromSuperview()
+        } else { facilitiesView.removeFromSuperview() }
+        setupStationDetailViewLayout(subView)
+        view.insertSubview(subView, at: view.subviews.count - 2)
+    }
+}
 
 //MARK: MapsViewDelegate
 extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
-        
-        //TODO: 현재 zoom 정도에 따라서 stationMarker를 표시할지 말지에 대한 로직 추후 논의 필요
-        //        if mapView.zoomLevel >= MapsLiteral.markerZoomLevel {
-        //            stationMarker.hidden = false
-        //        } else {
-        //            stationMarker.hidden = true
-        //        }
+        if mapView.zoomLevel >= 14 {
+            stationMarker.hidden = false
+            elevatorMarker.hidden = true
+        } else {
+            stationMarker.hidden = true
+            elevatorMarker.hidden = false
+        }
     }
     
     func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
@@ -209,7 +313,6 @@ extension MapsViewController: CLLocationManagerDelegate {
             DispatchQueue.main.async { [weak self] in
                 if let self = self {
                     self.setcurrentLocation()
-                    self.setStationMarker()
                 }
             }
             

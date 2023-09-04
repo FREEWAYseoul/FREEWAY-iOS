@@ -49,9 +49,9 @@ struct MockData {
     static let mockStationDTOs: [StationDTO] = [
         StationDTO(
             stationId: "207",
-            stationName: "상왕십리",
+            stationName: "성수",
             lineId: "2",
-            coordinate: CoordinateDTO(latitude: "37.56443666620397", longitude: "127.02927241035283"),
+            coordinate: CoordinateDTO(latitude: "37.5445888153751", longitude: "127.056066999327"),
             stationStatus: "사용 가능",
             elevatorsNumber: 2
         ),
