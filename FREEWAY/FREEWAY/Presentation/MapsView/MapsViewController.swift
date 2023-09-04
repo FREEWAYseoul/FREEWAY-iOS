@@ -14,11 +14,12 @@ import CoreLocation
 class MapsViewController: UIViewController {
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
+    private let data = MockData.mockStationDTOs.first
     //TODO: 임시 강남역 마커로 설정 추후 배열로 변경 예정
-    private var stationMarkerView = StationMarkerView(lineImageName: "2", stationColor: LinePallete.two.color!, stationName: "강남역").then {
+    private lazy var stationMarkerView = StationMarkerView(lineImageName: self.data!.lineId, stationColor: (LinePallete(rawValue: self.data!.lineId)?.color)!, stationName: self.data!.stationName).then {
         $0.frame = CGRect(x: 0, y: 0, width: 94.5, height: 49.3)
     }
-    private var elevatorMarkerView = ElevatorMarker(imageName: "2", stationColor: LinePallete.two.color!, stationName: "강남역", fontSize: 12).then {
+    private lazy var elevatorMarkerView = ElevatorMarker(imageName: self.data!.lineId, stationColor: (LinePallete(rawValue: self.data!.lineId)?.color)!, stationName: self.data!.stationName, fontSize: 12).then {
         $0.frame = CGRect(x: 0, y: 0, width: 72, height: 39.74)
     }
     
@@ -39,7 +40,7 @@ class MapsViewController: UIViewController {
     private lazy var stationMarker = NMFMarker().then {
         //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
         //TODO: 임시 marker icon 후에 UIView로 구현 예정
-        $0.position = NMGLatLng(lat: 37.496, lng: 127.028)
+        $0.position = NMGLatLng(lat: CLLocationDegrees((data?.coordinate.latitude)!)!, lng: CLLocationDegrees((data?.coordinate.longitude)!)!)
         
         $0.iconImage = NMFOverlayImage(image: self.stationMarkerView.toImage()!)
         $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
@@ -49,7 +50,7 @@ class MapsViewController: UIViewController {
     private lazy var elevatorMarker = NMFMarker().then {
         //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
         //TODO: 임시 marker icon 후에 UIView로 구현 예정
-        $0.position = NMGLatLng(lat: 37.496, lng: 127.028)
+        $0.position = NMGLatLng(lat: CLLocationDegrees((data?.coordinate.latitude)!)!, lng: CLLocationDegrees((data?.coordinate.longitude)!)!)
         
         $0.iconImage = NMFOverlayImage(image: self.elevatorMarkerView.toImage()!)
         $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
@@ -225,7 +226,7 @@ private extension MapsViewController {
             self.elevatorMarker.touchHandler = { (overlay: NMFOverlay) -> Bool in
                 self.mapsView.zoomLevel = 14
                 //현재 좌표로 확대하도록 변경되어야할 부분
-                self.moveLocation(latitude: 37.496, longitude: 127.028)
+                self.moveLocation(latitude: self.elevatorMarker.position.lat, longitude: self.elevatorMarker.position.lng)
                 return true
             }
         }
