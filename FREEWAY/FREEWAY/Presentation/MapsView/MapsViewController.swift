@@ -260,11 +260,17 @@ private extension MapsViewController {
 }
 
 extension MapsViewController: SetStationDetailViewControllerDelegate {
+    func removeStationDetailView() {
+        stationMapWebView.removeFromSuperview()
+        facilitiesView.removeFromSuperview()
+    }
+    
     func showStationDetailView(_ isFacilities: Bool) {
         let subView = isFacilities ? facilitiesView : stationMapWebView
-        print(subView)
+        if subView == facilitiesView {
+            stationMapWebView.removeFromSuperview()
+        } else { facilitiesView.removeFromSuperview() }
         setupStationDetailViewLayout(subView)
-        print("안녕")
         view.insertSubview(subView, at: view.subviews.count - 2)
     }
 }

@@ -11,6 +11,7 @@ import Then
 
 protocol SetStationDetailViewControllerDelegate: AnyObject {
     func showStationDetailView(_ isFacilities: Bool)
+    func removeStationDetailView()
 }
 
 final class StationDetailViewController: UIViewController {
@@ -74,6 +75,10 @@ extension StationDetailViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StationDetailCollectionViewCell.stationDetailCollectionViewCellId, for: indexPath) as? StationDetailCollectionViewCell else { return UICollectionViewCell() }
         
         cell.configure(stationInfoItems[indexPath.row].0, stationInfoItems[indexPath.row].1)
+        if indexPath.item == 0 {
+          cell.isSelected = true
+          collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
+        }
         return cell
     }
 }
@@ -85,14 +90,14 @@ extension StationDetailViewController: UICollectionViewDelegate {
             let selectedItem = stationInfoItems[indexPath.row].0
             switch selectedItem {
             case "elevater":
-                print("elevator")
+                delegate?.removeStationDetailView()
             case "call":
+                delegate?.removeStationDetailView()
                 let url = "tel://\(data.stationContact)"
                  
                 if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
                     UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
                 }
-
             case "map":
                 delegate?.showStationDetailView(false)
             case "convenience":
