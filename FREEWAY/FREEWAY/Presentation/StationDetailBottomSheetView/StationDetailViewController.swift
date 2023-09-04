@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 protocol SetStationDetailViewControllerDelegate: AnyObject {
-    func showStationDetailView()
+    func showStationDetailView(_ isFacilities: Bool)
 }
 
 final class StationDetailViewController: UIViewController {
@@ -94,9 +94,9 @@ extension StationDetailViewController: UICollectionViewDelegate {
                 }
 
             case "map":
-                print("map")
+                delegate?.showStationDetailView(false)
             case "convenience":
-                delegate?.showStationDetailView()
+                delegate?.showStationDetailView(true)
             default:
                 break
             }

@@ -34,6 +34,7 @@ class MapsViewController: UIViewController {
     }
     
     private var facilitiesView = FacilitiesView()
+    private var stationMapWebView = StationMapWebView()
     
     private lazy var stationMarker = NMFMarker().then {
         //TODO: 임시 position 변수 후에 API 연결 시 변경 예정
@@ -158,9 +159,9 @@ private extension MapsViewController {
             make.height.width.equalTo(36.67)
         }
     }
-    func setupStationDetailViewLayout() {
-        view.addSubview(facilitiesView)
-        facilitiesView.snp.makeConstraints { make in
+    func setupStationDetailViewLayout(_ subView: UIView) {
+        view.addSubview(subView)
+        subView.snp.makeConstraints { make in
             make.top.equalTo(searchTextFieldView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
         }
@@ -259,12 +260,13 @@ private extension MapsViewController {
 }
 
 extension MapsViewController: SetStationDetailViewControllerDelegate {
-    func showStationDetailView() {
-        setupStationDetailViewLayout()
-        view.insertSubview(facilitiesView, at: view.subviews.count - 2)
+    func showStationDetailView(_ isFacilities: Bool) {
+        let subView = isFacilities ? facilitiesView : stationMapWebView
+        print(subView)
+        setupStationDetailViewLayout(subView)
+        print("안녕")
+        view.insertSubview(subView, at: view.subviews.count - 2)
     }
-    
-    
 }
 
 //MARK: MapsViewDelegate
