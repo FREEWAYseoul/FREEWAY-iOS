@@ -68,6 +68,7 @@ class MapsViewController: UIViewController {
         setStationMarker()
         setDefaultNavigationBar()
         setElevatorMarker()
+        showBottomSheet()
     }
     
     //MARK: Contraints
@@ -219,6 +220,10 @@ private extension MapsViewController {
             self.elevatorMarker.mapView = self.mapsView
             self.elevatorMarker.touchHandler = { (overlay: NMFOverlay) -> Bool in
                 self.mapsView.zoomLevel = 14
+                //현재 좌표로 확대하도록 변경되어야할 부분
+                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: 37.496, lng: 127.028), zoomTo: 14)
+                cameraUpdate.animation = .easeIn
+                self.mapsView.moveCamera(cameraUpdate)
                 return true
             }
         }
@@ -278,14 +283,13 @@ extension MapsViewController: SetStationDetailViewControllerDelegate {
 //MARK: MapsViewDelegate
 extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
-        
-                if mapView.zoomLevel >= 14 {
-                    stationMarker.hidden = false
-                    elevatorMarker.hidden = true
-                } else {
-                    stationMarker.hidden = true
-                    elevatorMarker.hidden = false
-                }
+        if mapView.zoomLevel >= 14 {
+            stationMarker.hidden = false
+            elevatorMarker.hidden = true
+        } else {
+            stationMarker.hidden = true
+            elevatorMarker.hidden = false
+        }
     }
     
     func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
