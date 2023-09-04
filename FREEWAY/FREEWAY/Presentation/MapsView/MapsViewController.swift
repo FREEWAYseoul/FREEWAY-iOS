@@ -179,6 +179,12 @@ private extension MapsViewController {
         currentLocation.requestWhenInUseAuthorization()
     }
     
+    func moveLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
+        cameraUpdate.animation = .easeIn
+        mapsView.moveCamera(cameraUpdate)
+    }
+    
     func setcurrentLocation() {
         let latitude = currentLocation.location?.coordinate.latitude ?? 0
         let longitude = currentLocation.location?.coordinate.longitude ?? 0
@@ -189,9 +195,7 @@ private extension MapsViewController {
             currentLocation.startUpdatingLocation()
             print(latitude, longitude)
             
-            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
-            cameraUpdate.animation = .easeIn
-            mapsView.moveCamera(cameraUpdate)
+            moveLocation(latitude: latitude, longitude: longitude)
             guard let locationOverlay = locationOverlay else { return }
             locationOverlay.hidden = false
             locationOverlay.location = NMGLatLng(lat: latitude, lng: longitude)
@@ -221,9 +225,7 @@ private extension MapsViewController {
             self.elevatorMarker.touchHandler = { (overlay: NMFOverlay) -> Bool in
                 self.mapsView.zoomLevel = 14
                 //현재 좌표로 확대하도록 변경되어야할 부분
-                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: 37.496, lng: 127.028), zoomTo: 14)
-                cameraUpdate.animation = .easeIn
-                self.mapsView.moveCamera(cameraUpdate)
+                self.moveLocation(latitude: 37.496, longitude: 127.028)
                 return true
             }
         }
