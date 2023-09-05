@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+
 
 final class HomeViewController: UIViewController {
     
@@ -18,6 +20,7 @@ final class HomeViewController: UIViewController {
     private let textField = HomeSearchTextfieldView()
     private let recentSearchView = RecentSearchView()
     private let voiceSearchLottieView = VoiceSearchLottieView()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

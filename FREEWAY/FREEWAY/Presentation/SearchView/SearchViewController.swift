@@ -8,20 +8,22 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 //TODO: Model로 추후 변경 필요
 struct StationInfo {
     let stationName: String
-//        let stationId: String
+    //        let stationId: String
     let lineId: String
-//        let lineName: String
-//        let stationCoordinate: StationCoordinate
+    //        let lineName: String
+    //        let stationCoordinate: StationCoordinate
     let stationStatus: String
 }
 
 struct StationCoordinate {
-        let latitude: String
-        let longitude: String
+    let latitude: String
+    let longitude: String
 }
 
 final class SearchViewController: UIViewController {
@@ -34,13 +36,7 @@ final class SearchViewController: UIViewController {
     lazy var searchHistoryView = searchHistorys.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: searchHistorys)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var viewModel = BaseViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +44,7 @@ final class SearchViewController: UIViewController {
         setDefaultNavigationBar()
         setupLayout()
         configure()
+        bind()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -61,6 +58,14 @@ final class SearchViewController: UIViewController {
         } else {
             return .default
         }
+    }
+    
+    private func bind() {
+        let input = BaseViewModel.Input (
+                trigger: searchTextFieldView.searchTextfield.rx.text.orEmpty.asObservable()
+            )
+        let output = viewModel.getStationDTO(input: input)
+
     }
     
     private func safeAreaTopInset() -> CGFloat? {
@@ -133,7 +138,7 @@ private extension SearchViewController {
 }
 
 extension SearchViewController: UITextFieldDelegate {
-
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let char = string.cString(using: String.Encoding.utf8) {
             let isBackSpace = strcmp(char, "\\b")
@@ -142,7 +147,7 @@ extension SearchViewController: UITextFieldDelegate {
             }
         }
         guard textField.text!.count < 10 else { return false }
-
+        
         return true
     }
     
@@ -157,5 +162,5 @@ extension SearchViewController: UITextFieldDelegate {
         }
         return true
     }
-
+    
 }
