@@ -33,7 +33,6 @@ final class StationMapWebView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 private extension StationMapWebView {
@@ -45,7 +44,7 @@ private extension StationMapWebView {
         }
         self.addSubview(GuidanceLabel)
         GuidanceLabel.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-253)
             make.centerX.equalToSuperview()
         }
     }
