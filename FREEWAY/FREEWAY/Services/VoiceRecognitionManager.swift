@@ -8,12 +8,15 @@
 import AVFoundation
 import Speech
 import RxSwift
+import RxCocoa
 
 protocol VoiceRecognitionDelegate: AnyObject {
     func didRecognizeVoice(text: String)
 }
 
 class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
+    
+    var recognizedTextRelay = BehaviorRelay<String?>(value: nil)
     static let shared = VoiceRecognitionManager()
     
     weak var delegate: VoiceRecognitionDelegate?
@@ -54,6 +57,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             if let result = result {
                 isFinal = result.isFinal
                 self.resultText = result.bestTranscription.formattedString
+                self.recognizedTextRelay.accept(self.resultText)
                 if isFinal {
                     self.delegate?.didRecognizeVoice(text: self.resultText ?? "")
                 }
@@ -137,7 +141,7 @@ extension VoiceRecognitionManager: AVAudioRecorderDelegate {
             if averagePower < -30.0 { // Assuming -30 dB as silence threshold
                 stopRecognition()
             } else {
-                startRecordingSilenceDetection()
+                //startRecordingSilenceDetection()
             }
         } else {
             print("Audio recording failed.")

@@ -9,47 +9,44 @@ import RxSwift
 import RxCocoa
 
 class BaseViewModel {
-    var searchText = BehaviorRelay<String>(value: "")
-    var voiceRecognizedText = BehaviorRelay<String?>(value: nil)
-
-    // Input
     struct Input {
-        let searchText: Driver<String>
-        let voiceRecognizedText: Driver<String?>
-    }
-
-    // Output
-    struct Output {
-        let updatedText: Driver<String>
-    }
-
-    private let disposeBag = DisposeBag()
-
-    init() {
-        setupBindings()
-    }
-
-    func setupBindings() {
-        let input = Input(
-            searchText: searchText.asDriver(),
-            voiceRecognizedText: voiceRecognizedText.asDriver()
-        )
-
-        let output = transform(input: input)
-
-        // 출력(Output)을 처리할 Output 프로퍼티 추가
-        viewModelOutput = output
-    }
-
-    func transform(input: Input) -> Output {
-        // Combine searchText and voiceRecognizedText into a single updatedText
-        let updatedText = Driver.combineLatest(input.searchText, input.voiceRecognizedText) { (search, voice) -> String in
-            return voice ?? search
-        }
-
-        return Output(updatedText: updatedText)
+        let text: Observable<String>
     }
     
-    // ViewModel Output 프로퍼티 추가
-    var viewModelOutput: Output?
+    struct Output {
+        let result: Observable<String>
+        let currentStation: Observable<StationDetailDTO>
+    }
+    
+    let disposeBag = DisposeBag()
+    
+    // BehaviorSubject를 사용하여 현재 StationDetailDTO를 저장
+    private let currentStationSubject = BehaviorSubject<StationDetailDTO?>(value: nil)
+    
+    var currentStation: Observable<StationDetailDTO> {
+        return currentStationSubject
+            .compactMap { $0 } // nil이 아닌 값만 방출
+    }
+    
+    init() {
+
+    }
+    
+    func transform(input: Input) -> Output {
+        let rxResult = input.text.asObservable()
+        
+        // 예제를 위해 더미 StationDetailDTO를 생성
+        let dummyStationDetailDTO = MockData.mockStationDetail
+        
+        // 입력 텍스트가 변경될 때마다 현재 StationDetailDTO 업데이트
+        let resultObservable = rxResult
+            .map { text -> StationDTO? in
+                //self.currentText = text
+                return MockData.mockStationDTOs.first { $0.stationName == text }
+            }
+            .filter { $0 != nil }
+            .map { $0! } // Force unwrap since we've filtered out nil values
+        print(resultObservable)
+        return Output(result: rxResult, currentStation: currentStation)
+    }
 }

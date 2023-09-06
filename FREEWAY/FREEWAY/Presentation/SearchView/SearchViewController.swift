@@ -52,6 +52,7 @@ final class SearchViewController: UIViewController {
         setDefaultNavigationBar()
         setupLayout()
         configure()
+        bind()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -91,7 +92,7 @@ final class SearchViewController: UIViewController {
             voiceRecognitionManager.stopRecognition()
             voiceSearchLottieView.removeFromSuperview()
             searchTextFieldView.searchTextfield.text = voiceRecognitionManager.resultText
-            
+            navigateToMapsViewControllerIfNeeded(voiceRecognitionManager.resultText ?? "")
         } else {
             searchHistoryView.isHidden = true
             searchTextFieldView.searchTextfield.resignFirstResponder()
@@ -102,6 +103,21 @@ final class SearchViewController: UIViewController {
             //TODO: 추후 Rxswift를 활용한 ViewModel 연동 시에 수정될 부분
             //voiceSearchLottieView.updateResultText("강남역")
         }
+    }
+    
+    private func bind() {
+        voiceSearchLottieView.resultTextLabel.text = "듣고 있어요"
+        let input = BaseViewModel.Input(text: searchTextFieldView.searchTextfield.rx.text.orEmpty.asObservable())
+        let output = viewModel.transform(input: input)
+        output.result
+            .bind(to: voiceSearchLottieView.resultTextLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
+        
+        voiceRecognitionManager.recognizedTextRelay
+            .subscribe(onNext: { [weak self] recognizedText in
+                self?.voiceSearchLottieView.resultTextLabel.text = recognizedText
+            })
+            .disposed(by: viewModel.disposeBag)
     }
     
 }
@@ -150,14 +166,28 @@ extension SearchViewController: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField.text != "" {
-            self.navigationController?.pushViewController(MapsViewController(), animated: true)
+    private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
+        return MockData.mockStationDTOs.first { $0.stationName == stationName }
+    }
+    
+    private func showInvalidStationNameAlert() {
+        let alert = UIAlertController(title: "역 이름을 다시 한 번 확인해주세요!", message: "", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
+        if let stationDTO = findStationDetailDTO(searchText) {
+            self.navigationController?.pushViewController(MapsViewController(searchText, stationDTO), animated: true)
         } else {
-            let alert = UIAlertController(title: "역 이름을 다시 한 번 확인해주세요!", message: "", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
-            alert.addAction(okAction)
-            self.present(alert, animated: true, completion: nil)
+            showInvalidStationNameAlert()
+        }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let searchText = textField.text {
+            navigateToMapsViewControllerIfNeeded(searchText)
         }
         return true
     }

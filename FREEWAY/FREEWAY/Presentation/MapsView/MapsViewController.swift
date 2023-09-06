@@ -14,7 +14,7 @@ import CoreLocation
 class MapsViewController: UIViewController {
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
-    private let data = MockData.mockStationDTOs.first
+    private var data = MockData.mockStationDTOs.first
     //TODO: 임시 강남역 마커로 설정 추후 배열로 변경 예정
     private lazy var stationMarkerView = StationMarkerView(lineImageName: self.data!.lineId, stationColor: (LinePallete(rawValue: self.data!.lineId)?.color)!, stationName: self.data!.stationName).then {
         $0.frame = CGRect(x: 0, y: 0, width: 94.5, height: 49.3)
@@ -58,6 +58,16 @@ class MapsViewController: UIViewController {
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
     
+    init(_ searchText: String, _ station: StationDTO) {
+        mapsTitleView.currentTextLabel.text = searchText
+        data = station
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -65,6 +75,7 @@ class MapsViewController: UIViewController {
         configure()
         setupLayout()
         configureCurrentLocation()
+        //moveLocation(latitude: CLLocationDegrees((data?.coordinate.latitude)!)!, longitude: CLLocationDegrees((data?.coordinate.longitude)!)!)
         setStationMarker()
         setDefaultNavigationBar()
         setElevatorMarker()
@@ -88,6 +99,10 @@ class MapsViewController: UIViewController {
     
     //MARK: Action
     @objc func closeButtonPressed(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func titleLabelPressed(_ sender: UITapGestureRecognizer) {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -135,7 +150,7 @@ private extension MapsViewController {
         currentLocationButton.addTarget(self, action: #selector(currentLocationButtonDidTap), for: .touchUpInside)
         mapsTitleView.closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
         mapsTitleView.backButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
-        let textLabelGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonPressed))
+        let textLabelGesture = UITapGestureRecognizer(target: self, action: #selector(titleLabelPressed))
         mapsTitleView.currentTextLabel.addGestureRecognizer(textLabelGesture)
 
     }
@@ -180,7 +195,19 @@ private extension MapsViewController {
         currentLocation.requestWhenInUseAuthorization()
     }
     
-    func moveLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    func moveLocation() {
+        guard let latitudeString = data?.coordinate.latitude,
+              let longitudeString = data?.coordinate.longitude,
+              let latitude = CLLocationDegrees(latitudeString),
+              let longitude = CLLocationDegrees(longitudeString) else {
+            // 값이 없는 경우 강남역의 위치로 설정
+            let gangnamStationLocation = NMGLatLng(lat: 37.498085, lng: 127.027548)
+            let cameraUpdate = NMFCameraUpdate(scrollTo: gangnamStationLocation, zoomTo: 14)
+            cameraUpdate.animation = .easeIn
+            mapsView.moveCamera(cameraUpdate)
+            return
+        }
+        
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
         cameraUpdate.animation = .easeIn
         mapsView.moveCamera(cameraUpdate)
@@ -194,18 +221,15 @@ private extension MapsViewController {
             //TODO: 테스트 구문
             print("위치 서비스 On 상태")
             currentLocation.startUpdatingLocation()
-            print(latitude, longitude)
             
-            moveLocation(latitude: latitude, longitude: longitude)
+            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
+            cameraUpdate.animation = .easeIn
+            mapsView.moveCamera(cameraUpdate)
             guard let locationOverlay = locationOverlay else { return }
             locationOverlay.hidden = false
             locationOverlay.location = NMGLatLng(lat: latitude, lng: longitude)
             locationOverlay.circleOutlineWidth = 10
             
-        } else {
-            //TODO: 테스트 구문
-            //위치 서비스가 Off일 시에 예외처리가 필요 -> 앱 내 Alert 띄워주고 터치해서 위치 정보 접근 허용으로 이동하는 알림이면 좋을 듯
-            print("위치 서비스 Off 상태")
         }
     }
     
@@ -226,7 +250,7 @@ private extension MapsViewController {
             self.elevatorMarker.touchHandler = { (overlay: NMFOverlay) -> Bool in
                 self.mapsView.zoomLevel = 14
                 //현재 좌표로 확대하도록 변경되어야할 부분
-                self.moveLocation(latitude: self.elevatorMarker.position.lat, longitude: self.elevatorMarker.position.lng)
+                self.moveLocation()
                 return true
             }
         }
@@ -312,7 +336,7 @@ extension MapsViewController: CLLocationManagerDelegate {
         case .authorizedAlways, .authorizedWhenInUse:
             DispatchQueue.main.async { [weak self] in
                 if let self = self {
-                    self.setcurrentLocation()
+                    self.moveLocation()
                 }
             }
             
