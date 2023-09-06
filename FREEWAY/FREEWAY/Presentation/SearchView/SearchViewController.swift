@@ -29,14 +29,22 @@ struct StationCoordinate {
 final class SearchViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
+    let viewModel: BaseViewModel
     
     //TODO: 추후 userdefaults 변수로 변경 필요
     let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
-    lazy var searchTextFieldView = SearchTextfieldView()
+    lazy var searchTextFieldView = SearchTextfieldView(viewModel: viewModel)
     lazy var searchHistoryView = searchHistorys.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: searchHistorys)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     
-    private var viewModel = BaseViewModel()
+    init(viewModel: BaseViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +52,6 @@ final class SearchViewController: UIViewController {
         setDefaultNavigationBar()
         setupLayout()
         configure()
-        bind()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,14 +65,6 @@ final class SearchViewController: UIViewController {
         } else {
             return .default
         }
-    }
-    
-    private func bind() {
-        let input = BaseViewModel.Input (
-                trigger: searchTextFieldView.searchTextfield.rx.text.orEmpty.asObservable()
-            )
-        let output = viewModel.getStationDTO(input: input)
-
     }
     
     private func safeAreaTopInset() -> CGFloat? {

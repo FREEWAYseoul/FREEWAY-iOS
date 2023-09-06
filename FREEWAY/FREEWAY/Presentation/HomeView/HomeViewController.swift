@@ -14,6 +14,7 @@ import RxSwift
 final class HomeViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
+    let viewModel = BaseViewModel()
     
     private let alertButton = InAppAlertButtonView()
     private let homeTitle = HomeTitleView()
@@ -63,7 +64,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func tabPlaceholderLabel(sender: UITapGestureRecognizer){
-        self.navigationController?.pushViewController(SearchViewController(), animated: true)
+        self.navigationController?.pushViewController(SearchViewController(viewModel: viewModel), animated: true)
     }
 }
 

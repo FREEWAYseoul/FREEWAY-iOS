@@ -4,43 +4,52 @@
 //
 //  Created by 한택환 on 2023/09/05.
 //
-
-import UIKit
-import Then
-import SnapKit
+import Foundation
 import RxSwift
-
+import RxCocoa
 
 class BaseViewModel {
-    //TODO: 추후 네트워크 작업으로 변경될 부분
-    var stationDatas = MockData.mockStationDTOs
-    var stationDetailData = MockData.mockStationDetail
-    
+    var searchText = BehaviorRelay<String>(value: "")
+    var voiceRecognizedText = BehaviorRelay<String?>(value: nil)
+
+    // Input
+    struct Input {
+        let searchText: Driver<String>
+        let voiceRecognizedText: Driver<String?>
+    }
+
+    // Output
+    struct Output {
+        let updatedText: Driver<String>
+    }
+
+    private let disposeBag = DisposeBag()
+
     init() {
-        
+        setupBindings()
     }
-    
-    struct Input { // View에서 발생할 Input 이벤트(Stream)들
-        let trigger: Observable<String> // viewWillAppear와 같은 trigger event
-    }
-    struct Output { // NView에 반영시킬 Output Stream들
-        let resultText: Observable<StationDTO> // UILabel 등에 바인딩할 데이터 Stream
-    }
-    var disposeBag = DisposeBag()
-    
-    //var currentText = BehaviorRelay(value: "")
-    
-    func getStationDTO(input: Input) -> Output {
-        let currentText = input.trigger
 
-        let resultObservable = currentText
-            .map { text -> StationDTO? in
-                //self.currentText = text
-                return self.stationDatas.first { $0.stationName == text }
-            }
-            .filter { $0 != nil }
-            .map { $0! } // Force unwrap since we've filtered out nil values
+    func setupBindings() {
+        let input = Input(
+            searchText: searchText.asDriver(),
+            voiceRecognizedText: voiceRecognizedText.asDriver()
+        )
 
-        return Output(resultText: resultObservable)
+        let output = transform(input: input)
+
+        // 출력(Output)을 처리할 Output 프로퍼티 추가
+        viewModelOutput = output
     }
+
+    func transform(input: Input) -> Output {
+        // Combine searchText and voiceRecognizedText into a single updatedText
+        let updatedText = Driver.combineLatest(input.searchText, input.voiceRecognizedText) { (search, voice) -> String in
+            return voice ?? search
+        }
+
+        return Output(updatedText: updatedText)
+    }
+    
+    // ViewModel Output 프로퍼티 추가
+    var viewModelOutput: Output?
 }
