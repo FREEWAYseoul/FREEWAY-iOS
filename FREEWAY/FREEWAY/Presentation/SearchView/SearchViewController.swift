@@ -11,21 +11,6 @@ import Then
 import RxSwift
 import RxCocoa
 
-//TODO: Model로 추후 변경 필요
-struct StationInfo {
-    let stationName: String
-    //        let stationId: String
-    let lineId: String
-    //        let lineName: String
-    //        let stationCoordinate: StationCoordinate
-    let stationStatus: String
-}
-
-struct StationCoordinate {
-    let latitude: String
-    let longitude: String
-}
-
 final class SearchViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
@@ -35,7 +20,7 @@ final class SearchViewController: UIViewController {
     
     //TODO: 추후 userdefaults 변수로 변경 필요
     lazy var searchTextFieldView = SearchTextfieldView(viewModel: viewModel)
-    lazy var searchHistoryView = datas.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: datas)
+    lazy var searchHistoryView = SearchHistoryView(searchHistorys: datas)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     lazy var searchListView = SearchListView(datas: datas)
     lazy var emptySearchView = EmptySearchView()
@@ -103,8 +88,6 @@ final class SearchViewController: UIViewController {
             voiceSearchLottieView.voiceLottieView.play()
             voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
             voiceRecognitionManager.startRecognition()
-            //TODO: 추후 Rxswift를 활용한 ViewModel 연동 시에 수정될 부분
-            //voiceSearchLottieView.updateResultText("강남역")
         }
     }
     
@@ -140,6 +123,8 @@ private extension SearchViewController {
         searchTextFieldView.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         searchTextFieldView.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
         searchTextFieldView.searchTextfield.delegate = self
+        searchListView.searchHistoryTableView.delegate = self
+        searchHistoryView.searchHistoryTableView.delegate = self
     }
     
     func setupLayout() {
@@ -213,3 +198,12 @@ extension SearchViewController: UITextFieldDelegate {
     }
     
 }
+
+extension SearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let cell = tableView.cellForRow(at: indexPath) as? SearchHistoryBaseViewCell {
+            self.navigateToMapsViewControllerIfNeeded(cell.stationTitleLabel.text ?? "왕십리")
+            }
+        }
+    }

@@ -47,7 +47,7 @@ private extension SearchListView {
     }
 }
 
-extension SearchListView: UITableViewDataSource, UITableViewDelegate {
+extension SearchListView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         datas.count
     }

@@ -60,7 +60,7 @@ private extension SearchHistoryView {
     }
 }
 
-extension SearchHistoryView: UITableViewDataSource, UITableViewDelegate {
+extension SearchHistoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchHistorys.count
     }

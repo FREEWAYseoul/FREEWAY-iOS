@@ -15,7 +15,7 @@ final class SearchHistoryBaseViewCell: UITableViewCell {
     
     static let searchHistoryViewCellId = "SearchHistoryViewCell"
     
-    private let stationTitleLabel = UILabel().then {
+    let stationTitleLabel = UILabel().then {
         //변경 필요
         $0.textColor = Pallete.customBlack.color
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
