@@ -30,12 +30,15 @@ final class SearchViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
     let viewModel: BaseViewModel
+    let disposeBag = DisposeBag()
+    var datas = MockData.mockStationDTOs
     
     //TODO: 추후 userdefaults 변수로 변경 필요
-    let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
     lazy var searchTextFieldView = SearchTextfieldView(viewModel: viewModel)
-    lazy var searchHistoryView = searchHistorys.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: searchHistorys)
+    lazy var searchHistoryView = datas.isEmpty ? EmptyHistoryView() : SearchHistoryView(searchHistorys: datas)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
+    lazy var searchListView = SearchListView(datas: datas)
+    lazy var emptySearchView = EmptySearchView()
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
@@ -106,20 +109,30 @@ final class SearchViewController: UIViewController {
     }
     
     private func bind() {
-        voiceSearchLottieView.resultTextLabel.text = "듣고 있어요"
-        let input = BaseViewModel.Input(text: searchTextFieldView.searchTextfield.rx.text.orEmpty.asObservable())
-        let output = viewModel.transform(input: input)
-        output.result
-            .bind(to: voiceSearchLottieView.resultTextLabel.rx.text)
-            .disposed(by: viewModel.disposeBag)
-        
         voiceRecognitionManager.recognizedTextRelay
             .subscribe(onNext: { [weak self] recognizedText in
                 self?.voiceSearchLottieView.resultTextLabel.text = recognizedText
             })
-            .disposed(by: viewModel.disposeBag)
+            .disposed(by: disposeBag)
+        
+        searchTextFieldView.searchTextfield.rx.text.orEmpty
+             .subscribe(onNext: { [weak self] text in
+                 self?.handleTextFieldInput(text)
+                 self?.emptySearchView.searchText = text
+             })
+             .disposed(by: disposeBag)
     }
     
+    func handleTextFieldInput(_ text: String) {
+        if !text.isEmpty {
+            searchListView.datas = self.datas.filter{ $0.stationName.hasPrefix(text) }
+            setupSearchListLayout(view: searchListView.datas.isEmpty ? emptySearchView : searchListView)
+            searchListView.searchHistoryTableView.reloadData()
+        } else {
+            searchListView.removeFromSuperview()
+            emptySearchView.removeFromSuperview()
+        }
+    }
 }
 
 private extension SearchViewController {
@@ -150,6 +163,14 @@ private extension SearchViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
+    
+    func setupSearchListLayout(view: UIView) {
+        self.view.addSubview(view)
+        view.snp.makeConstraints { make in
+            make.top.equalTo(searchTextFieldView.snp.bottom).offset(22)
+            make.bottom.leading.trailing.equalToSuperview()
+        }
+    }
 }
 
 extension SearchViewController: UITextFieldDelegate {
@@ -162,7 +183,6 @@ extension SearchViewController: UITextFieldDelegate {
             }
         }
         guard textField.text!.count < 10 else { return false }
-        
         return true
     }
     

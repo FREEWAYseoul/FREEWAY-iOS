@@ -77,7 +77,7 @@ extension SearchHistoryBaseViewCell {
     
     func configure(_ title: String, _ status: String, _ line: String, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
         stationTitleLabel.text = title
-        stationStateImage.image = UIImage(named: status)
+        stationStateImage.image = UIImage(named: status == "사용 가능" ? "possible" : "impossible")
         stationLineImage.image = UIImage(named: line)
         if horizontalOffset == 0 {
             stationTitleLabel.snp.updateConstraints { make in

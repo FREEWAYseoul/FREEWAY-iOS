@@ -11,11 +11,14 @@ import SnapKit
 
 final class EmptySearchView: UIView {
     //추후에 TextField와 데이터 바인딩 필요
-    var searchText: String = "강남"
+    var searchText: String = "" {
+        didSet {
+            emptySearchTitleLabel.text = "\"\(searchText)\" 검색 결과가 없습니다."
+        }
+    }
     
     private lazy var emptySearchTitleLabel = UILabel().then {
         $0.textColor = Pallete.customGray.color
-        $0.text = "\"\(searchText)\" 검색 결과가 없습니다."
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 20)
     }
     

@@ -16,7 +16,7 @@ protocol VoiceRecognitionDelegate: AnyObject {
 
 class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     
-    var recognizedTextRelay = BehaviorRelay<String?>(value: nil)
+    var recognizedTextRelay = BehaviorRelay<String?>(value: "듣고 있어요")
     static let shared = VoiceRecognitionManager()
     
     weak var delegate: VoiceRecognitionDelegate?
@@ -114,7 +114,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             audioRecorder?.isMeteringEnabled = true
             audioRecorder?.record()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + silenceThreshold) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
                 self?.stopRecognition()
             }
         } catch {
