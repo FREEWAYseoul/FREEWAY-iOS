@@ -35,7 +35,7 @@ class MapsViewController: UIViewController {
     }
     private let mapsTitleView = MapsViewTitle()
     
-    private var facilitiesView = FacilitiesView()
+    private lazy var facilitiesView = FacilitiesView(getStationDetail(data!.stationName)!)
     private var stationMapWebView = StationMapWebView()
     
     private lazy var stationMarker = NMFMarker().then {
