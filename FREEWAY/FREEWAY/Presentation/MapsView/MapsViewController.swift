@@ -33,6 +33,7 @@ class MapsViewController: UIViewController {
         $0.allowsScrolling = true
         locationOverlay = $0.locationOverlay
     }
+    private let mapsTitleView = MapsViewTitle()
     
     private var facilitiesView = FacilitiesView()
     private var stationMapWebView = StationMapWebView()
@@ -56,8 +57,6 @@ class MapsViewController: UIViewController {
         $0.width = CGFloat(NMF_MARKER_SIZE_AUTO)
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
-    
-    private let searchTextFieldView = SearchTextfieldView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,10 +133,11 @@ private extension MapsViewController {
         mapsView.addCameraDelegate(delegate: self)
         mapsView.touchDelegate = self
         currentLocationButton.addTarget(self, action: #selector(currentLocationButtonDidTap), for: .touchUpInside)
-        searchTextFieldView.voiceRecognitionButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
-        searchTextFieldView.backButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
-        searchTextFieldView.voiceRecognitionImage.image = UIImage(systemName: "x.circle.fill")
-        searchTextFieldView.voiceRecognitionImage.tintColor = Pallete.customGray.color
+        mapsTitleView.closeButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        mapsTitleView.backButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
+        let textLabelGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonPressed))
+        mapsTitleView.currentTextLabel.addGestureRecognizer(textLabelGesture)
+
     }
     
     func setupLayout() {
@@ -147,8 +147,8 @@ private extension MapsViewController {
             make.bottom.leading.trailing.equalToSuperview()
         }
         
-        view.addSubview(searchTextFieldView)
-        searchTextFieldView.snp.makeConstraints { make in
+        view.addSubview(mapsTitleView)
+        mapsTitleView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(59)
@@ -164,7 +164,7 @@ private extension MapsViewController {
     func setupStationDetailViewLayout(_ subView: UIView) {
         view.addSubview(subView)
         subView.snp.makeConstraints { make in
-            make.top.equalTo(searchTextFieldView.snp.bottom)
+            make.top.equalTo(mapsTitleView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
         }
     }
