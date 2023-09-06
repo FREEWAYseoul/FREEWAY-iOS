@@ -23,7 +23,7 @@ class MapsViewController: UIViewController {
         $0.frame = CGRect(x: 0, y: 0, width: 72, height: 39.74)
     }
     
-    private lazy var bottomSheet = StationDetailViewController()
+    private lazy var bottomSheet = StationDetailViewController(getStationDetail(data!.stationName)!)
     private var bottomSheetState = false
     
     private var currentLocationButton = CurrentLocationButton()
@@ -75,7 +75,6 @@ class MapsViewController: UIViewController {
         configure()
         setupLayout()
         configureCurrentLocation()
-        //moveLocation(latitude: CLLocationDegrees((data?.coordinate.latitude)!)!, longitude: CLLocationDegrees((data?.coordinate.longitude)!)!)
         setStationMarker()
         setDefaultNavigationBar()
         setElevatorMarker()
@@ -95,6 +94,10 @@ class MapsViewController: UIViewController {
     private func setDefaultNavigationBar() {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+    }
+    
+    private func getStationDetail(_ stationName: String) -> StationDetailDTO? {
+        return MockData.mockStationDetails.first { $0.stationName == stationName }
     }
     
     //MARK: Action

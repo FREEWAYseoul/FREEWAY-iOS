@@ -18,12 +18,21 @@ final class StationDetailViewController: UIViewController {
     
     weak var delegate: SetStationDetailViewControllerDelegate?
     
-    var data = MockData.mockStationDetail
+    var data: StationDetailDTO
     private let stationInfoItems: [(String, String)] = [("elevater", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("convenience", "편의시설")]
     
     let stationDetailCollectionView = StationDetailCollectionView()
     lazy var stationDetailTitle = StationDetailTitleView(lineImageName: data.lineId, stationColor: (LinePallete(rawValue: data.lineId)?.color!)!, stationName: data.stationName, nextStationName: data.nextStation.stationName, prevStationName: data.previousStation.stationName)
 
+    init(_ data: StationDetailDTO) {
+        self.data = data
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -67,7 +76,6 @@ extension StationDetailViewController: UICollectionViewDelegateFlowLayout {
 
 extension StationDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("안녕")
         return stationInfoItems.count
     }
     
