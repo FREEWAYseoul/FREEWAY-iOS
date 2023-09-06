@@ -19,7 +19,7 @@ final class SearchViewController: UIViewController {
     var datas = MockData.mockStationDTOs
     
     //TODO: 추후 userdefaults 변수로 변경 필요
-    lazy var searchTextFieldView = SearchTextfieldView(viewModel: viewModel)
+    lazy var searchTextFieldView = SearchTextfieldView()
     lazy var searchHistoryView = SearchHistoryView(searchHistorys: datas)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     lazy var searchListView = SearchListView(datas: datas)
@@ -104,6 +104,10 @@ final class SearchViewController: UIViewController {
                  self?.emptySearchView.searchText = text
              })
              .disposed(by: disposeBag)
+        
+        searchTextFieldView.searchTextfield.rx.text.orEmpty
+            .bind(to: viewModel.textSubject)
+            .disposed(by: disposeBag)
     }
     
     func handleTextFieldInput(_ text: String) {
@@ -184,7 +188,7 @@ extension SearchViewController: UITextFieldDelegate {
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
         if let stationDTO = findStationDetailDTO(searchText) {
-            self.navigationController?.pushViewController(MapsViewController(searchText, stationDTO), animated: true)
+            self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel, searchText, stationDTO), animated: true)
         } else {
             showInvalidStationNameAlert()
         }

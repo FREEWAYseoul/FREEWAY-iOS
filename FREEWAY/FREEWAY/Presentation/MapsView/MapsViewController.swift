@@ -10,8 +10,13 @@ import NMapsMap
 import Then
 import SnapKit
 import CoreLocation
+import RxSwift
+import RxCocoa
 
 class MapsViewController: UIViewController {
+    let viewModel: BaseViewModel
+    let disposeBag = DisposeBag()
+    
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
     private var data = MockData.mockStationDTOs.first
@@ -58,8 +63,8 @@ class MapsViewController: UIViewController {
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
     
-    init(_ searchText: String, _ station: StationDTO) {
-        mapsTitleView.currentTextLabel.text = searchText
+    init(viewModel: BaseViewModel, _ searchText: String, _ station: StationDTO) {
+        self.viewModel = viewModel
         data = station
         super.init(nibName: nil, bundle: nil)
     }
@@ -79,6 +84,15 @@ class MapsViewController: UIViewController {
         setDefaultNavigationBar()
         setElevatorMarker()
         showBottomSheet()
+        bind()
+    }
+    
+    private func bind() {
+        viewModel.textSubject
+            .subscribe(onNext: { [weak self] text in
+                self?.mapsTitleView.currentTextLabel.text = text
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: Contraints

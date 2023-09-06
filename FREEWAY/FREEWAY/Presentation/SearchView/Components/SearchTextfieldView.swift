@@ -11,7 +11,6 @@ import Then
 
 final class SearchTextfieldView: UIView {
     
-    let viewModel: BaseViewModel
     let searchTextfield = UITextField().then {
         $0.borderStyle = .none
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
@@ -39,8 +38,7 @@ final class SearchTextfieldView: UIView {
         $0.backgroundColor = .clear
     }
     
-    init(viewModel: BaseViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         backgroundColor = .white
         setupLayout()
