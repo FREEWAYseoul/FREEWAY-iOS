@@ -50,8 +50,6 @@ final class HomeViewController: UIViewController {
                 textField.placeholderLabel.textColor = Pallete.customBlack.color
                 textField.placeholderLabel.layer.opacity = 1.0
             }
-            
-            
         } else {
             recentSearchView.isHidden = true
             setupLottieLayout()

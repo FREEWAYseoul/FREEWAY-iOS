@@ -14,15 +14,25 @@ class BaseViewModel {
     
     // 입력된 데이터를 저장하는 BehaviorSubject
     let inputText = BehaviorSubject<String>(value: "")
-    
+    let inputVoice = BehaviorSubject<String?>(value: "듣고 있어요")
+    let disposeBag = DisposeBag()
     // Observable로 변환하여 ViewController에서 사용할 수 있도록
     var stationName: Observable<String> {
         return inputText.asObservable()
     }
     
+    var voiceStationName: Observable<String?> {
+        return inputVoice.asObservable()
+    }
+    
     // 사용자 입력을 업데이트하는 함수
     func updateText(_ text: String) {
         inputText.onNext(text)
+    }
+    
+    func updateVoiceText(_ text: String) {
+        inputText.onNext(text)
+        inputVoice.onNext(text)
     }
     
     func getStationDTO() -> StationDTO? {

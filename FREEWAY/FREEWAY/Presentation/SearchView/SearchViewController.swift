@@ -40,6 +40,7 @@ final class SearchViewController: UIViewController {
         setDefaultNavigationBar()
         setupLayout()
         configure()
+        voiceRecognitionManager.setViewModel(viewModel: viewModel)
         bind()
     }
     
@@ -92,9 +93,9 @@ final class SearchViewController: UIViewController {
     }
     
     private func bind() {
-        voiceRecognitionManager.recognizedTextRelay
-            .subscribe(onNext: { [weak self] recognizedText in
-                self?.voiceSearchLottieView.resultTextLabel.text = recognizedText
+        viewModel.voiceStationName
+            .subscribe(onNext: { [weak self] text in
+                self?.voiceSearchLottieView.resultTextLabel.text = text
             })
             .disposed(by: disposeBag)
         

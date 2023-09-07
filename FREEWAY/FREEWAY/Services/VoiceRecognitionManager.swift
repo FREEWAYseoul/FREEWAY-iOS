@@ -5,6 +5,118 @@
 //  Created by 한택환 on 2023/08/27.
 //
 
+//import AVFoundation
+//import Speech
+//import RxSwift
+//import RxCocoa
+//
+//protocol VoiceRecognitionDelegate: AnyObject {
+//    func didRecognizeVoice(text: String)
+//}
+//
+//class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
+//    var viewModel: BaseViewModel?
+//    static let shared = VoiceRecognitionManager()
+//
+//    weak var delegate: VoiceRecognitionDelegate?
+//
+//    var isRecognizing = false
+//    var resultText: String?
+//    private let audioEngine = AVAudioEngine()
+//    private var speechRecognizer: SFSpeechRecognizer?
+//    private var request: SFSpeechAudioBufferRecognitionRequest?
+//    private var recognitionTask: SFSpeechRecognitionTask?
+//
+//    private var audioRecorder: AVAudioRecorder?
+//
+//    private override init() {
+//        super.init()
+//        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR")) //한국어
+//        speechRecognizer?.delegate = self
+//    }
+//
+//    func setViewModel(viewModel: BaseViewModel) {
+//        self.viewModel = viewModel
+//    }
+//
+//    func startRecognition() {
+//        stopRecognition()
+//
+//        guard let recognizer = speechRecognizer, recognizer.isAvailable else {
+//            print("진단1")
+//            return
+//        }
+//
+//        guard !isRecognizing, let recognizer = speechRecognizer, recognizer.isAvailable else {
+//            print("진단2")
+//            return
+//        }
+//
+//        request = SFSpeechAudioBufferRecognitionRequest()
+//
+//        guard let request = request else {
+//            print("진단3")
+//            return
+//        }
+//        isRecognizing = true
+//        resultText = nil
+//
+//        let inputNode = audioEngine.inputNode
+//        recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
+//            guard let self = self else { return }
+//            var isFinal = false
+//
+//            if let result = result {
+//                isFinal = result.isFinal
+//                self.resultText = result.bestTranscription.formattedString
+//                self.viewModel?.updateVoiceText(self.resultText ?? "듣고 있어요")
+//                if isFinal {
+//                    self.delegate?.didRecognizeVoice(text: self.resultText ?? "")
+//                }
+//            }
+//
+//            if error != nil || isFinal {
+//                self.stopRecognition()
+//            }
+//        }
+//
+//        let recordingFormat = inputNode.outputFormat(forBus: 0)
+//        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
+//            self.request?.append(buffer)
+//        }
+//
+//        audioEngine.prepare()
+//
+//        do {
+//            try audioEngine.start()
+//        } catch {
+//            print("Audio Engine start error: \(error)")
+//        }
+//    }
+//
+//    func stopRecognition() {
+//        if isRecognizing {
+//            isRecognizing = false
+//            audioEngine.stop()
+//            recognitionTask?.cancel()
+//        }
+//    }
+//}
+//
+//extension VoiceRecognitionManager: AVAudioRecorderDelegate {
+//    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+//        if flag {
+//            let averagePower = recorder.averagePower(forChannel: 0)
+//            if averagePower < -30.0 { // Assuming -30 dB as silence threshold
+//                stopRecognition()
+//            } else {
+//                // Start recording silence detection again if needed
+//            }
+//        } else {
+//            print("Audio recording failed.")
+//        }
+//    }
+//}
 import AVFoundation
 import Speech
 import RxSwift
@@ -12,11 +124,11 @@ import RxCocoa
 
 protocol VoiceRecognitionDelegate: AnyObject {
     func didRecognizeVoice(text: String)
+    func voiceRecognitionError(error: Error)
 }
 
 class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
-    
-    var recognizedTextRelay = BehaviorRelay<String?>(value: "듣고 있어요")
+    var viewModel: BaseViewModel?
     static let shared = VoiceRecognitionManager()
     
     weak var delegate: VoiceRecognitionDelegate?
@@ -28,17 +140,18 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     
-    private var audioRecorder: AVAudioRecorder?
-    private let silenceThreshold: TimeInterval = 5.0 // 1초간 무응답인 경우 자동 종료
-    
     private override init() {
         super.init()
-        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR")) //한국어
+        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR")) // 한국어
         speechRecognizer?.delegate = self
     }
     
+    func setViewModel(viewModel: BaseViewModel) {
+        self.viewModel = viewModel
+    }
+    
     func startRecognition() {
-        guard let recognizer = speechRecognizer, recognizer.isAvailable else {
+        guard !isRecognizing, let recognizer = speechRecognizer, recognizer.isAvailable else {
             return
         }
         
@@ -48,26 +161,18 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             return
         }
         isRecognizing = true
+        resultText = nil
         
         let inputNode = audioEngine.inputNode
         recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
             guard let self = self else { return }
-            var isFinal = false
-            
             if let result = result {
-                isFinal = result.isFinal
                 self.resultText = result.bestTranscription.formattedString
-                self.recognizedTextRelay.accept(self.resultText)
-                if isFinal {
-                    self.delegate?.didRecognizeVoice(text: self.resultText ?? "")
-                }
+                self.viewModel?.updateVoiceText(self.resultText ?? "듣고 있어요")
+                self.delegate?.didRecognizeVoice(text: self.resultText ?? "")
             }
-            
-            if error != nil || isFinal {
-                self.audioEngine.stop()
-                inputNode.removeTap(onBus: 0)
-                self.request = nil
-                self.recognitionTask = nil
+            if error != nil || result?.isFinal == true {
+                self.stopRecognition()
             }
         }
         
@@ -80,71 +185,25 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
         
         do {
             try audioEngine.start()
-            startRecordingSilenceDetection()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
+                self?.stopRecognition()
+            }
         } catch {
             print("Audio Engine start error: \(error)")
+            delegate?.voiceRecognitionError(error: error)
+            stopRecognition()
         }
     }
     
     func stopRecognition() {
-        isRecognizing = false
-        audioEngine.stop()
-        recognitionTask?.cancel()
-        stopRecordingSilenceDetection()
-    }
-    
-    private func startRecordingSilenceDetection() {
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.record)
-            try audioSession.setActive(true)
-            
-            let audioURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("silence.caf")
-            let audioSettings: [String: Any] = [
-                AVFormatIDKey: Int(kAudioFormatAppleIMA4),
-                AVSampleRateKey: 44100.0,
-                AVNumberOfChannelsKey: 1,
-                AVEncoderBitRateKey: 12800,
-                AVLinearPCMBitDepthKey: 16,
-                AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
-            ]
-            
-            audioRecorder = try AVAudioRecorder(url: audioURL, settings: audioSettings)
-            audioRecorder?.delegate = self
-            audioRecorder?.isMeteringEnabled = true
-            audioRecorder?.record()
-            
-            DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
-                self?.stopRecognition()
-            }
-        } catch {
-            print("Error starting audio recorder: \(error)")
-        }
-    }
-    
-    private func stopRecordingSilenceDetection() {
-        audioRecorder?.stop()
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setActive(false)
-        } catch {
-            print("Error stopping audio recorder: \(error)")
-        }
-        audioRecorder = nil
-    }
-}
-
-extension VoiceRecognitionManager: AVAudioRecorderDelegate {
-    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        if flag {
-            let averagePower = recorder.averagePower(forChannel: 0)
-            if averagePower < -30.0 { // Assuming -30 dB as silence threshold
-                stopRecognition()
-            } else {
-                //startRecordingSilenceDetection()
-            }
-        } else {
-            print("Audio recording failed.")
+        if isRecognizing {
+            isRecognizing = false
+            audioEngine.stop()
+            audioEngine.inputNode.removeTap(onBus: 0)
+            request?.endAudio()
+            recognitionTask?.cancel()
+            recognitionTask = nil
+            request = nil
         }
     }
 }
