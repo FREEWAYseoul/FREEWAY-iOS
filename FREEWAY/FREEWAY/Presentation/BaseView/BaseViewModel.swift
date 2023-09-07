@@ -9,16 +9,48 @@ import RxSwift
 import RxCocoa
 
 class BaseViewModel {
+    let stationDetailDatas = MockData.mockStationDetails
+    let stationDatas = MockData.mockStationDTOs
+    
     // 입력된 데이터를 저장하는 BehaviorSubject
-    let textSubject = BehaviorSubject<String>(value: "")
+    let inputText = BehaviorSubject<String>(value: "")
     
     // Observable로 변환하여 ViewController에서 사용할 수 있도록
-    var textObservable: Observable<String> {
-        return textSubject.asObservable()
+    var stationName: Observable<String> {
+        return inputText.asObservable()
     }
     
     // 사용자 입력을 업데이트하는 함수
     func updateText(_ text: String) {
-        textSubject.onNext(text)
+        inputText.onNext(text)
+    }
+    
+    func getStationDTO() -> StationDTO? {
+        do {
+            let stationName = try inputText.value()
+            // StationName을 사용하여 StationDTO를 검색하고 반환
+            if let station = stationDatas.first(where: { $0.stationName == stationName }) {
+                return station
+            }
+            return nil // 찾을 수 없는 경우
+        } catch {
+            // BehaviorSubject에서 값을 가져오지 못한 경우
+            return nil
+        }
+    }
+
+    // StationName을 기반으로 StationDetailDTO 반환
+    func getStationDetailDTO() -> StationDetailDTO? {
+        do {
+            let stationName = try inputText.value()
+            // StationName을 사용하여 StationDetailDTO를 생성하고 반환
+            if let stationDetailData = stationDetailDatas.first(where: { $0.stationName == stationName }) {
+                return stationDetailData
+            }
+            return nil // 찾을 수 없는 경우
+        } catch {
+            // BehaviorSubject에서 값을 가져오지 못한 경우
+            return nil
+        }
     }
 }

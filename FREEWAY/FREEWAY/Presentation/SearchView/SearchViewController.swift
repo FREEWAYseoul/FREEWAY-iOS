@@ -106,7 +106,7 @@ final class SearchViewController: UIViewController {
              .disposed(by: disposeBag)
         
         searchTextFieldView.searchTextfield.rx.text.orEmpty
-            .bind(to: viewModel.textSubject)
+            .bind(to: viewModel.inputText)
             .disposed(by: disposeBag)
     }
     
@@ -187,8 +187,8 @@ extension SearchViewController: UITextFieldDelegate {
     }
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
-        if let stationDTO = findStationDetailDTO(searchText) {
-            self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel, searchText, stationDTO), animated: true)
+        if findStationDetailDTO(searchText) != nil {
+            self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
             showInvalidStationNameAlert()
         }

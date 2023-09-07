@@ -28,7 +28,7 @@ class MapsViewController: UIViewController {
         $0.frame = CGRect(x: 0, y: 0, width: 72, height: 39.74)
     }
     
-    private lazy var bottomSheet = StationDetailViewController(getStationDetail(data!.stationName)!)
+    private lazy var bottomSheet = StationDetailViewController(viewModel.getStationDetailDTO()!)
     private var bottomSheetState = false
     
     private var currentLocationButton = CurrentLocationButton()
@@ -40,7 +40,7 @@ class MapsViewController: UIViewController {
     }
     private let mapsTitleView = MapsViewTitle()
     
-    private lazy var facilitiesView = FacilitiesView(getStationDetail(data!.stationName)!)
+    private lazy var facilitiesView = FacilitiesView(viewModel.getStationDetailDTO()!)
     private var stationMapWebView = StationMapWebView()
     
     private lazy var stationMarker = NMFMarker().then {
@@ -63,9 +63,9 @@ class MapsViewController: UIViewController {
         $0.height = CGFloat(NMF_MARKER_SIZE_AUTO)
     }
     
-    init(viewModel: BaseViewModel, _ searchText: String, _ station: StationDTO) {
+    init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
-        data = station
+        data = viewModel.getStationDTO()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -88,7 +88,7 @@ class MapsViewController: UIViewController {
     }
     
     private func bind() {
-        viewModel.textSubject
+        viewModel.stationName
             .subscribe(onNext: { [weak self] text in
                 self?.mapsTitleView.currentTextLabel.text = text
             })
@@ -109,11 +109,7 @@ class MapsViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
-    
-    private func getStationDetail(_ stationName: String) -> StationDetailDTO? {
-        return MockData.mockStationDetails.first { $0.stationName == stationName }
-    }
-    
+
     //MARK: Action
     @objc func closeButtonPressed(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
