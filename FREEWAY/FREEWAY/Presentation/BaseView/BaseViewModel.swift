@@ -35,6 +35,16 @@ class BaseViewModel {
         inputVoice.onNext(text)
     }
     
+    func getStationName() -> String? {
+        do {
+            let stationName = try inputText.value()
+            return stationName
+        } catch {
+            // BehaviorSubject에서 값을 가져오지 못한 경우
+            return nil
+        }
+    }
+    
     func getStationDTO() -> StationDTO? {
         do {
             let stationName = try inputText.value()
