@@ -2,32 +2,33 @@
 //  ElevatorMarkerView.swift
 //  FREEWAY
 //
-//  Created by 한택환 on 2023/08/29.
+//  Created by 한택환 on 2023/09/09.
 //
 
 import UIKit
 import SnapKit
 import Then
 
-final class ElevatorMarker: UIView {
+final class ElevatorMarkerView: UIView {
     var imageName: String
-    var stationColor: UIColor
-    var stationName: String
-    var fontSize: CGFloat
+    var exitNumber: String
+    var status: String
     
     private lazy var stationMarkerBackground = UIView().then {
-        $0.backgroundColor = stationColor
-        $0.layer.cornerRadius = 15
+        $0.backgroundColor = Pallete(rawValue: status)?.color
+        $0.layer.cornerRadius = MapsLiteral.markerRadius
     }
     
-    private lazy var lineImage = UIImageView().then {
+    lazy var elevatorImage = UIImageView().then {
         $0.image = UIImage(named: imageName)
         $0.contentMode = .scaleAspectFit
+        $0.sizeToFit()
     }
-    private lazy var stationLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-SemiBold", size: fontSize)
-        $0.text = stationName
+    lazy var exitLabel = UILabel().then {
+        $0.font = UIFont(name: "Pretendard-Regular", size: 15)
+        $0.text = exitNumber
         $0.textColor = .white
+        $0.sizeToFit()
     }
     
     override func draw(_ rect: CGRect) {
@@ -35,19 +36,18 @@ final class ElevatorMarker: UIView {
         // Draw balloon shape
         let path = UIBezierPath()
         path.move(to: CGPoint(x: rect.width / 2 - 3.25, y: 30))
-        path.addLine(to: CGPoint(x: rect.width / 2, y: 39.4))
-        path.addLine(to: CGPoint(x: rect.width / 2 + 3.25, y: 30))
+        path.addLine(to: CGPoint(x: rect.width / 2, y: 39.74))
+        path.addLine(to: CGPoint(x: rect.width / 2 + 3.25, y: 39.74))
         path.close()
 
-        stationColor.setFill() // 배경 색상 설정
+        Pallete(rawValue: status)?.color?.setFill() // 배경 색상 설정
         path.fill()
     }
     
-    init(imageName: String, stationColor: UIColor, stationName: String, fontSize: CGFloat) {
+    init(imageName: String, exitNumber: String, status: String) {
         self.imageName = imageName
-        self.stationColor = stationColor
-        self.stationName = stationName
-        self.fontSize = fontSize
+        self.status = status
+        self.exitNumber = exitNumber
         super.init(frame: .zero)
         
         configure()
@@ -61,30 +61,30 @@ final class ElevatorMarker: UIView {
     
 }
 
-extension ElevatorMarker {
+extension ElevatorMarkerView {
     private func configure() {
         self.addSubview(stationMarkerBackground)
-         self.addSubview(lineImage)
-         self.addSubview(stationLabel)
+         self.addSubview(elevatorImage)
+         self.addSubview(exitLabel)
      }
      
      private func setupLayout() {
          stationMarkerBackground.snp.makeConstraints { make in
-             make.width.equalToSuperview()
+             make.width.equalTo(exitLabel.intrinsicContentSize.width + 47)
              make.height.equalTo(30)
              make.center.equalToSuperview()
          }
          
-         lineImage.snp.makeConstraints { make in
+         elevatorImage.snp.makeConstraints { make in
              make.centerY.equalToSuperview()
-             //TODO: 향후 뷰에 추가되면서 수정될 부분
-             make.leading.equalToSuperview().offset(5)
-             make.width.height.equalTo(20)
+             make.leading.equalToSuperview().offset(12)
+             make.height.equalTo(18)
          }
          
-         stationLabel.snp.makeConstraints { make in
+         exitLabel.snp.makeConstraints { make in
              make.centerY.equalToSuperview()
-             make.leading.equalTo(lineImage.snp.trailing).offset(5)
+             make.leading.equalTo(elevatorImage.snp.trailing).offset(5)
          }
      }
 }
+

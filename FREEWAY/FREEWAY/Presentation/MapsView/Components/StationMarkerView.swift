@@ -2,7 +2,7 @@
 //  StationMarkerView.swift
 //  FREEWAY
 //
-//  Created by 한택환 on 2023/08/17.
+//  Created by 한택환 on 2023/08/29.
 //
 
 import UIKit
@@ -10,43 +10,50 @@ import SnapKit
 import Then
 
 final class StationMarkerView: UIView {
-    var lineImageName: String
+    var line: String
     var stationColor: UIColor
     var stationName: String
     
     private lazy var stationMarkerBackground = UIView().then {
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = MapsLiteral.markerRadius
-        $0.layer.borderWidth = MapsLiteral.markerBorderWidth
-        $0.layer.borderColor = stationColor.cgColor
+        $0.backgroundColor = stationColor
+        $0.layer.cornerRadius = 15
     }
     
-    private lazy var lineImage = UIImageView().then {
-        $0.image = UIImage(named: lineImageName)
+    private let lineBackground = UIView().then {
+        $0.backgroundColor = .white
         $0.contentMode = .scaleAspectFit
+        $0.layer.cornerRadius = 10
     }
-    private lazy var stationLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-Regular", size: 18)
-        $0.text = stationName
+    private lazy var lineLabel = UILabel().then {
+        $0.text = line
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
         $0.textColor = .black
+        $0.sizeToFit()
+    }
+    
+    lazy var stationLabel = UILabel().then {
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
+        $0.text = stationName
+        $0.textColor = .white
+        $0.sizeToFit()
     }
     
     override func draw(_ rect: CGRect) {
 
         // Draw balloon shape
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: rect.width / 2 - 9, y: 40.3))
-        path.addLine(to: CGPoint(x: rect.width / 2, y: 49.3))
-        path.addLine(to: CGPoint(x: rect.width / 2 + 9, y: 40.3))
+        path.move(to: CGPoint(x: rect.width / 2 - 3.25, y: 30))
+        path.addLine(to: CGPoint(x: rect.width / 2, y: 39.74))
+        path.addLine(to: CGPoint(x: rect.width / 2 + 3.25, y: 30))
         path.close()
 
         stationColor.setFill() // 배경 색상 설정
         path.fill()
     }
     
-    init(lineImageName: String, stationName: String) {
-        self.lineImageName = lineImageName
-        self.stationColor = (LinePallete(rawValue: lineImageName)?.color)!
+    init(line: String, stationName: String) {
+        self.line = line
+        self.stationColor = (LinePallete(rawValue: line)?.color)!
         self.stationName = stationName
         super.init(frame: .zero)
         
@@ -64,26 +71,31 @@ final class StationMarkerView: UIView {
 extension StationMarkerView {
     private func configure() {
         self.addSubview(stationMarkerBackground)
-         self.addSubview(lineImage)
-         self.addSubview(stationLabel)
+         stationMarkerBackground.addSubview(lineBackground)
+        lineBackground.addSubview(lineLabel)
+         stationMarkerBackground.addSubview(stationLabel)
      }
      
      private func setupLayout() {
          stationMarkerBackground.snp.makeConstraints { make in
-             make.width.equalTo(94.5)
-             make.height.equalTo(40.3)
+             make.width.equalTo(stationLabel.intrinsicContentSize.width + 40)
+             make.height.equalTo(30)
              make.center.equalToSuperview()
          }
          
-         lineImage.snp.makeConstraints { make in
+         lineBackground.snp.makeConstraints { make in
              make.centerY.equalToSuperview()
-             make.leading.equalToSuperview().offset(6)
+             make.leading.equalToSuperview().offset(5)
              make.width.height.equalTo(20)
+         }
+         
+         lineLabel.snp.makeConstraints { make in
+             make.centerX.centerY.equalToSuperview()
          }
          
          stationLabel.snp.makeConstraints { make in
              make.centerY.equalToSuperview()
-             make.leading.equalTo(lineImage.snp.trailing).offset(6)
+             make.leading.equalTo(lineBackground.snp.trailing).offset(5)
          }
      }
 }

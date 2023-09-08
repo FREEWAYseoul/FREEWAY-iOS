@@ -177,7 +177,7 @@ extension SearchViewController: UITextFieldDelegate {
     }
     
     private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
-        return MockData.mockStationDTOs.first { $0.stationName == stationName }
+        return viewModel.stationDatas.first { $0.stationName == stationName }
     }
     
     private func showInvalidStationNameAlert() {
@@ -208,7 +208,10 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let cell = tableView.cellForRow(at: indexPath) as? SearchHistoryBaseViewCell {
-            self.navigateToMapsViewControllerIfNeeded(cell.stationTitleLabel.text ?? "왕십리")
+            if let stationName = cell.stationTitleLabel.text {
+                viewModel.updateText(stationName)
+                self.navigateToMapsViewControllerIfNeeded(stationName)
+                }
             }
         }
     }

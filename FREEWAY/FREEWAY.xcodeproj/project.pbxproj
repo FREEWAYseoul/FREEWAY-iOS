@@ -11,13 +11,14 @@
 		016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6402A7D49E4005C4882 /* NetworkService.swift */; };
 		016CB64E2A7D4B4D005C4882 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		016CB6562A87DB46005C4882 /* Literal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6552A87DB46005C4882 /* Literal.swift */; };
-		2A26EA202A8E62F900FA355B /* StationMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA1F2A8E62F900FA355B /* StationMarkerView.swift */; };
+		2A26EA202A8E62F900FA355B /* CurrentStationMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA1F2A8E62F900FA355B /* CurrentStationMarkerView.swift */; };
 		2A26EA232A8E6B6300FA355B /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */; };
 		2A26EA282A9120E000FA355B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA272A9120E000FA355B /* SearchViewController.swift */; };
 		2A26EA2A2A9120F100FA355B /* SearchHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA292A9120F100FA355B /* SearchHistoryView.swift */; };
 		2A26EA2C2A91244F00FA355B /* SearchHistoryBaseViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA2B2A91244F00FA355B /* SearchHistoryBaseViewCell.swift */; };
 		2A26EA2E2A9200E700FA355B /* SearchTextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA2D2A9200E700FA355B /* SearchTextfieldView.swift */; };
 		2A2F696B2A93A50300B07652 /* EmptyHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F696A2A93A50300B07652 /* EmptyHistoryView.swift */; };
+		2A6D6CFE2AAB8012004E2DDA /* ElevatorMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6D6CFD2AAB8012004E2DDA /* ElevatorMarkerView.swift */; };
 		2A7A8B7B2A964EAB00D0FFC2 /* Pallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8B7A2A964EAB00D0FFC2 /* Pallete.swift */; };
 		2A7A8BAC2A96517C00D0FFC2 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BA72A96517C00D0FFC2 /* Pretendard-Bold.otf */; };
 		2A7A8BAD2A96517C00D0FFC2 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BA72A96517C00D0FFC2 /* Pretendard-Bold.otf */; };
@@ -49,7 +50,7 @@
 		2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */; };
 		2AB2852E2A9B5E140077ED7C /* VoiceSearchLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */; };
 		2AB285322A9B5F150077ED7C /* VoiceLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 2AB285312A9B5F150077ED7C /* VoiceLottie.json */; };
-		2AB285362A9E343D0077ED7C /* ElevatorMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285352A9E343D0077ED7C /* ElevatorMarkerView.swift */; };
+		2AB285362A9E343D0077ED7C /* StationMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285352A9E343D0077ED7C /* StationMarkerView.swift */; };
 		2AB285382A9E36CB0077ED7C /* CurrentLocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285372A9E36CB0077ED7C /* CurrentLocationButton.swift */; };
 		2AB2853B2A9F8A460077ED7C /* StationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853A2A9F8A460077ED7C /* StationDetailViewController.swift */; };
 		2AB2853E2A9F8AAD0077ED7C /* StationDetailCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2853D2A9F8AAD0077ED7C /* StationDetailCollectionView.swift */; };
@@ -102,13 +103,14 @@
 		10CC25F152549A99084FF2F4 /* Pods_FREEWAY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8CCA570A4E0238769A7DFB /* Pods_FREEWAYTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAYTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B019DCAF33D6AEE416BE0D /* Pods_FREEWAY_FREEWAYUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY_FREEWAYUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2A26EA1F2A8E62F900FA355B /* StationMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationMarkerView.swift; sourceTree = "<group>"; };
+		2A26EA1F2A8E62F900FA355B /* CurrentStationMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentStationMarkerView.swift; sourceTree = "<group>"; };
 		2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		2A26EA272A9120E000FA355B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		2A26EA292A9120F100FA355B /* SearchHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryView.swift; sourceTree = "<group>"; };
 		2A26EA2B2A91244F00FA355B /* SearchHistoryBaseViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryBaseViewCell.swift; sourceTree = "<group>"; };
 		2A26EA2D2A9200E700FA355B /* SearchTextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextfieldView.swift; sourceTree = "<group>"; };
 		2A2F696A2A93A50300B07652 /* EmptyHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyHistoryView.swift; sourceTree = "<group>"; };
+		2A6D6CFD2AAB8012004E2DDA /* ElevatorMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevatorMarkerView.swift; sourceTree = "<group>"; };
 		2A7A8B7A2A964EAB00D0FFC2 /* Pallete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pallete.swift; sourceTree = "<group>"; };
 		2A7A8BA72A96517C00D0FFC2 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		2A7A8BA82A96517C00D0FFC2 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
@@ -130,7 +132,7 @@
 		2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecognitionManager.swift; sourceTree = "<group>"; };
 		2AB2852D2A9B5E140077ED7C /* VoiceSearchLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSearchLottieView.swift; sourceTree = "<group>"; };
 		2AB285312A9B5F150077ED7C /* VoiceLottie.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = VoiceLottie.json; sourceTree = "<group>"; };
-		2AB285352A9E343D0077ED7C /* ElevatorMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElevatorMarkerView.swift; sourceTree = "<group>"; };
+		2AB285352A9E343D0077ED7C /* StationMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationMarkerView.swift; sourceTree = "<group>"; };
 		2AB285372A9E36CB0077ED7C /* CurrentLocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationButton.swift; sourceTree = "<group>"; };
 		2AB2853A2A9F8A460077ED7C /* StationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailViewController.swift; sourceTree = "<group>"; };
 		2AB2853D2A9F8AAD0077ED7C /* StationDetailCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailCollectionView.swift; sourceTree = "<group>"; };
@@ -283,10 +285,11 @@
 		2A26EA1E2A8E62B800FA355B /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				2A26EA1F2A8E62F900FA355B /* StationMarkerView.swift */,
-				2AB285352A9E343D0077ED7C /* ElevatorMarkerView.swift */,
+				2A26EA1F2A8E62F900FA355B /* CurrentStationMarkerView.swift */,
+				2AB285352A9E343D0077ED7C /* StationMarkerView.swift */,
 				2AB285372A9E36CB0077ED7C /* CurrentLocationButton.swift */,
 				2AB285552AA85D360077ED7C /* MapsViewTitle.swift */,
+				2A6D6CFD2AAB8012004E2DDA /* ElevatorMarkerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -761,7 +764,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A26EA202A8E62F900FA355B /* StationMarkerView.swift in Sources */,
+				2A26EA202A8E62F900FA355B /* CurrentStationMarkerView.swift in Sources */,
 				2AB285382A9E36CB0077ED7C /* CurrentLocationButton.swift in Sources */,
 				2A26EA2C2A91244F00FA355B /* SearchHistoryBaseViewCell.swift in Sources */,
 				2AB285562AA85D360077ED7C /* MapsViewTitle.swift in Sources */,
@@ -791,13 +794,14 @@
 				2AB2853B2A9F8A460077ED7C /* StationDetailViewController.swift in Sources */,
 				2AB285122A98EFB80077ED7C /* RecentSearchView.swift in Sources */,
 				016CB63B2A7D493D005C4882 /* NetworkError.swift in Sources */,
+				2A6D6CFE2AAB8012004E2DDA /* ElevatorMarkerView.swift in Sources */,
 				016CB6562A87DB46005C4882 /* Literal.swift in Sources */,
 				016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */,
 				2AB2854C2AA23AE80077ED7C /* FacilitiesView.swift in Sources */,
 				2AB285222A9B2CB20077ED7C /* AlertDTO.swift in Sources */,
 				2AB285402A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift in Sources */,
 				2AC755212A7BFD2F00099C2A /* FREEWAY.xcdatamodeld in Sources */,
-				2AB285362A9E343D0077ED7C /* ElevatorMarkerView.swift in Sources */,
+				2AB285362A9E343D0077ED7C /* StationMarkerView.swift in Sources */,
 				2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */,
 				2AB285502AA7761C0077ED7C /* BaseViewModel.swift in Sources */,
 				2AB285202A9B29BF0077ED7C /* StationDTO.swift in Sources */,
