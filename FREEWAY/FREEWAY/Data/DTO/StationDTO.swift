@@ -13,10 +13,15 @@ struct CoordinateDTO: Codable {
 }
 
 struct StationDTO: Codable {
-    let stationId: String
+    let stationId: Int
     let stationName: String
     let lineId: String
     let coordinate: CoordinateDTO
     let stationStatus: String
-    let elevatorsNumber: Int
+    let availableElevatorsNumber: Int
+
+    enum CodingKeys: String, CodingKey {
+        case stationId, stationName, lineId, coordinate, stationStatus
+        case availableElevatorsNumber = "availableElevatorsNumber"
+    }
 }

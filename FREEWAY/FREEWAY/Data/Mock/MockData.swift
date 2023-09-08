@@ -52,20 +52,20 @@ struct MockData {
 
     static let mockStationDTOs: [StationDTO] = [
         StationDTO(
-            stationId: "207",
+            stationId: 207,
             stationName: "성수",
             lineId: "2",
             coordinate: CoordinateDTO(latitude: "37.5445888153751", longitude: "127.056066999327"),
             stationStatus: "사용 가능",
-            elevatorsNumber: 2
+            availableElevatorsNumber: 2
         ),
         StationDTO(
-            stationId: "208",
+            stationId: 208,
             stationName: "왕십리",
             lineId: "2",
             coordinate: CoordinateDTO(latitude: "37.561268363317176", longitude: "127.03710337610202"),
             stationStatus: "일부 가능",
-            elevatorsNumber: 2
+            availableElevatorsNumber: 2
         )
     ]
 }
