@@ -8,22 +8,29 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+
 
 final class HomeViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
+    let viewModel = BaseViewModel()
+    let disposeBag = DisposeBag()
     
     private let alertButton = InAppAlertButtonView()
     private let homeTitle = HomeTitleView()
     private let textField = HomeSearchTextfieldView()
     private let recentSearchView = RecentSearchView()
     private let voiceSearchLottieView = VoiceSearchLottieView()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configure()
+        voiceRecognitionManager.setViewModel(viewModel: viewModel)
         setupLayout()
+        bind()
     }
     //TODO: BaseViewController 구현 후에 옮기기
     private func safeAreaTopInset() -> CGFloat? {
@@ -40,27 +47,45 @@ final class HomeViewController: UIViewController {
             recentSearchView.isHidden = false
             voiceRecognitionManager.stopRecognition()
             voiceSearchLottieView.removeFromSuperview()
-            //TODO: 로직적으로 보완되어야할 부분 텍스트 색 변경 및 텍스트 없을 시에 그대로 유지
-            if let resultText = voiceRecognitionManager.resultText {
-                textField.placeholderLabel.text = resultText
-                textField.placeholderLabel.textColor = Pallete.customBlack.color
-                textField.placeholderLabel.layer.opacity = 1.0
-            }
-            
-            
+            navigateToMapsViewControllerIfNeeded(voiceRecognitionManager.resultText ?? "")
         } else {
             recentSearchView.isHidden = true
             setupLottieLayout()
             voiceSearchLottieView.voiceLottieView.play()
             voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
             voiceRecognitionManager.startRecognition()
-            //TODO: 추후 Rxswift를 활용한 ViewModel 연동 시에 수정될 부분
-            //voiceSearchLottieView.updateResultText("강남역")
         }
     }
     
+    private func bind() {
+        viewModel.voiceStationName
+            .subscribe(onNext: { [weak self] text in
+                self?.voiceSearchLottieView.resultTextLabel.text = text
+            })
+            .disposed(by: disposeBag)
+    }
+    
     @objc func tabPlaceholderLabel(sender: UITapGestureRecognizer){
-        self.navigationController?.pushViewController(SearchViewController(), animated: true)
+        self.navigationController?.pushViewController(SearchViewController(viewModel: viewModel), animated: true)
+    }
+    
+    private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
+        return MockData.mockStationDTOs.first { $0.stationName == stationName }
+    }
+    
+    private func showInvalidStationNameAlert() {
+        let alert = UIAlertController(title: "역 이름을 다시 한 번 확인해주세요!", message: "", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
+        if findStationDetailDTO(searchText) != nil {
+            self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
+        } else {
+            showInvalidStationNameAlert()
+        }
     }
 }
 

@@ -24,3 +24,10 @@ class SearchHistoryBaseView: UIView {
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 16)
     }
 }
+
+extension SearchHistoryBaseView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+}

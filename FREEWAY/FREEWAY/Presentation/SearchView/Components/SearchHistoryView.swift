@@ -11,13 +11,13 @@ import SnapKit
 
 final class SearchHistoryView: SearchHistoryBaseView {
     
-    private var searchHistorys: [StationInfo]!
+    private var searchHistorys: [StationDTO]!
     
     private let divider = UIView().then {
         $0.backgroundColor = Pallete.dividerGray.color
     }
     
-    init(searchHistorys: [StationInfo]) {
+    init(searchHistorys: [StationDTO]) {
         super.init(frame: .zero)
         self.searchHistorys = searchHistorys
         self.backgroundColor = Pallete.backgroundGray.color
@@ -60,7 +60,7 @@ private extension SearchHistoryView {
     }
 }
 
-extension SearchHistoryView: UITableViewDataSource, UITableViewDelegate {
+extension SearchHistoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchHistorys.count
     }

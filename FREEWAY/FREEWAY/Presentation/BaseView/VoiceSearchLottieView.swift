@@ -17,7 +17,7 @@ final class VoiceSearchLottieView: UIView {
         $0.tintColor = .white
     }
     
-    private let resultTextLabel = UILabel().then {
+    let resultTextLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Bold", size: 18)
         $0.text = "듣고 있어요"
         $0.adjustsFontSizeToFitWidth = true

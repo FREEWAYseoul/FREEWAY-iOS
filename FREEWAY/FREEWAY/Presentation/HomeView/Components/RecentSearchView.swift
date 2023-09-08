@@ -11,8 +11,7 @@ import Then
 
 final class RecentSearchView: SearchHistoryBaseView {
     
-    //TODO: 추후 userdefaults 변수로 변경 필요 및 SearchViewController와 연결 필요
-    let searchHistorys: [StationInfo] = [StationInfo(stationName: "강남", lineId: "2", stationStatus: "possible"),StationInfo(stationName: "신촌", lineId: "2", stationStatus: "possible")]
+    let searchHistorys = MockData.mockStationDTOs
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,7 +47,7 @@ private extension RecentSearchView {
     }
 }
 
-extension RecentSearchView: UITableViewDelegate, UITableViewDataSource {
+extension RecentSearchView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchHistorys.count
     }

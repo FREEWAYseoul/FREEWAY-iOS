@@ -45,6 +45,10 @@ struct MockData {
             elevators: elevators
         )
     }()
+    
+    static let mockStationDetails: [StationDetailDTO] = [
+        mockStationDetail, mockStationDetail
+    ]
 
     static let mockStationDTOs: [StationDTO] = [
         StationDTO(

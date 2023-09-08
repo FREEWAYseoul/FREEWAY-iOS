@@ -10,9 +10,22 @@ import Then
 import SnapKit
 
 final class FacilitiesView: UIView {
+    var data = MockData.mockStationDetail
     
-    private let data = MockData.mockStationDetail
-    private let facilitiesTitles = ["장애인 화장실", "휠체어 리프트", "유아수유방", "환전키오스크", "무인민원발급기", "환승주차장"]
+    struct FailitiesData {
+        let title: String
+        let imageName: String
+        let status: Bool
+    }
+    
+    private lazy var facilitieDatas: [FailitiesData] = [
+        FailitiesData(title: "장애인 화장실", imageName: "disabledToilet", status: data.facilities.disabledToilet),
+        FailitiesData(title: "휠체어 리프트", imageName: "wheelchairLift", status: data.facilities.wheelchairLift),
+        FailitiesData(title: "유아수유방", imageName: "feedingRoom", status: data.facilities.feedingRoom),
+        FailitiesData(title: "환전키오스크", imageName: "currencyExchangeKiosk", status: data.facilities.currencyExchangeKiosk),
+        FailitiesData(title: "무인민원발급기", imageName: "unmannedCivilApplicationIssuingMachine", status: data.facilities.unmannedCivilApplicationIssuingMachine),
+        FailitiesData(title: "환승주차장", imageName: "transitParkingLot", status: data.facilities.transitParkingLot)
+    ]
     
     let updateTimeLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
@@ -27,8 +40,9 @@ final class FacilitiesView: UIView {
         $0.separatorStyle = .none
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(_ data: StationDetailDTO) {
+        self.data = data
+        super.init(frame: .zero)
         self.backgroundColor = .white
         configure()
         setupLayout()
@@ -63,12 +77,13 @@ private extension FacilitiesView {
 
 extension FacilitiesView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        facilitiesTitles.count
+        facilitieDatas.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FacilitiesTableViewCell.facilitiesCellId) as? FacilitiesTableViewCell else { return UITableViewCell() }
-        cell.configure("wheelchairLift", data.facilities.wheelchairLift, "휠체어 리프트")
+        let data = facilitieDatas[indexPath.row]
+        cell.configure(data.imageName, data.status, data.title)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell
