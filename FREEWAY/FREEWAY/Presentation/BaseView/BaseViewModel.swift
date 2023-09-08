@@ -63,6 +63,7 @@ class BaseViewModel {
     func getStationDetailDTO() -> StationDetailDTO? {
         do {
             let stationName = try inputText.value()
+            print(stationName)
             // StationName을 사용하여 StationDetailDTO를 생성하고 반환
             if let stationDetailData = stationDetailDatas.first(where: { $0.stationName == stationName }) {
                 return stationDetailData

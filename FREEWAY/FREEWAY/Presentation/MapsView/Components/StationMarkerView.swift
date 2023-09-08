@@ -44,9 +44,9 @@ final class StationMarkerView: UIView {
         path.fill()
     }
     
-    init(lineImageName: String, stationColor: UIColor, stationName: String) {
+    init(lineImageName: String, stationName: String) {
         self.lineImageName = lineImageName
-        self.stationColor = stationColor
+        self.stationColor = (LinePallete(rawValue: lineImageName)?.color)!
         self.stationName = stationName
         super.init(frame: .zero)
         
@@ -63,7 +63,6 @@ final class StationMarkerView: UIView {
 
 extension StationMarkerView {
     private func configure() {
-        print("hi")
         self.addSubview(stationMarkerBackground)
          self.addSubview(lineImage)
          self.addSubview(stationLabel)

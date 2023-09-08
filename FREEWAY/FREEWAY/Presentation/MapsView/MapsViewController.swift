@@ -43,6 +43,7 @@ class MapsViewController: UIViewController {
     private var stationMapWebView = StationMapWebView()
     
     private lazy var stationMarkers: [StationMarker] = []
+    private var currentStationMarker: StationMarker?
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
@@ -62,6 +63,7 @@ class MapsViewController: UIViewController {
         setupLayout()
         configureCurrentLocation()
         setStationMarker()
+        setStationDetailMarker()
         setDefaultNavigationBar()
         showBottomSheet()
         bind()
@@ -194,7 +196,6 @@ private extension MapsViewController {
     func addMarker(data: StationDTO, width: CGFloat, height: CGFloat) {
         let imageView = StationMarkerView(
             lineImageName: data.lineId,
-            stationColor: (LinePallete(rawValue: data.lineId)?.color)!,
             stationName: data.stationName
         )
         let position: CLLocationCoordinate2D = {
@@ -204,6 +205,15 @@ private extension MapsViewController {
         
         let stationMarker: StationMarker = StationMarker(stationData: data, markerImage: createMarkerImage(imageView: imageView, position: position))
         stationMarkers.append(stationMarker)
+    }
+    
+    func addDetailMarker(width: CGFloat, height: CGFloat) -> StationMarker {
+        let imageView = StationMarkerView(lineImageName: self.data!.lineId, stationName: self.data!.stationName)
+        imageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        let position: CLLocationCoordinate2D = {
+            CLLocationCoordinate2D(latitude: CLLocationDegrees(self.data!.coordinate.latitude)!, longitude: CLLocationDegrees(self.data!.coordinate.longitude)!)
+        }()
+        return StationMarker(stationData: self.data!, markerImage: createMarkerImage(imageView: imageView, position: position))
     }
     
     func setStationMarker() {
@@ -222,8 +232,22 @@ private extension MapsViewController {
                         self.data = self.viewModel.getStationDTO()
                         //현재 좌표로 확대하도록 변경되어야할 부분
                         self.moveLocation()
+                        self.setStationDetailMarker()
                         return true
                     }
+                }
+            }
+        }
+    }
+    
+    func setStationDetailMarker() {
+        DispatchQueue.main.async { [weak self] in
+            if let self = self {
+                self.currentStationMarker = self.addDetailMarker(width: 94.5, height: 49.3)
+                self.currentStationMarker?.markerImage.mapView = self.mapsView
+                self.currentStationMarker?.markerImage.touchHandler = { (overlay: NMFOverlay) -> Bool in
+                    self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
+                    return true
                 }
             }
         }
@@ -273,7 +297,6 @@ private extension MapsViewController {
             locationOverlay.hidden = false
             locationOverlay.location = NMGLatLng(lat: latitude, lng: longitude)
             locationOverlay.circleOutlineWidth = 10
-            
         }
     }
 }
@@ -332,9 +355,9 @@ extension MapsViewController: SetStationDetailViewControllerDelegate {
 extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
         if mapView.zoomLevel >= 14 {
-            
+            currentStationMarker?.markerImage.hidden = false
         } else {
-            
+            currentStationMarker?.markerImage.hidden = true
         }
     }
     
