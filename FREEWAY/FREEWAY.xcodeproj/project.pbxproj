@@ -44,7 +44,7 @@
 		2AB2851B2A9909670077ED7C /* InAppAlertButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2851A2A9909670077ED7C /* InAppAlertButtonView.swift */; };
 		2AB2851D2A990E070077ED7C /* EmptyRecentSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2851C2A990E070077ED7C /* EmptyRecentSearchView.swift */; };
 		2AB285202A9B29BF0077ED7C /* StationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2851F2A9B29BF0077ED7C /* StationDTO.swift */; };
-		2AB285222A9B2CB20077ED7C /* AlertDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285212A9B2CB20077ED7C /* AlertDTO.swift */; };
+		2AB285222A9B2CB20077ED7C /* NotificationDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285212A9B2CB20077ED7C /* NotificationDataDTO.swift */; };
 		2AB285242A9B2F080077ED7C /* StationDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285232A9B2F080077ED7C /* StationDetailDTO.swift */; };
 		2AB285272A9B36280077ED7C /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285262A9B36280077ED7C /* MockData.swift */; };
 		2AB2852C2A9B413A0077ED7C /* VoiceRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */; };
@@ -126,7 +126,7 @@
 		2AB2851A2A9909670077ED7C /* InAppAlertButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppAlertButtonView.swift; sourceTree = "<group>"; };
 		2AB2851C2A990E070077ED7C /* EmptyRecentSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyRecentSearchView.swift; sourceTree = "<group>"; };
 		2AB2851F2A9B29BF0077ED7C /* StationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDTO.swift; sourceTree = "<group>"; };
-		2AB285212A9B2CB20077ED7C /* AlertDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDTO.swift; sourceTree = "<group>"; };
+		2AB285212A9B2CB20077ED7C /* NotificationDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDataDTO.swift; sourceTree = "<group>"; };
 		2AB285232A9B2F080077ED7C /* StationDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationDetailDTO.swift; sourceTree = "<group>"; };
 		2AB285262A9B36280077ED7C /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		2AB2852B2A9B413A0077ED7C /* VoiceRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRecognitionManager.swift; sourceTree = "<group>"; };
@@ -371,7 +371,7 @@
 			isa = PBXGroup;
 			children = (
 				2AB2851F2A9B29BF0077ED7C /* StationDTO.swift */,
-				2AB285212A9B2CB20077ED7C /* AlertDTO.swift */,
+				2AB285212A9B2CB20077ED7C /* NotificationDataDTO.swift */,
 				2AB285232A9B2F080077ED7C /* StationDetailDTO.swift */,
 			);
 			path = DTO;
@@ -798,7 +798,7 @@
 				016CB6562A87DB46005C4882 /* Literal.swift in Sources */,
 				016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */,
 				2AB2854C2AA23AE80077ED7C /* FacilitiesView.swift in Sources */,
-				2AB285222A9B2CB20077ED7C /* AlertDTO.swift in Sources */,
+				2AB285222A9B2CB20077ED7C /* NotificationDataDTO.swift in Sources */,
 				2AB285402A9F8ABD0077ED7C /* StationDetailCollectionViewCell.swift in Sources */,
 				2AC755212A7BFD2F00099C2A /* FREEWAY.xcdatamodeld in Sources */,
 				2AB285362A9E343D0077ED7C /* StationMarkerView.swift in Sources */,
