@@ -30,6 +30,14 @@ final class HomeViewController: UIViewController {
         configure()
         voiceRecognitionManager.setViewModel(viewModel: viewModel)
         setupLayout()
+        NetworkService.shared.getAllStationList { stations, error in
+            if let stations = stations {
+                self.viewModel.stationDatas = stations
+            }
+            else if let error = error {
+                
+            }
+        }
         bind()
     }
     //TODO: BaseViewController 구현 후에 옮기기

@@ -9,8 +9,8 @@ import RxSwift
 import RxCocoa
 
 class BaseViewModel {
-    let stationDetailDatas = MockData.mockStationDetails
-    let stationDatas = MockData.mockStationDTOs
+    var stationDetailDatas = MockData.mockStationDetails
+    var stationDatas = MockData.mockStationDTOs
     
     // 입력된 데이터를 저장하는 BehaviorSubject
     let inputText = BehaviorSubject<String>(value: "")
