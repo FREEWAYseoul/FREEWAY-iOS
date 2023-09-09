@@ -48,7 +48,6 @@ class MapsViewController: UIViewController {
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
         data = viewModel.getStationDTO()
-        print(data)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -234,7 +233,6 @@ private extension MapsViewController {
                 }
                 self.stationMarkers.forEach { stationMarker in
                     let markerImage = stationMarker.markerImage
-                    print(markerImage)
                     markerImage.mapView = self.mapsView
                     markerImage.touchHandler = { (overlay: NMFOverlay) -> Bool in
                         self.deleteStationDetailMarker()
@@ -371,7 +369,6 @@ extension MapsViewController: NMFMapViewCameraDelegate {
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
         if mapView.zoomLevel >= 13 {
             currentStationMarker?.hidden = false
-            print("축소됨")
         } else {
             currentStationMarker?.hidden = true
         }
