@@ -40,7 +40,7 @@ class MapsViewController: UIViewController {
     }
     private let mapsTitleView = MapsViewTitle()
     
-    private lazy var facilitiesView = FacilitiesView(viewModel.currentStationDetailData)
+    private lazy var facilitiesView = FacilitiesView(viewModel.currentStationDetailData.facilities!)
     private var stationMapWebView = StationMapWebView()
     
     private lazy var stationMarkers: [StationMarker] = []
@@ -224,7 +224,7 @@ private extension MapsViewController {
     func setElevatorMarker() {
         DispatchQueue.main.async { [weak self] in
             if let self = self {
-                self.viewModel.currentStationDetailData.elevators.forEach {
+                self.viewModel.currentStationDetailData.elevators!.forEach {
                     self.addElevatorMarker(data: $0, width: 100, height: 39.74)
                 }
                 self.elevatorMarkers.forEach {
@@ -250,8 +250,8 @@ private extension MapsViewController {
                         self.data = self.viewModel.getStationDTO()
                         self.viewModel.getCurrentStationDetailData(stationData: self.data!)
                         self.moveLocation()
-                        self.setStationDetailMarker()
                         self.setElevatorMarker()
+                        self.setStationDetailMarker()
                         return true
                     }
                 }

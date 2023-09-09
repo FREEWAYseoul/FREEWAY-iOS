@@ -23,14 +23,14 @@ struct PreviousStation: Codable {
 }
 
 struct Facilities: Codable {
-    let elevator: Bool
-    let wheelchairLift: Bool
-    let disabledToilet: Bool
-    let transitParkingLot: Bool
-    let unmannedCivilApplicationIssuingMachine: Bool
-    let currencyExchangeKiosk: Bool
-    let trainTicketOffice: Bool
-    let feedingRoom: Bool
+    let elevator: Bool?
+    let wheelchairLift: Bool?
+    let disabledToilet: Bool?
+    let transitParkingLot: Bool?
+    let unmannedCivilApplicationIssuingMachine: Bool?
+    let currencyExchangeKiosk: Bool?
+    let trainTicketOffice: Bool?
+    let feedingRoom: Bool?
 }
 
 struct Elevator: Codable {
@@ -56,8 +56,7 @@ struct StationDetailDTO: Codable {
     let stationImageUrl: String?
     let nextStation: NextStation?
     let previousStation: PreviousStation?
-    let branchStation: String?
-    let facilities: Facilities
+    let facilities: Facilities?
     let transferStations: [TransferStation]
-    let elevators: [Elevator]
+    let elevators: [Elevator]?
 }

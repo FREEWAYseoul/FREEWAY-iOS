@@ -40,7 +40,6 @@ struct MockData {
             stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_5_27.jpg",
             nextStation: nextStation,
             previousStation: previousStation,
-            branchStation: nil,
             facilities: facilities,
             transferStations: [
                 TransferStation(stationId: 84, lineId: "2"),
