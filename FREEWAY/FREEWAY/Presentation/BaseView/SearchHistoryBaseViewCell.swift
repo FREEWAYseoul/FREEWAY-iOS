@@ -23,7 +23,9 @@ final class SearchHistoryBaseViewCell: UITableViewCell {
     
     private let stationStateImage = UIImageView()
     
-    private let stationLineImage = UIImageView()
+    private let stationLineImage = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
     
     private let divider = UIView().then {
         $0.backgroundColor = Pallete.dividerGray.color
@@ -64,7 +66,7 @@ extension SearchHistoryBaseViewCell {
         stationLineImage.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-horizontalOffset)
             make.centerY.equalTo(stationTitleLabel)
-            make.height.width.equalTo(28)
+            make.height.equalTo(28)
         }
         
         self.addSubview(divider)
