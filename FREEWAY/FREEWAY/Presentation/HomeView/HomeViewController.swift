@@ -14,7 +14,7 @@ import RxSwift
 final class HomeViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
-    let viewModel = BaseViewModel()
+    let viewModel: BaseViewModel
     let disposeBag = DisposeBag()
     
     private let alertButton = InAppAlertButtonView()
@@ -23,6 +23,14 @@ final class HomeViewController: UIViewController {
     private let recentSearchView = RecentSearchView()
     private let voiceSearchLottieView = VoiceSearchLottieView()
 
+    init(viewModel: BaseViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,14 +38,6 @@ final class HomeViewController: UIViewController {
         configure()
         voiceRecognitionManager.setViewModel(viewModel: viewModel)
         setupLayout()
-        NetworkService.shared.getAllStationList { stations, error in
-            if let stations = stations {
-                self.viewModel.stationDatas = stations
-            }
-            else if let error = error {
-                
-            }
-        }
         bind()
     }
     //TODO: BaseViewController 구현 후에 옮기기

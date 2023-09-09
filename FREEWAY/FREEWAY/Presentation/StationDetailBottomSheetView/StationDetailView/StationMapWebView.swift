@@ -13,7 +13,7 @@ import WebKit
 final class StationMapWebView: UIView {
     
     private var data = MockData.mockStationDetail
-    lazy var webURL: String = data.stationImageUrl
+    lazy var webURL: String = data.stationImageUrl ?? ""
     private var webView: WKWebView!
     private let GuidanceLabel = UILabel().then {
         $0.text = "손으로 확대, 축소가 가능해요"

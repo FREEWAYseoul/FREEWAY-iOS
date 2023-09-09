@@ -52,8 +52,8 @@ struct StationDetailDTO: Codable {
     let lineName: String
     let stationCoordinate: StationCoordinate
     let stationStatus: String
-    let stationContact: String
-    let stationImageUrl: String
+    let stationContact: String?
+    let stationImageUrl: String?
     let nextStation: NextStation?
     let previousStation: PreviousStation?
     let branchStation: String?

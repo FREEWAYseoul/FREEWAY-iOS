@@ -112,17 +112,6 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func getStationDetail() {
-        networkService.getStationDetail(stationId: String(viewModel.currentStationData.stationId)) { station, error in
-            if let station = station {
-                print(station)
-                self.viewModel.currentStationDetailData = station
-            } else if let error = error {
-                print("오류")
-            }
-        }
-    }
-    
     func handleTextFieldInput(_ text: String) {
         if !text.isEmpty {
             searchListView.datas = self.viewModel.stationDatas.filter{ $0.stationName.hasPrefix(text) }
@@ -201,7 +190,6 @@ extension SearchViewController: UITextFieldDelegate {
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
         if findStationDetailDTO(searchText) != nil {
-            getStationDetail()
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
             showInvalidStationNameAlert()
