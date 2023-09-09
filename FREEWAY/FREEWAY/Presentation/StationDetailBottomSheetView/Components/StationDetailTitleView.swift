@@ -204,7 +204,6 @@ private extension PrevNextStationButton {
 
 final class StationTitle: UIView {
     var lineImageName: String
-    var stationColor: UIColor
     var stationName: String
     var nextStationName: String
     var prevStationName: String
@@ -213,7 +212,7 @@ final class StationTitle: UIView {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 39 / 2
         $0.layer.borderWidth = 3.15
-        $0.layer.borderColor = LinePallete.two.color?.cgColor
+        $0.layer.borderColor = LinePallete(rawValue: lineImageName)?.color?.cgColor
     }
     
     private lazy var lineImage = UIImageView().then {
@@ -224,9 +223,10 @@ final class StationTitle: UIView {
         $0.font = UIFont(name: "Pretendard-Regular", size: 18)
         $0.text = stationName
         $0.textColor = .black
+        $0.sizeToFit()
     }
-    private let prevNextStationTitlebackground = UIView().then {
-        $0.backgroundColor = LinePallete.two.color
+    private lazy var prevNextStationTitlebackground = UIView().then {
+        $0.backgroundColor = LinePallete(rawValue: lineImageName)?.color
         $0.layer.cornerRadius = 14
     }
     lazy var prevStationTitleButton = PrevNextStationButton(prevStationName, true)
@@ -236,7 +236,6 @@ final class StationTitle: UIView {
     
     init(lineImageName: String, stationColor: UIColor, stationName: String, nextStationName: String, prevStationName: String) {
         self.lineImageName = lineImageName
-        self.stationColor = stationColor
         self.stationName = stationName
         self.nextStationName = nextStationName
         self.prevStationName = prevStationName
@@ -278,20 +277,21 @@ private extension StationTitle {
         stationTitleBackground.snp.makeConstraints { make in
             make.centerX.centerY.equalTo(prevNextStationTitlebackground)
             //텍스트 길이에 따라 옵셔널로 들어가야할 부분
-            make.width.equalTo(122.8)
+            make.width.equalTo(stationLabel.intrinsicContentSize.width)
             make.height.equalTo(39.9)
             make.center.equalToSuperview()
         }
         stationTitleBackground.addSubview(lineImage)
         lineImage.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(29)
+            make.leading.equalToSuperview().offset(12.68)
             make.width.height.equalTo(20)
         }
         stationTitleBackground.addSubview(stationLabel)
         stationLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(lineImage.snp.trailing).offset(2)
+            make.trailing.equalToSuperview().offset(-12.68)
         }
     }
 }
