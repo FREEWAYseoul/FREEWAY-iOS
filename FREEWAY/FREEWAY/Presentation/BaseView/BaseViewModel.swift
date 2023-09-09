@@ -62,7 +62,7 @@ class BaseViewModel {
         }
     }
     
-    func getCurrentStationDetailData() {
-        currentStationDetailData = (stationsDetailDatas.first{ $0.stationId == currentStationData.stationId})!
+    func getCurrentStationDetailData(stationData: StationDTO) {
+        currentStationDetailData = (stationsDetailDatas.first{ $0.stationId == stationData.stationId}) ?? MockData.mockStationDetail
     }
 }

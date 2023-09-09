@@ -45,11 +45,12 @@ class MapsViewController: UIViewController {
     
     private lazy var stationMarkers: [StationMarker] = []
     private var currentStationMarker: NMFMarker?
+    private var elevatorMarkers: [NMFMarker] = []
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
         data = viewModel.currentStationData
-        viewModel.getCurrentStationDetailData()
+        viewModel.getCurrentStationDetailData(stationData: data!)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,7 +60,6 @@ class MapsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         view.backgroundColor = .white
         currentLocation = CLLocationManager()
         configure()
@@ -67,16 +67,9 @@ class MapsViewController: UIViewController {
         configureCurrentLocation()
         setStationMarker()
         setStationDetailMarker()
+        setElevatorMarker()
         setDefaultNavigationBar()
         showBottomSheet()
-    }
-    
-    private func bind() {
-        viewModel.stationName
-            .subscribe(onNext: { [weak self] text in
-                self?.mapsTitleView.currentTextLabel.text = text
-            })
-            .disposed(by: disposeBag)
     }
     
     //MARK: Contraints
@@ -142,6 +135,7 @@ class MapsViewController: UIViewController {
 private extension MapsViewController {
     
     func configure() {
+        mapsTitleView.currentTextLabel.text = viewModel.currentStationData.stationName
         mapsView.addCameraDelegate(delegate: self)
         mapsView.touchDelegate = self
         currentLocationButton.addTarget(self, action: #selector(currentLocationButtonDidTap), for: .touchUpInside)
@@ -218,13 +212,26 @@ private extension MapsViewController {
         return createMarkerImage(imageView: imageView, position: position)
     }
     
-    func addElevatorMarker(data: Elevator, width: CGFloat, height: CGFloat) -> NMFMarker {
-        let imageView = ElevatorMarkerView(imageName: "", exitNumber: "", status: "")
-        imageView.frame = CGRect(x: 0, y: 0, width: imageView.exitLabel.intrinsicContentSize.width + 47, height: height)
+    func addElevatorMarker(data: Elevator, width: CGFloat, height: CGFloat) {
+        let imageView = ElevatorMarkerView(exitNumber: data.exitNumber, status: data.elevatorStatus)
+        imageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
         let position: CLLocationCoordinate2D = {
-            CLLocationCoordinate2D(latitude: CLLocationDegrees(self.data!.coordinate.latitude)!, longitude: CLLocationDegrees(self.data!.coordinate.longitude)!)
+            CLLocationCoordinate2D(latitude: CLLocationDegrees(data.elevatorCoordinate.latitude)!, longitude: CLLocationDegrees(data.elevatorCoordinate.longitude)!)
         }()
-        return createMarkerImage(imageView: imageView, position: position)
+        elevatorMarkers.append(createMarkerImage(imageView: imageView, position: position))
+    }
+    
+    func setElevatorMarker() {
+        DispatchQueue.main.async { [weak self] in
+            if let self = self {
+                self.viewModel.currentStationDetailData.elevators.forEach {
+                    self.addElevatorMarker(data: $0, width: 100, height: 39.74)
+                }
+                self.elevatorMarkers.forEach {
+                    $0.mapView = self.mapsView
+                }
+            }
+        }
     }
     
     func setStationMarker() {
@@ -241,8 +248,10 @@ private extension MapsViewController {
                         self.mapsView.zoomLevel = 14
                         self.viewModel.updateText(stationMarker.stationData.stationName)
                         self.data = self.viewModel.getStationDTO()
+                        self.viewModel.getCurrentStationDetailData(stationData: self.data!)
                         self.moveLocation()
                         self.setStationDetailMarker()
+                        self.setElevatorMarker()
                         return true
                     }
                 }
@@ -252,6 +261,11 @@ private extension MapsViewController {
     
     func deleteStationDetailMarker() {
         currentStationMarker?.mapView = nil
+        elevatorMarkers.forEach {
+            $0.mapView = nil
+        }
+        elevatorMarkers.removeAll()
+        
     }
     
     func setStationDetailMarker() {

@@ -211,7 +211,8 @@ extension SearchViewController: UITableViewDelegate {
         if let cell = tableView.cellForRow(at: indexPath) as? SearchHistoryBaseViewCell {
             if let cellData = cell.cellData {
                 viewModel.currentStationData = cellData
-                viewModel.updateText()
+                viewModel.updateText(cellData.stationName)
+                
                 self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
             }
             else {
