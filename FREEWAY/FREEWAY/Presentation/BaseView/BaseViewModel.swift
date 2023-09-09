@@ -9,8 +9,8 @@ import RxSwift
 import RxCocoa
 
 class BaseViewModel {
-    var stationDatas = MockData.mockStationDTOs
-    var stationsDetailDatas: [StationDetailDTO]?
+    var stationDatas: [StationDTO] = []
+    var stationsDetailDatas: [StationDetailDTO] = []
     var currentStationData = MockData.mockStationDTO
     var currentStationDetailData = MockData.mockStationDetail
     
@@ -28,8 +28,8 @@ class BaseViewModel {
     }
     
     // 사용자 입력을 업데이트하는 함수
-    func updateText(_ text: String) {
-        inputText.onNext(text)
+    func updateText(_ text: String? = nil) {
+        inputText.onNext(text ?? currentStationDetailData.stationName)
     }
     
     func updateVoiceText(_ text: String) {
@@ -61,17 +61,8 @@ class BaseViewModel {
             return nil
         }
     }
-
-    // StationName을 기반으로 StationDetailDTO 반환
-//    func getStationDetailDTO() -> StationDetailDTO? {
-//        do {
-//            let stationId = currentStationData?.stationId
-//            if let stationDetailData = stationDetailDatas.first(where: { $0.stationName == stationName }) {
-//                return stationDetailData
-//            }
-//            return nil
-//        } catch {
-//            return nil
-//        }
-//    }
+    
+    func getCurrentStationDetailData() {
+        currentStationDetailData = (stationsDetailDatas.first{ $0.stationId == currentStationData.stationId})!
+    }
 }

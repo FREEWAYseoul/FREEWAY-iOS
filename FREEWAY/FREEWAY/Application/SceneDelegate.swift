@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
         
-        let viewModel = BaseViewModel()
+        var viewModel = BaseViewModel()
         NetworkService.shared.getAllStationList { stations, error in
             if let stations = stations {
                 viewModel.stationDatas = stations
@@ -28,15 +28,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     NetworkService.shared.getStationDetail(stationId: String(station.stationId)) {
                             stationDetail, error in
                             if let stationDetail = stationDetail {
-                                print(stationDetail)
-                                viewModel.stationsDetailDatas?.append(stationDetail)
+                                viewModel.stationsDetailDatas.append(stationDetail)
+                                //print(viewModel.stationsDetailDatas)
                             } else if error != nil {
                                 print("오류")
                             }
                         }
                 }
                 let rootViewController = HomeViewController(viewModel: viewModel)
-                print(viewModel.currentStationDetailData)
                 self.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
             }
             else if error != nil {

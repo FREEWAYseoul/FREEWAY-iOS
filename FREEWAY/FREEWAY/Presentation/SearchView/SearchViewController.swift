@@ -101,11 +101,11 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         searchTextFieldView.searchTextfield.rx.text.orEmpty
-             .subscribe(onNext: { [weak self] text in
-                 self?.handleTextFieldInput(text)
-                 self?.emptySearchView.searchText = text
-             })
-             .disposed(by: disposeBag)
+            .subscribe(onNext: { [weak self] text in
+                self?.handleTextFieldInput(text)
+                self?.emptySearchView.searchText = text
+            })
+            .disposed(by: disposeBag)
         
         searchTextFieldView.searchTextfield.rx.text.orEmpty
             .bind(to: viewModel.inputText)
@@ -195,7 +195,7 @@ extension SearchViewController: UITextFieldDelegate {
             showInvalidStationNameAlert()
         }
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let searchText = textField.text {
             navigateToMapsViewControllerIfNeeded(searchText)
@@ -209,10 +209,14 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let cell = tableView.cellForRow(at: indexPath) as? SearchHistoryBaseViewCell {
-            if let stationName = cell.stationTitleLabel.text {
-                viewModel.updateText(stationName)
-                self.navigateToMapsViewControllerIfNeeded(stationName)
-                }
+            if let cellData = cell.cellData {
+                viewModel.currentStationData = cellData
+                viewModel.updateText()
+                self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
+            }
+            else {
+                showInvalidStationNameAlert()
             }
         }
     }
+}

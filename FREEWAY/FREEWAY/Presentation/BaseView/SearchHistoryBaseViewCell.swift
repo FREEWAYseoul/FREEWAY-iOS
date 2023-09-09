@@ -15,6 +15,8 @@ final class SearchHistoryBaseViewCell: UITableViewCell {
     
     static let searchHistoryViewCellId = "SearchHistoryViewCell"
     
+    var cellData: StationDTO?
+    
     let stationTitleLabel = UILabel().then {
         //변경 필요
         $0.textColor = Pallete.customBlack.color
@@ -77,10 +79,11 @@ extension SearchHistoryBaseViewCell {
         }
     }
     
-    func configure(_ title: String, _ status: String, _ line: String, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
-        stationTitleLabel.text = title
-        stationStateImage.image = UIImage(named: status == "사용 가능" ? "possible" : "impossible")
-        stationLineImage.image = UIImage(named: line)
+    func configure(data: StationDTO, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
+        cellData = data
+        stationTitleLabel.text = data.stationName
+        stationStateImage.image = UIImage(named: data.stationStatus == "사용 가능" ? "possible" : "impossible")
+        stationLineImage.image = UIImage(named: data.lineId)
         if horizontalOffset == 0 {
             stationTitleLabel.snp.updateConstraints { make in
                 make.leading.equalToSuperview().offset(horizontalOffset ?? 20)

@@ -55,7 +55,7 @@ extension RecentSearchView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchHistoryBaseViewCell.searchHistoryViewCellId) as? SearchHistoryBaseViewCell else { return UITableViewCell() }
         let searchHistory = searchHistorys[indexPath.row]
-        cell.configure(searchHistory.stationName, searchHistory.stationStatus, searchHistory.lineId, false, 0)
+        cell.configure(data: searchHistory, false, 0)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell

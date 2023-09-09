@@ -48,7 +48,8 @@ class MapsViewController: UIViewController {
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
-        data = viewModel.getStationDTO()
+        data = viewModel.currentStationData
+        viewModel.getCurrentStationDetailData()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -240,7 +241,6 @@ private extension MapsViewController {
                         self.mapsView.zoomLevel = 14
                         self.viewModel.updateText(stationMarker.stationData.stationName)
                         self.data = self.viewModel.getStationDTO()
-                        //현재 좌표로 확대하도록 변경되어야할 부분
                         self.moveLocation()
                         self.setStationDetailMarker()
                         return true
