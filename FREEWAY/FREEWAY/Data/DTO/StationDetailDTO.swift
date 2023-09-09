@@ -7,29 +7,22 @@
 
 import Foundation
 
-struct StationDetailDTO: Codable {
-    let stationId: String
-    let stationName: String
-    let lineId: String
-    let lineName: String
-    let stationCoordinate: CoordinateDTO
-    let stationStatus: String
-    let stationContact: String
-    let stationImageUrl: String
-    let nextStation: NextPreviousStationDTO
-    let previousStation: NextPreviousStationDTO
-    let branchStation: NextPreviousStationDTO
-    let facilities: FacilitiesDTO
-    let transferStations: [NextPreviousStationDTO]
-    let elevators: [ElevatorDTO]
+struct StationCoordinate: Codable {
+    let latitude: String
+    let longitude: String
 }
 
-struct NextPreviousStationDTO: Codable {
-    let stationId: String
+struct NextStation: Codable {
+    let stationId: Int
     let stationName: String
 }
 
-struct FacilitiesDTO: Codable {
+struct PreviousStation: Codable {
+    let stationId: Int
+    let stationName: String
+}
+
+struct Facilities: Codable {
     let elevator: Bool
     let wheelchairLift: Bool
     let disabledToilet: Bool
@@ -40,8 +33,31 @@ struct FacilitiesDTO: Codable {
     let feedingRoom: Bool
 }
 
-struct ElevatorDTO: Codable {
+struct Elevator: Codable {
     let elevatorId: Int
-    let elevatorCoordinate: CoordinateDTO
+    let elevatorCoordinate: StationCoordinate
     let elevatorStatus: String
+    let exitNumber: String
+}
+
+struct TransferStation: Codable {
+    let stationId: Int
+    let lineId: String
+}
+
+struct StationDetailDTO: Codable {
+    let stationId: Int
+    let stationName: String
+    let lineId: String
+    let lineName: String
+    let stationCoordinate: StationCoordinate
+    let stationStatus: String
+    let stationContact: String
+    let stationImageUrl: String
+    let nextStation: NextStation?
+    let previousStation: PreviousStation?
+    let branchStation: String?
+    let facilities: Facilities
+    let transferStations: [TransferStation]
+    let elevators: [Elevator]
 }

@@ -17,12 +17,13 @@ final class SearchViewController: UIViewController {
     let viewModel: BaseViewModel
     let disposeBag = DisposeBag()
     var datas = MockData.mockStationDTOs
+    let networkService = NetworkService.shared
     
     //TODO: 추후 userdefaults 변수로 변경 필요
     lazy var searchTextFieldView = SearchTextfieldView()
     lazy var searchHistoryView = SearchHistoryView(searchHistorys: datas)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
-    lazy var searchListView = SearchListView(datas: datas)
+    lazy var searchListView = SearchListView(datas: viewModel.stationDatas)
     lazy var emptySearchView = EmptySearchView()
     
     init(viewModel: BaseViewModel) {
@@ -111,9 +112,20 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func getStationDetail() {
+        networkService.getStationDetail(stationId: String(viewModel.currentStationData.stationId)) { station, error in
+            if let station = station {
+                print(station)
+                self.viewModel.currentStationDetailData = station
+            } else if let error = error {
+                print("오류")
+            }
+        }
+    }
+    
     func handleTextFieldInput(_ text: String) {
         if !text.isEmpty {
-            searchListView.datas = self.datas.filter{ $0.stationName.hasPrefix(text) }
+            searchListView.datas = self.viewModel.stationDatas.filter{ $0.stationName.hasPrefix(text) }
             setupSearchListLayout(view: searchListView.datas.isEmpty ? emptySearchView : searchListView)
             searchListView.searchHistoryTableView.reloadData()
         } else {
@@ -189,6 +201,7 @@ extension SearchViewController: UITextFieldDelegate {
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
         if findStationDetailDTO(searchText) != nil {
+            getStationDetail()
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
             showInvalidStationNameAlert()

@@ -14,10 +14,23 @@ final class NetworkService {
     private init() {
         
     }
-    
 
-    func getAllStationList(stationId: String = "", completion: @escaping ([StationDTO]?, Error?) -> Void) {
-        AF.request("http://freeway.ap-northeast-2.elasticbeanstalk.com/api/stations\(stationId)").responseDecodable(of: [StationDTO].self) { response in
+    func getAllStationList(completion: @escaping ([StationDTO]?, Error?) -> Void) {
+        AF.request("http://freeway.ap-northeast-2.elasticbeanstalk.com/api/stations").responseDecodable(of: [StationDTO].self) { response in
+            switch response.result {
+            case .success(let stations):
+                // 성공적으로 디코딩된 데이터를 사용할 수 있습니다.
+                completion(stations, nil)
+            case .failure(let error):
+                // 데이터를 가져오는 중에 오류가 발생한 경우 처리할 내용을 작성합니다.
+                print("데이터를 불러오는 중 오류 발생: \(error)")
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func getStationDetail(stationId: String = "", completion: @escaping (StationDetailDTO?, Error?) -> Void) {
+        AF.request("http://freeway.ap-northeast-2.elasticbeanstalk.com/api/stations/\(stationId)").responseDecodable(of: StationDetailDTO.self) { response in
             switch response.result {
             case .success(let stations):
                 // 성공적으로 디코딩된 데이터를 사용할 수 있습니다.

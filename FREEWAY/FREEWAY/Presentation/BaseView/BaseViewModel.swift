@@ -9,8 +9,9 @@ import RxSwift
 import RxCocoa
 
 class BaseViewModel {
-    var stationDetailDatas = MockData.mockStationDetails
     var stationDatas = MockData.mockStationDTOs
+    var currentStationData = MockData.mockStationDTO
+    var currentStationDetailData = MockData.mockStationDetail
     
     // 입력된 데이터를 저장하는 BehaviorSubject
     let inputText = BehaviorSubject<String>(value: "")
@@ -50,6 +51,7 @@ class BaseViewModel {
             let stationName = try inputText.value()
             // StationName을 사용하여 StationDTO를 검색하고 반환
             if let station = stationDatas.first(where: { $0.stationName == stationName }) {
+                self.currentStationData = station
                 return station
             }
             return nil // 찾을 수 없는 경우
@@ -60,15 +62,15 @@ class BaseViewModel {
     }
 
     // StationName을 기반으로 StationDetailDTO 반환
-    func getStationDetailDTO() -> StationDetailDTO? {
-        do {
-            let stationName = try inputText.value()
-            if let stationDetailData = stationDetailDatas.first(where: { $0.stationName == stationName }) {
-                return stationDetailData
-            }
-            return nil
-        } catch {
-            return nil
-        }
-    }
+//    func getStationDetailDTO() -> StationDetailDTO? {
+//        do {
+//            let stationId = currentStationData?.stationId
+//            if let stationDetailData = stationDetailDatas.first(where: { $0.stationName == stationName }) {
+//                return stationDetailData
+//            }
+//            return nil
+//        } catch {
+//            return nil
+//        }
+//    }
 }

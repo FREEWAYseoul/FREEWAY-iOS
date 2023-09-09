@@ -22,12 +22,13 @@ class MapsViewController: UIViewController {
     
     let viewModel: BaseViewModel
     let disposeBag = DisposeBag()
+    let networkService = NetworkService.shared
     
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
     private var data = MockData.mockStationDTOs.first
     
-    private lazy var bottomSheet = StationDetailViewController(viewModel.getStationDetailDTO()!)
+    private lazy var bottomSheet = StationDetailViewController(viewModel.currentStationDetailData)
     private var bottomSheetState = false
     
     private var currentLocationButton = CurrentLocationButton()
@@ -39,7 +40,7 @@ class MapsViewController: UIViewController {
     }
     private let mapsTitleView = MapsViewTitle()
     
-    private lazy var facilitiesView = FacilitiesView(viewModel.getStationDetailDTO()!)
+    private lazy var facilitiesView = FacilitiesView(viewModel.currentStationDetailData)
     private var stationMapWebView = StationMapWebView()
     
     private lazy var stationMarkers: [StationMarker] = []
@@ -57,6 +58,7 @@ class MapsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         view.backgroundColor = .white
         currentLocation = CLLocationManager()
         configure()
@@ -66,7 +68,6 @@ class MapsViewController: UIViewController {
         setStationDetailMarker()
         setDefaultNavigationBar()
         showBottomSheet()
-        bind()
     }
     
     private func bind() {
@@ -201,7 +202,7 @@ private extension MapsViewController {
         let position: CLLocationCoordinate2D = {
             CLLocationCoordinate2D(latitude: CLLocationDegrees(data.coordinate.latitude)!, longitude: CLLocationDegrees(data.coordinate.longitude)!)
         }()
-        imageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        imageView.frame = CGRect(x: 0, y: 0, width: imageView.stationLabel.intrinsicContentSize.width + 40, height: height)
         
         let stationMarker: StationMarker = StationMarker(stationData: data, markerImage: createMarkerImage(imageView: imageView, position: position))
         stationMarkers.append(stationMarker)
@@ -216,7 +217,7 @@ private extension MapsViewController {
         return createMarkerImage(imageView: imageView, position: position)
     }
     
-    func addElevatorMarker(data: ElevatorDTO, width: CGFloat, height: CGFloat) -> NMFMarker {
+    func addElevatorMarker(data: Elevator, width: CGFloat, height: CGFloat) -> NMFMarker {
         let imageView = ElevatorMarkerView(imageName: "", exitNumber: "", status: "")
         imageView.frame = CGRect(x: 0, y: 0, width: imageView.exitLabel.intrinsicContentSize.width + 47, height: height)
         let position: CLLocationCoordinate2D = {
