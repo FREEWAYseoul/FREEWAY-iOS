@@ -40,8 +40,8 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setDefaultNavigationBar()
-        setupLayout()
         configure()
+        setupLayout()
         voiceRecognitionManager.setViewModel(viewModel: viewModel)
         bind()
     }
