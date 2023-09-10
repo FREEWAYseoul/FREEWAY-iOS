@@ -100,8 +100,12 @@ extension StationDetailViewController: UICollectionViewDelegate {
             case "elevater":
                 delegate?.removeStationDetailView()
             case "call":
+                //TODO: 번호 없을 시에 Alert가 필요할 듯
+                var url = ""
                 delegate?.removeStationDetailView()
-                let url = "tel://\(data.stationContact)"
+                if let number = data.stationContact {
+                    url = "tel://\(String(describing: number))"
+                }
                  
                 if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
                     UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
