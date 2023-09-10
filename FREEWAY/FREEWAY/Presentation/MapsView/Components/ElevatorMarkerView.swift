@@ -18,7 +18,7 @@ final class ElevatorMarkerView: UIView {
         if status == "사용 가능" {
             color = "possibleGreen"
         } else if status == "확인 불가"{
-            color = "unavaliableGray"
+            color = "unavailableGray"
         } else {
             color = "impossibleRed"
         }
