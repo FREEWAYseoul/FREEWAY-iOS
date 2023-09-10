@@ -21,6 +21,7 @@ final class HomeViewController: UIViewController {
     private let homeTitle = HomeTitleView()
     private let textField = HomeSearchTextfieldView()
     private lazy var recentSearchView = RecentSearchView(viewModel: viewModel)
+    private let emptyRecentView = EmptyRecentSearchView()
     private let voiceSearchLottieView = VoiceSearchLottieView()
 
     init(viewModel: BaseViewModel) {
@@ -109,6 +110,7 @@ private extension HomeViewController {
         textField.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
         let placeHolderGesture = UITapGestureRecognizer(target: self, action: #selector(tabPlaceholderLabel))
         textField.placeholderLabel.addGestureRecognizer(placeHolderGesture)
+        recentSearchView.isHidden = UserDefaults.standard.searchHistory.isEmpty
     }
     
     func setupLayout() {
@@ -140,6 +142,16 @@ private extension HomeViewController {
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview()
+        }
+        
+        if recentSearchView.isHidden {
+            view.addSubview(emptyRecentView)
+            emptyRecentView.snp.makeConstraints { make in
+                make.top.equalTo(textField.snp.bottom).offset(74)
+                make.leading.equalToSuperview().offset(24)
+                make.trailing.equalToSuperview().offset(-16)
+                make.bottom.equalToSuperview()
+            }
         }
     }
     
