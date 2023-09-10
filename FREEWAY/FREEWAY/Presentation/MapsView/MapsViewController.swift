@@ -187,8 +187,8 @@ private extension MapsViewController {
         let markerView = NMFMarker().then {
             $0.position = NMGLatLng(lat: position.latitude, lng: position.longitude)
             $0.iconImage = NMFOverlayImage(image: imageView.toImage()!)
-            $0.width = CGFloat(72)
-            $0.height = CGFloat(39.74)
+            $0.width = imageView.frame.width
+            $0.height = imageView.frame.height
         }
         return markerView
     }
@@ -243,7 +243,7 @@ private extension MapsViewController {
         DispatchQueue.main.async { [weak self] in
             if let self = self {
                 self.viewModel.stationDatas.forEach {
-                    self.addMarker(data: $0, width: 72, height: 39.7)
+                    self.addMarker(data: $0, width: 72, height: 39.74)
                 }
                 self.stationMarkers.forEach { stationMarker in
                     let markerImage = stationMarker.markerImage
