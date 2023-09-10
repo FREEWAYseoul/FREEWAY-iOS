@@ -29,7 +29,7 @@ class MapsViewController: UIViewController {
     private var data = MockData.mockStationDTOs.first
     
     private lazy var bottomSheet = StationDetailViewController(viewModel.currentStationDetailData)
-    private var bottomSheetState = false
+    
     
     private var currentLocationButton = CurrentLocationButton()
     private lazy var mapsView = NMFMapView().then {
@@ -275,7 +275,7 @@ private extension MapsViewController {
                 self.currentStationMarker = self.addDetailMarker(width: 94.5, height: 49.3)
                 self.currentStationMarker?.mapView = self.mapsView
                 self.currentStationMarker?.touchHandler = { (overlay: NMFOverlay) -> Bool in
-                    self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
+                    //self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
                     return true
                 }
             }
@@ -333,34 +333,10 @@ private extension MapsViewController {
 //MARK: SetBottomSheet
 private extension MapsViewController {
     func showBottomSheet() {
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        else { fatalError() }
-        let bottomSheetHeight = (scene.screen.bounds.height - 233)
-        self.addChild(bottomSheet)
-        view.addSubview(bottomSheet.view)
-        bottomSheet.delegate = self
-        bottomSheet.didMove(toParent: self)
-        bottomSheet.view.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
-        bottomSheet.view.layer.cornerRadius = 20
-        bottomSheet.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        bottomSheet.view.layer.masksToBounds = true
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.bottomSheet.view.frame.origin.y = bottomSheetHeight
-        }
-        bottomSheetState = true
-    }
-    
-    func hideBottomSheet() {
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        else { fatalError() }
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.bottomSheet.view.frame.origin.y = scene.screen.bounds.height
-        }) { [weak self] _ in
-            self?.bottomSheet.view.willMove(toWindow: nil)
-            self?.bottomSheet.view.removeFromSuperview()
-            self?.bottomSheet.removeFromParent()
-        }
-        bottomSheetState = false
+        let bottomSheetVC = BottomSheetViewController(isTouchPassable: true)
+        bottomSheetVC.set(contentViewController: bottomSheet)
+        bottomSheetVC.addPanel(toParent: self)
+        bottomSheetVC.show()
     }
 }
 
@@ -396,7 +372,7 @@ extension MapsViewController: NMFMapViewCameraDelegate {
 
 extension MapsViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        if bottomSheetState { self.hideBottomSheet() }
+        //if bottomSheetState { self.hideBottomSheet() }
     }
 }
 

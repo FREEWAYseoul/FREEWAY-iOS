@@ -1,4 +1,5 @@
 PODS:
+  - FloatingPanel (2.7.0)
   - lottie-ios (4.2.0)
   - NMapsGeometry (1.0.1)
   - NMapsMap (3.17.0):
@@ -11,6 +12,7 @@ PODS:
   - RxSwift (6.5.0)
 
 DEPENDENCIES:
+  - FloatingPanel
   - lottie-ios
   - NMapsMap
   - RxCocoa
@@ -18,6 +20,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - FloatingPanel
     - lottie-ios
     - NMapsGeometry
     - NMapsMap
@@ -26,6 +29,7 @@ SPEC REPOS:
     - RxSwift
 
 SPEC CHECKSUMS:
+  FloatingPanel: c88e3fd981b7a74121ff48746fb14d496f5fd553
   lottie-ios: 809ecf2d460ed650a6aed7aa88b2ec45fab4779c
   NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
   NMapsMap: a5b909a31b6f3d27a670f6eb2ddc913c38975474
@@ -33,6 +37,6 @@ SPEC CHECKSUMS:
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: e657253b3e355efd43c4bf2226016fdfe01becdf
+PODFILE CHECKSUM: c7f4a9da3b6352f8d89ca482e007cfe9b9c6249d
 
 COCOAPODS: 1.12.1

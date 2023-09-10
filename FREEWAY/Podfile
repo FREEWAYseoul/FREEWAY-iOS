@@ -10,6 +10,7 @@ target 'FREEWAY' do
   pod 'lottie-ios'
   pod 'RxCocoa'
   pod 'RxSwift'
+  pod 'FloatingPanel'
 
   target 'FREEWAYTests' do
     inherit! :search_paths
