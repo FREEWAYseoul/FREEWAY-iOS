@@ -9,8 +9,10 @@ import RxSwift
 import RxCocoa
 
 class BaseViewModel {
-    let stationDetailDatas = MockData.mockStationDetails
-    let stationDatas = MockData.mockStationDTOs
+    var stationDatas: [StationDTO] = []
+    var stationsDetailDatas: [StationDetailDTO] = []
+    var currentStationData = MockData.mockStationDTO
+    var currentStationDetailData = MockData.mockStationDetail
     
     // 입력된 데이터를 저장하는 BehaviorSubject
     let inputText = BehaviorSubject<String>(value: "")
@@ -26,8 +28,8 @@ class BaseViewModel {
     }
     
     // 사용자 입력을 업데이트하는 함수
-    func updateText(_ text: String) {
-        inputText.onNext(text)
+    func updateText(_ text: String? = nil) {
+        inputText.onNext(text ?? currentStationDetailData.stationName)
     }
     
     func updateVoiceText(_ text: String) {
@@ -50,6 +52,7 @@ class BaseViewModel {
             let stationName = try inputText.value()
             // StationName을 사용하여 StationDTO를 검색하고 반환
             if let station = stationDatas.first(where: { $0.stationName == stationName }) {
+                self.currentStationData = station
                 return station
             }
             return nil // 찾을 수 없는 경우
@@ -58,20 +61,8 @@ class BaseViewModel {
             return nil
         }
     }
-
-    // StationName을 기반으로 StationDetailDTO 반환
-    func getStationDetailDTO() -> StationDetailDTO? {
-        do {
-            let stationName = try inputText.value()
-            print(stationName)
-            // StationName을 사용하여 StationDetailDTO를 생성하고 반환
-            if let stationDetailData = stationDetailDatas.first(where: { $0.stationName == stationName }) {
-                return stationDetailData
-            }
-            return nil // 찾을 수 없는 경우
-        } catch {
-            // BehaviorSubject에서 값을 가져오지 못한 경우
-            return nil
-        }
+    
+    func getCurrentStationDetailData(stationData: StationDTO) {
+        currentStationDetailData = (stationsDetailDatas.first{ $0.stationId == stationData.stationId}) ?? MockData.mockStationDetail
     }
 }

@@ -14,6 +14,7 @@ DEPENDENCIES:
   - lottie-ios
   - NMapsMap
   - RxCocoa
+  - RxSwift
 
 SPEC REPOS:
   trunk:
@@ -32,6 +33,6 @@ SPEC CHECKSUMS:
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: cbde1b7e249b0f90440aba6c43098362ebf9be2c
+PODFILE CHECKSUM: e657253b3e355efd43c4bf2226016fdfe01becdf
 
 COCOAPODS: 1.12.1

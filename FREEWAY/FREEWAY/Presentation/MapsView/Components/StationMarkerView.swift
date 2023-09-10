@@ -96,6 +96,7 @@ extension StationMarkerView {
          stationLabel.snp.makeConstraints { make in
              make.centerY.equalToSuperview()
              make.leading.equalTo(lineBackground.snp.trailing).offset(5)
+             make.trailing.equalToSuperview().offset(-10)
          }
      }
 }

@@ -10,11 +10,7 @@ import SnapKit
 import Then
 
 final class StationDetailTitleView: UIView {
-    var lineImageName: String
-    var stationColor: UIColor
-    var stationName: String
-    var prevStationName: String
-    var nextStationName: String
+    var data: StationDetailDTO
     
     private let closeButtonImage = UIImageView(frame: .zero).then {
         $0.image = UIImage(systemName: "xmark")
@@ -30,24 +26,24 @@ final class StationDetailTitleView: UIView {
         $0.backgroundColor = Pallete.dividerGray.color
     }
     
-    var lineButtons: [LineButton] = [LineButton("2"), LineButton("K2")]
+    lazy var lineButton = LineButton(data.lineId)
+
+    lazy var subLineButtons = [SubLineButton]()
     
-    var lineButtonsStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.distribution = .equalSpacing
-        $0.spacing = 9
+    func setSubLineButtons() {
+        data.transferStations.forEach {
+            let subLine = SubLineButton($0.lineId)
+            subLineButtons.append(subLine)
+        }
     }
+
+    lazy var stationTitle = StationTitle(data: data)
     
-    lazy var stationTitle = StationTitle(lineImageName: lineImageName, stationColor: stationColor, stationName: stationName, nextStationName: nextStationName, prevStationName: prevStationName)
     
-    
-    init(lineImageName: String, stationColor: UIColor, stationName: String, nextStationName: String, prevStationName: String) {
-        self.lineImageName = lineImageName
-        self.stationColor = stationColor
-        self.stationName = stationName
-        self.nextStationName = nextStationName
-        self.prevStationName = prevStationName
+    init(data: StationDetailDTO) {
+        self.data = data
         super.init(frame: .zero)
+        self.setSubLineButtons()
         
         configure()
         setupLayout()
@@ -61,17 +57,36 @@ final class StationDetailTitleView: UIView {
 
 private extension StationDetailTitleView {
     func configure() {
-        for lineButton in lineButtons {
-            lineButtonsStackView.addArrangedSubview(lineButton)
-        }
     }
     
     func setupLayout() {
-        self.addSubview(lineButtonsStackView)
-        lineButtonsStackView.snp.makeConstraints { make in
+        self.addSubview(lineButton)
+        lineButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(13)
             make.leading.equalToSuperview().offset(16)
             make.height.equalTo(21)
+            make.width.equalTo(lineButton.lineIcon.intrinsicContentSize.width)
+        }
+        
+        var prevSubLine: SubLineButton?
+        
+        for idx in 0..<subLineButtons.count {
+            let subLineButton = subLineButtons[idx]
+            self.addSubview(subLineButton)
+            
+            subLineButton.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(13)
+                if idx == 0 {
+                    make.leading.equalTo(lineButton.snp.trailing).offset(9)
+                }
+                else {
+                    make.leading.equalTo(prevSubLine!.snp.trailing).offset(9)
+                }
+                make.height.equalTo(21)
+                make.width.equalTo(subLineButton.intrinsicContentSize.width)
+            }
+            
+            prevSubLine = subLineButton
         }
         
         self.addSubview(backButton)
@@ -89,7 +104,7 @@ private extension StationDetailTitleView {
         
         self.addSubview(separator)
         separator.snp.makeConstraints { make in
-            make.top.equalTo(lineButtonsStackView.snp.bottom).offset(12)
+            make.top.equalTo(lineButton.snp.bottom).offset(12)
             make.height.equalTo(1)
             make.leading.trailing.equalToSuperview()
         }
@@ -109,6 +124,7 @@ final class LineButton: UIButton {
     lazy var lineIcon = UIImageView().then {
         $0.image = UIImage(named: line)
         $0.contentMode = .scaleAspectFit
+        $0.sizeToFit()
     }
     
     init(_ line: String) {
@@ -129,6 +145,56 @@ private extension LineButton {
             make.height.equalTo(20)
         }
         lineIcon.isUserInteractionEnabled = false
+    }
+}
+
+final class SubLineButton: UIButton {
+    var line: String
+    
+    private lazy var lineBackground = UIView().then {
+        $0.backgroundColor = .white
+        $0.contentMode = .scaleAspectFit
+        $0.layer.cornerRadius = 10
+        
+        $0.layer.borderWidth = 1.0
+        $0.layer.borderColor = LinePallete(rawValue: self.line)?.color?.cgColor
+    }
+    private lazy var lineLabel = UILabel().then {
+        $0.text = line
+        $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
+        $0.textColor = LinePallete(rawValue: line)?.color
+        $0.sizeToFit()
+    }
+    
+    init(_ line: String) {
+        self.line = line
+        super.init(frame: .zero)
+        setupLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private extension SubLineButton {
+    func setupLayout() {
+        self.addSubview(lineBackground)
+        lineBackground.snp.makeConstraints { make in
+            make.height.equalTo(20)
+            if line.count > 1 {
+                make.width.equalTo(lineLabel.intrinsicContentSize.width + 12)
+            }
+            else {
+                make.width.equalTo(20)
+            }
+        }
+        lineBackground.isUserInteractionEnabled = false
+        
+        lineBackground.addSubview(lineLabel)
+        lineLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+        }
     }
 }
 
@@ -204,16 +270,15 @@ private extension PrevNextStationButton {
 
 final class StationTitle: UIView {
     var lineImageName: String
-    var stationColor: UIColor
     var stationName: String
-    var nextStationName: String
-    var prevStationName: String
+    var nextStationName: String?
+    var prevStationName: String?
     
     private lazy var stationTitleBackground = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 39 / 2
         $0.layer.borderWidth = 3.15
-        $0.layer.borderColor = LinePallete.two.color?.cgColor
+        $0.layer.borderColor = LinePallete(rawValue: lineImageName)?.color?.cgColor
     }
     
     private lazy var lineImage = UIImageView().then {
@@ -224,22 +289,31 @@ final class StationTitle: UIView {
         $0.font = UIFont(name: "Pretendard-Regular", size: 18)
         $0.text = stationName
         $0.textColor = .black
+        $0.sizeToFit()
+        $0.lineBreakMode = .byTruncatingTail
     }
-    private let prevNextStationTitlebackground = UIView().then {
-        $0.backgroundColor = LinePallete.two.color
+    private lazy var prevNextStationTitlebackground = UIView().then {
+        $0.backgroundColor = LinePallete(rawValue: lineImageName)?.color
         $0.layer.cornerRadius = 14
     }
-    lazy var prevStationTitleButton = PrevNextStationButton(prevStationName, true)
-    lazy var nextStationTitleButton = PrevNextStationButton(nextStationName, false)
+    
+    let stackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .center
+        $0.spacing = 2
+        $0.distribution = .fillProportionally
+    }
+    
+    lazy var prevStationTitleButton = PrevNextStationButton(prevStationName ?? "", true)
+    lazy var nextStationTitleButton = PrevNextStationButton(nextStationName ?? "", false)
     
     
     
-    init(lineImageName: String, stationColor: UIColor, stationName: String, nextStationName: String, prevStationName: String) {
-        self.lineImageName = lineImageName
-        self.stationColor = stationColor
-        self.stationName = stationName
-        self.nextStationName = nextStationName
-        self.prevStationName = prevStationName
+    init(data: StationDetailDTO) {
+        self.lineImageName = data.lineId
+        self.stationName = data.stationName
+        self.nextStationName = data.nextStation?.stationName
+        self.prevStationName = data.previousStation?.stationName
         super.init(frame: .zero)
         setupLayout()
         self.backgroundColor = .clear
@@ -278,20 +352,20 @@ private extension StationTitle {
         stationTitleBackground.snp.makeConstraints { make in
             make.centerX.centerY.equalTo(prevNextStationTitlebackground)
             //텍스트 길이에 따라 옵셔널로 들어가야할 부분
-            make.width.equalTo(122.8)
+            if stationLabel.text!.count <= 5 {make.width.equalTo(stationLabel.intrinsicContentSize.width + lineImage.intrinsicContentSize.width + 62) }
+            else { make.width.equalTo(150) }
             make.height.equalTo(39.9)
             make.center.equalToSuperview()
         }
-        stationTitleBackground.addSubview(lineImage)
-        lineImage.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(29)
-            make.width.height.equalTo(20)
-        }
-        stationTitleBackground.addSubview(stationLabel)
-        stationLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(lineImage.snp.trailing).offset(2)
+
+        stackView.addArrangedSubview(lineImage)
+        stackView.addArrangedSubview(stationLabel)
+
+        stationTitleBackground.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.height.equalTo(20)
+            if stationLabel.text!.count > 5 { make.width.equalTo(120) }
         }
     }
 }

@@ -10,7 +10,7 @@ import Then
 import SnapKit
 
 final class FacilitiesView: UIView {
-    var data = MockData.mockStationDetail
+    var data: Facilities
     
     struct FailitiesData {
         let title: String
@@ -19,12 +19,12 @@ final class FacilitiesView: UIView {
     }
     
     private lazy var facilitieDatas: [FailitiesData] = [
-        FailitiesData(title: "장애인 화장실", imageName: "disabledToilet", status: data.facilities.disabledToilet),
-        FailitiesData(title: "휠체어 리프트", imageName: "wheelchairLift", status: data.facilities.wheelchairLift),
-        FailitiesData(title: "유아수유방", imageName: "feedingRoom", status: data.facilities.feedingRoom),
-        FailitiesData(title: "환전키오스크", imageName: "currencyExchangeKiosk", status: data.facilities.currencyExchangeKiosk),
-        FailitiesData(title: "무인민원발급기", imageName: "unmannedCivilApplicationIssuingMachine", status: data.facilities.unmannedCivilApplicationIssuingMachine),
-        FailitiesData(title: "환승주차장", imageName: "transitParkingLot", status: data.facilities.transitParkingLot)
+        FailitiesData(title: "장애인 화장실", imageName: "disabledToilet", status: data.disabledToilet ?? false),
+        FailitiesData(title: "휠체어 리프트", imageName: "wheelchairLift", status: data.wheelchairLift ?? false),
+        FailitiesData(title: "유아수유방", imageName: "feedingRoom", status: data.feedingRoom ?? false),
+        FailitiesData(title: "환전키오스크", imageName: "currencyExchangeKiosk", status: data.currencyExchangeKiosk ?? false),
+        FailitiesData(title: "무인민원발급기", imageName: "unmannedCivilApplicationIssuingMachine", status: data.unmannedCivilApplicationIssuingMachine ?? false),
+        FailitiesData(title: "환승주차장", imageName: "transitParkingLot", status: data.transitParkingLot ?? false)
     ]
     
     let updateTimeLabel = UILabel().then {
@@ -40,7 +40,7 @@ final class FacilitiesView: UIView {
         $0.separatorStyle = .none
     }
     
-    init(_ data: StationDetailDTO) {
+    init(_ data: Facilities) {
         self.data = data
         super.init(frame: .zero)
         self.backgroundColor = .white

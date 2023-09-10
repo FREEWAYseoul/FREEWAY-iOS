@@ -17,12 +17,13 @@ final class SearchViewController: UIViewController {
     let viewModel: BaseViewModel
     let disposeBag = DisposeBag()
     var datas = MockData.mockStationDTOs
+    let networkService = NetworkService.shared
     
     //TODO: 추후 userdefaults 변수로 변경 필요
     lazy var searchTextFieldView = SearchTextfieldView()
     lazy var searchHistoryView = SearchHistoryView(searchHistorys: datas)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
-    lazy var searchListView = SearchListView(datas: datas)
+    lazy var searchListView = SearchListView(datas: viewModel.stationDatas)
     lazy var emptySearchView = EmptySearchView()
     
     init(viewModel: BaseViewModel) {
@@ -100,11 +101,11 @@ final class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         searchTextFieldView.searchTextfield.rx.text.orEmpty
-             .subscribe(onNext: { [weak self] text in
-                 self?.handleTextFieldInput(text)
-                 self?.emptySearchView.searchText = text
-             })
-             .disposed(by: disposeBag)
+            .subscribe(onNext: { [weak self] text in
+                self?.handleTextFieldInput(text)
+                self?.emptySearchView.searchText = text
+            })
+            .disposed(by: disposeBag)
         
         searchTextFieldView.searchTextfield.rx.text.orEmpty
             .bind(to: viewModel.inputText)
@@ -113,7 +114,7 @@ final class SearchViewController: UIViewController {
     
     func handleTextFieldInput(_ text: String) {
         if !text.isEmpty {
-            searchListView.datas = self.datas.filter{ $0.stationName.hasPrefix(text) }
+            searchListView.datas = self.viewModel.stationDatas.filter{ $0.stationName.hasPrefix(text) }
             setupSearchListLayout(view: searchListView.datas.isEmpty ? emptySearchView : searchListView)
             searchListView.searchHistoryTableView.reloadData()
         } else {
@@ -189,12 +190,14 @@ extension SearchViewController: UITextFieldDelegate {
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
         if findStationDetailDTO(searchText) != nil {
+            viewModel.currentStationData = viewModel.getStationDTO()!
+            viewModel.getCurrentStationDetailData(stationData: viewModel.currentStationData)
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
             showInvalidStationNameAlert()
         }
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let searchText = textField.text {
             navigateToMapsViewControllerIfNeeded(searchText)
@@ -208,10 +211,14 @@ extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let cell = tableView.cellForRow(at: indexPath) as? SearchHistoryBaseViewCell {
-            if let stationName = cell.stationTitleLabel.text {
-                viewModel.updateText(stationName)
-                self.navigateToMapsViewControllerIfNeeded(stationName)
-                }
+            if let cellData = cell.cellData {
+                viewModel.currentStationData = cellData
+                viewModel.updateText(cellData.stationName)
+                self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
+            }
+            else {
+                showInvalidStationNameAlert()
             }
         }
     }
+}

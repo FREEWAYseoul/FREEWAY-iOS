@@ -15,6 +15,8 @@ final class SearchHistoryBaseViewCell: UITableViewCell {
     
     static let searchHistoryViewCellId = "SearchHistoryViewCell"
     
+    var cellData: StationDTO?
+    
     let stationTitleLabel = UILabel().then {
         //변경 필요
         $0.textColor = Pallete.customBlack.color
@@ -23,7 +25,9 @@ final class SearchHistoryBaseViewCell: UITableViewCell {
     
     private let stationStateImage = UIImageView()
     
-    private let stationLineImage = UIImageView()
+    private let stationLineImage = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
     
     private let divider = UIView().then {
         $0.backgroundColor = Pallete.dividerGray.color
@@ -64,7 +68,7 @@ extension SearchHistoryBaseViewCell {
         stationLineImage.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-horizontalOffset)
             make.centerY.equalTo(stationTitleLabel)
-            make.height.width.equalTo(28)
+            make.height.equalTo(28)
         }
         
         self.addSubview(divider)
@@ -75,10 +79,11 @@ extension SearchHistoryBaseViewCell {
         }
     }
     
-    func configure(_ title: String, _ status: String, _ line: String, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
-        stationTitleLabel.text = title
-        stationStateImage.image = UIImage(named: status == "사용 가능" ? "possible" : "impossible")
-        stationLineImage.image = UIImage(named: line)
+    func configure(data: StationDTO, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
+        cellData = data
+        stationTitleLabel.text = data.stationName
+        stationStateImage.image = UIImage(named: data.stationStatus == "사용 가능" ? "possible" : "impossible")
+        stationLineImage.image = UIImage(named: data.lineId)
         if horizontalOffset == 0 {
             stationTitleLabel.snp.updateConstraints { make in
                 make.leading.equalToSuperview().offset(horizontalOffset ?? 20)

@@ -55,7 +55,7 @@ extension SearchListView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchHistoryBaseViewCell.searchHistoryViewCellId) as? SearchHistoryBaseViewCell else { return UITableViewCell() }
         let searchData = datas[indexPath.row]
-        cell.configure(searchData.stationName, searchData.stationStatus, searchData.lineId)
+        cell.configure(data: searchData)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell

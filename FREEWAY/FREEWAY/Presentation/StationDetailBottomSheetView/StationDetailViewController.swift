@@ -22,7 +22,7 @@ final class StationDetailViewController: UIViewController {
     private let stationInfoItems: [(String, String)] = [("elevater", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("convenience", "편의시설")]
     
     let stationDetailCollectionView = StationDetailCollectionView()
-    lazy var stationDetailTitle = StationDetailTitleView(lineImageName: data.lineId, stationColor: (LinePallete(rawValue: data.lineId)?.color!)!, stationName: data.stationName, nextStationName: data.nextStation.stationName, prevStationName: data.previousStation.stationName)
+    lazy var stationDetailTitle = StationDetailTitleView(data: data)
 
     init(_ data: StationDetailDTO) {
         self.data = data

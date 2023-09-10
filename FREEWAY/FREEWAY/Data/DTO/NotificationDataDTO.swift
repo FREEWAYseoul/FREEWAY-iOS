@@ -1,5 +1,5 @@
 //
-//  AlertDTO.swift
+//  NotificationDataDTO.swift
 //  FREEWAY
 //
 //  Created by 한택환 on 2023/08/27.
@@ -13,7 +13,7 @@ struct NotificationDTO: Codable {
     let time: String
 }
 
-struct AlertDTO: Codable {
+struct NotificationDataDTO: Codable {
     let date: String
     let notifications: [NotificationDTO]
 }
