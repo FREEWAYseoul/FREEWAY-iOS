@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 final class NotificationViewController: UIViewController {
-    let data = NotificationDTO
+    let data = MockData.mockNotiDTO
     
     let notificationsTableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear

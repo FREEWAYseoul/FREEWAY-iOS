@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct NotificationDTO: Codable {
+struct NotificationDataDTO: Codable {
     let summary: String
     let content: String
     let time: String
 }
 
-struct NotificationDataDTO: Codable {
+struct NotificationDTO: Codable {
     let date: String
-    let notifications: [NotificationDTO]
+    let notifications: [NotificationDataDTO]
 }
