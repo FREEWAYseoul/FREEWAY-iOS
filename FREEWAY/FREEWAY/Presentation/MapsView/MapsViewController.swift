@@ -229,6 +229,7 @@ private extension MapsViewController {
                 }
                 self.elevatorMarkers.forEach {
                     $0.mapView = self.mapsView
+                    $0.globalZIndex = 19000
                 }
             }
         }
