@@ -27,9 +27,9 @@ class MapsViewController: UIViewController {
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
     private var data = MockData.mockStationDTOs.first
-    
-    private lazy var bottomSheet = StationDetailViewController(viewModel.currentStationDetailData)
-    
+
+    let bottomSheetVC = BottomSheetViewController(isTouchPassable: true)
+    var bottomSheetHiddenState = false
     
     private var currentLocationButton = CurrentLocationButton()
     private lazy var mapsView = NMFMapView().then {
@@ -308,6 +308,7 @@ private extension MapsViewController {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
         cameraUpdate.animation = .easeIn
         mapsView.moveCamera(cameraUpdate)
+        bottomSheetVC.move(to: .half, animated: true)
     }
     
     func setcurrentLocation() {
@@ -333,8 +334,7 @@ private extension MapsViewController {
 //MARK: SetBottomSheet
 private extension MapsViewController {
     func showBottomSheet() {
-        let bottomSheetVC = BottomSheetViewController(isTouchPassable: true)
-        bottomSheetVC.set(contentViewController: bottomSheet)
+        bottomSheetVC.set(contentViewController: StationDetailViewController(viewModel.currentStationDetailData))
         bottomSheetVC.addPanel(toParent: self)
         bottomSheetVC.show()
     }
@@ -358,21 +358,34 @@ extension MapsViewController: SetStationDetailViewControllerDelegate {
 
 //MARK: MapsViewDelegate
 extension MapsViewController: NMFMapViewCameraDelegate {
+    func mapView(_ mapView: NMFMapView, cameraWillChangeByReason reason: Int, animated: Bool) {
+        bottomSheetVC.move(to: .tip, animated: true)
+    }
+    
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
         if mapView.zoomLevel >= 13 {
             currentStationMarker?.hidden = false
+            elevatorMarkers.forEach {
+                $0.hidden = false
+            }
         } else {
             currentStationMarker?.hidden = true
+            elevatorMarkers.forEach {
+                $0.hidden = true
+            }
         }
-    }
-    
-    func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
     }
 }
 
 extension MapsViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        //if bottomSheetState { self.hideBottomSheet() }
+        if bottomSheetHiddenState == true {
+            bottomSheetVC.move(to: .half, animated: true)
+            bottomSheetHiddenState = false
+        } else {
+            bottomSheetHiddenState = true
+            bottomSheetVC.move(to: .hidden, animated : true)
+        }
     }
 }
 
