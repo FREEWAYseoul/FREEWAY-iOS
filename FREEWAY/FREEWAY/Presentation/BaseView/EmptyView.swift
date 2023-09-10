@@ -1,5 +1,5 @@
 //
-//  EmptySearchView.swift
+//  EmptyView.swift
 //  FREEWAY
 //
 //  Created by 한택환 on 2023/08/25.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-final class EmptySearchView: UIView {
+final class EmptyView: UIView {
     //추후에 TextField와 데이터 바인딩 필요
     var searchText: String = "" {
         didSet {
@@ -17,7 +17,7 @@ final class EmptySearchView: UIView {
         }
     }
     
-    private lazy var emptySearchTitleLabel = UILabel().then {
+    lazy var emptySearchTitleLabel = UILabel().then {
         $0.textColor = Pallete.customGray.color
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 20)
     }
@@ -39,7 +39,7 @@ final class EmptySearchView: UIView {
     }
 }
 
-private extension EmptySearchView {
+private extension EmptyView {
     
     func setupLayout() {
         self.addSubview(emptySearchImage)

@@ -27,9 +27,9 @@ class MapsViewController: UIViewController {
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
     private var data = MockData.mockStationDTOs.first
-    
-    private lazy var bottomSheet = StationDetailViewController(viewModel.currentStationDetailData)
-    private var bottomSheetState = false
+
+    let bottomSheetVC = BottomSheetViewController(isTouchPassable: true)
+    var bottomSheetHiddenState = false
     
     private var currentLocationButton = CurrentLocationButton()
     private lazy var mapsView = NMFMapView().then {
@@ -40,8 +40,8 @@ class MapsViewController: UIViewController {
     }
     private let mapsTitleView = MapsViewTitle()
     
-    private lazy var facilitiesView = FacilitiesView(viewModel.currentStationDetailData.facilities!)
-    private var stationMapWebView = StationMapWebView()
+    private var facilitiesView: FacilitiesView?
+    private var stationMapWebView: StationMapWebView?
     
     private lazy var stationMarkers: [StationMarker] = []
     private var currentStationMarker: NMFMarker?
@@ -253,6 +253,8 @@ private extension MapsViewController {
                         self.moveLocation()
                         self.setElevatorMarker()
                         self.setStationDetailMarker()
+                        self.deleteBottomSheet()
+                        self.showBottomSheet()
                         return true
                     }
                 }
@@ -275,7 +277,7 @@ private extension MapsViewController {
                 self.currentStationMarker = self.addDetailMarker(width: 94.5, height: 49.3)
                 self.currentStationMarker?.mapView = self.mapsView
                 self.currentStationMarker?.touchHandler = { (overlay: NMFOverlay) -> Bool in
-                    self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
+                    //self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
                     return true
                 }
             }
@@ -308,6 +310,7 @@ private extension MapsViewController {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
         cameraUpdate.animation = .easeIn
         mapsView.moveCamera(cameraUpdate)
+        bottomSheetVC.move(to: .half, animated: true)
     }
     
     func setcurrentLocation() {
@@ -333,70 +336,78 @@ private extension MapsViewController {
 //MARK: SetBottomSheet
 private extension MapsViewController {
     func showBottomSheet() {
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        else { fatalError() }
-        let bottomSheetHeight = (scene.screen.bounds.height - 233)
-        self.addChild(bottomSheet)
-        view.addSubview(bottomSheet.view)
-        bottomSheet.delegate = self
-        bottomSheet.didMove(toParent: self)
-        bottomSheet.view.frame = CGRect(x: 0, y: scene.screen.bounds.height, width: scene.screen.bounds.width, height: 233)
-        bottomSheet.view.layer.cornerRadius = 20
-        bottomSheet.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        bottomSheet.view.layer.masksToBounds = true
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.bottomSheet.view.frame.origin.y = bottomSheetHeight
-        }
-        bottomSheetState = true
+        let stationDetailView = StationDetailViewController(viewModel.currentStationDetailData)
+        stationDetailView.delegate = self
+        bottomSheetVC.set(contentViewController: stationDetailView)
+        bottomSheetVC.addPanel(toParent: self)
+        bottomSheetVC.show()
+        facilitiesView = FacilitiesView((viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities)!)
+        stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
     }
     
-    func hideBottomSheet() {
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        else { fatalError() }
-        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-            self?.bottomSheet.view.frame.origin.y = scene.screen.bounds.height
-        }) { [weak self] _ in
-            self?.bottomSheet.view.willMove(toWindow: nil)
-            self?.bottomSheet.view.removeFromSuperview()
-            self?.bottomSheet.removeFromParent()
-        }
-        bottomSheetState = false
+    func deleteBottomSheet() {
+        bottomSheetVC.removeFromParent()
     }
 }
 
 extension MapsViewController: SetStationDetailViewControllerDelegate {
     func removeStationDetailView() {
-        stationMapWebView.removeFromSuperview()
-        facilitiesView.removeFromSuperview()
+        if let stationMapWebView = stationMapWebView {
+            stationMapWebView.removeFromSuperview()
+        }
+        if let facilitiesView = facilitiesView {
+            facilitiesView.removeFromSuperview()
+        }
     }
     
     func showStationDetailView(_ isFacilities: Bool) {
-        let subView = isFacilities ? facilitiesView : stationMapWebView
-        if subView == facilitiesView {
-            stationMapWebView.removeFromSuperview()
-        } else { facilitiesView.removeFromSuperview() }
-        setupStationDetailViewLayout(subView)
-        view.insertSubview(subView, at: view.subviews.count - 2)
+        if isFacilities {
+            if let subView = facilitiesView {
+                stationMapWebView?.removeFromSuperview()
+                setupStationDetailViewLayout(subView)
+                view.insertSubview(subView, at: view.subviews.count - 2)
+            }
+        } else {
+            if let subView = stationMapWebView {
+                facilitiesView?.removeFromSuperview()
+                setupStationDetailViewLayout(subView)
+                view.insertSubview(subView, at: view.subviews.count - 2)
+            }
+        }
+
     }
 }
 
 //MARK: MapsViewDelegate
 extension MapsViewController: NMFMapViewCameraDelegate {
+    func mapView(_ mapView: NMFMapView, cameraWillChangeByReason reason: Int, animated: Bool) {
+        bottomSheetVC.move(to: .tip, animated: true)
+    }
+    
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
         if mapView.zoomLevel >= 13 {
             currentStationMarker?.hidden = false
+            elevatorMarkers.forEach {
+                $0.hidden = false
+            }
         } else {
             currentStationMarker?.hidden = true
+            elevatorMarkers.forEach {
+                $0.hidden = true
+            }
         }
-    }
-    
-    func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
     }
 }
 
 extension MapsViewController: NMFMapViewTouchDelegate {
     func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
-        if bottomSheetState { self.hideBottomSheet() }
+        if bottomSheetHiddenState == true {
+            bottomSheetVC.move(to: .half, animated: true)
+            bottomSheetHiddenState = false
+        } else {
+            bottomSheetHiddenState = true
+            bottomSheetVC.move(to: .hidden, animated : true)
+        }
     }
 }
 

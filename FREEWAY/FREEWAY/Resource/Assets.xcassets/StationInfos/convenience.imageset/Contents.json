@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "convenience 3.svg",
+      "filename" : "Layer_1.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "convenience 1.svg",
+      "filename" : "Layer_1 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "convenience 2.svg",
+      "filename" : "Layer_1 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

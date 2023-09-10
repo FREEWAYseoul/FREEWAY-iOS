@@ -17,7 +17,6 @@ final class StationDetailCollectionViewCell: UICollectionViewCell {
     
     private var iconView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.tintColor = .black
     }
     
     private var iconLabel = UILabel().then {
