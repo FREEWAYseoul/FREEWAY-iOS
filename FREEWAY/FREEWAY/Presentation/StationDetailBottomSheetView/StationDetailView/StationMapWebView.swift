@@ -12,7 +12,7 @@ import WebKit
 
 final class StationMapWebView: UIView {
     
-    private var data = MockData.mockStationDetail
+    private var data: StationDetailDTO
     lazy var webURL: String = data.stationImageUrl ?? ""
     private var webView: WKWebView!
     private let GuidanceLabel = UILabel().then {
@@ -21,11 +21,13 @@ final class StationMapWebView: UIView {
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 16)
         $0.layer.opacity = 0.5
     }
+    private var emptyView = EmptyView()
     
-    init() {
+    init(data: StationDetailDTO) {
+        self.data = data
         super.init(frame: .zero)
         backgroundColor = Pallete.backgroundGray.color
-        setWebView()
+        if webURL != "" { setWebView() }
         setupLayout()
         self.insetsLayoutMarginsFromSafeArea = true
     }
@@ -37,15 +39,24 @@ final class StationMapWebView: UIView {
 
 private extension StationMapWebView {
     func setupLayout() {
-        self.addSubview(webView)
-        webView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-        self.addSubview(GuidanceLabel)
-        GuidanceLabel.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-253)
-            make.centerX.equalToSuperview()
+        if webURL != "" {
+            self.addSubview(webView)
+            webView.snp.makeConstraints { make in
+                make.top.equalToSuperview()
+                make.leading.trailing.bottom.equalToSuperview()
+            }
+            self.addSubview(GuidanceLabel)
+            GuidanceLabel.snp.makeConstraints { make in
+                make.bottom.equalToSuperview().offset(-253)
+                make.centerX.equalToSuperview()
+            }
+        } else {
+            self.addSubview(emptyView)
+            emptyView.snp.makeConstraints { make in
+                make.top.equalToSuperview()
+                make.leading.trailing.bottom.equalToSuperview()
+            }
+            emptyView.emptySearchTitleLabel.text = "역사 지도 정보가 없습니다."
         }
     }
     

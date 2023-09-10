@@ -40,8 +40,8 @@ class MapsViewController: UIViewController {
     }
     private let mapsTitleView = MapsViewTitle()
     
-    private lazy var facilitiesView = FacilitiesView(viewModel.currentStationDetailData.facilities!)
-    private var stationMapWebView = StationMapWebView()
+    private var facilitiesView: FacilitiesView?
+    private var stationMapWebView: StationMapWebView?
     
     private lazy var stationMarkers: [StationMarker] = []
     private var currentStationMarker: NMFMarker?
@@ -253,6 +253,8 @@ private extension MapsViewController {
                         self.moveLocation()
                         self.setElevatorMarker()
                         self.setStationDetailMarker()
+                        self.deleteBottomSheet()
+                        self.showBottomSheet()
                         return true
                     }
                 }
@@ -334,25 +336,45 @@ private extension MapsViewController {
 //MARK: SetBottomSheet
 private extension MapsViewController {
     func showBottomSheet() {
-        bottomSheetVC.set(contentViewController: StationDetailViewController(viewModel.currentStationDetailData))
+        let stationDetailView = StationDetailViewController(viewModel.currentStationDetailData)
+        stationDetailView.delegate = self
+        bottomSheetVC.set(contentViewController: stationDetailView)
         bottomSheetVC.addPanel(toParent: self)
         bottomSheetVC.show()
+        facilitiesView = FacilitiesView((viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities)!)
+        stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
+    }
+    
+    func deleteBottomSheet() {
+        bottomSheetVC.removeFromParent()
     }
 }
 
 extension MapsViewController: SetStationDetailViewControllerDelegate {
     func removeStationDetailView() {
-        stationMapWebView.removeFromSuperview()
-        facilitiesView.removeFromSuperview()
+        if let stationMapWebView = stationMapWebView {
+            stationMapWebView.removeFromSuperview()
+        }
+        if let facilitiesView = facilitiesView {
+            facilitiesView.removeFromSuperview()
+        }
     }
     
     func showStationDetailView(_ isFacilities: Bool) {
-        let subView = isFacilities ? facilitiesView : stationMapWebView
-        if subView == facilitiesView {
-            stationMapWebView.removeFromSuperview()
-        } else { facilitiesView.removeFromSuperview() }
-        setupStationDetailViewLayout(subView)
-        view.insertSubview(subView, at: view.subviews.count - 2)
+        if isFacilities {
+            if let subView = facilitiesView {
+                stationMapWebView?.removeFromSuperview()
+                setupStationDetailViewLayout(subView)
+                view.insertSubview(subView, at: view.subviews.count - 2)
+            }
+        } else {
+            if let subView = stationMapWebView {
+                facilitiesView?.removeFromSuperview()
+                setupStationDetailViewLayout(subView)
+                view.insertSubview(subView, at: view.subviews.count - 2)
+            }
+        }
+
     }
 }
 

@@ -24,7 +24,7 @@ final class SearchViewController: UIViewController {
     lazy var searchHistoryView = SearchHistoryView(searchHistorys: datas)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     lazy var searchListView = SearchListView(datas: viewModel.stationDatas)
-    lazy var emptySearchView = EmptySearchView()
+    lazy var emptySearchView = EmptyView()
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel

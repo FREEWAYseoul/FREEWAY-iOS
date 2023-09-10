@@ -14,14 +14,14 @@ struct MockData {
         let previousStation = PreviousStation(stationId: 215, stationName: "을지로4가")
         
         let facilities = Facilities(
-            elevator: true,
-            wheelchairLift: true,
-            disabledToilet: true,
+            elevator: false,
+            wheelchairLift: false,
+            disabledToilet: false,
             transitParkingLot: false,
             unmannedCivilApplicationIssuingMachine: false,
             currencyExchangeKiosk: false,
             trainTicketOffice: false,
-            feedingRoom: true
+            feedingRoom: false
         )
         
         let elevators = [
