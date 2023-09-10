@@ -190,6 +190,8 @@ extension SearchViewController: UITextFieldDelegate {
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
         if findStationDetailDTO(searchText) != nil {
+            viewModel.currentStationData = viewModel.getStationDTO()!
+            viewModel.getCurrentStationDetailData(stationData: viewModel.currentStationData)
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
             showInvalidStationNameAlert()
@@ -212,7 +214,6 @@ extension SearchViewController: UITableViewDelegate {
             if let cellData = cell.cellData {
                 viewModel.currentStationData = cellData
                 viewModel.updateText(cellData.stationName)
-                
                 self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
             }
             else {
