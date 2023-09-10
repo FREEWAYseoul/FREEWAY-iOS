@@ -112,6 +112,7 @@ private extension HomeViewController {
         textField.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
         let placeHolderGesture = UITapGestureRecognizer(target: self, action: #selector(tabPlaceholderLabel))
         textField.placeholderLabel.addGestureRecognizer(placeHolderGesture)
+        recentSearchView.searchHistoryTableView.delegate = self
         recentSearchView.isHidden = UserDefaults.standard.searchHistory.isEmpty
     }
     
@@ -163,6 +164,22 @@ private extension HomeViewController {
             make.bottom.equalToSuperview().offset(-200)
             make.leading.equalToSuperview().offset(-45)
             make.trailing.equalToSuperview().offset(45)
+        }
+    }
+}
+
+extension HomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let cell = tableView.cellForRow(at: indexPath) as? SearchHistoryBaseViewCell {
+            if let cellData = cell.cellData {
+                viewModel.currentStationData = cellData
+                viewModel.updateText(cellData.stationName)
+                self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
+            }
+            else {
+                showInvalidStationNameAlert()
+            }
         }
     }
 }
