@@ -10,6 +10,8 @@ import SnapKit
 import Then
 
 final class NotificationViewController: UIViewController {
+    let data = NotificationDTO
+    
     let notificationsTableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear
         $0.rowHeight = 57
