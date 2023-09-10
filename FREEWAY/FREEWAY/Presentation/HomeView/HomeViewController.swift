@@ -71,6 +71,10 @@ final class HomeViewController: UIViewController {
         }
     }
     
+    @objc func notiButtonPressed(_ sender: UIButton) {
+        self.navigationController?.pushViewController(NotificationViewController(), animated: true)
+    }
+    
     private func bind() {
         viewModel.voiceStationName
             .subscribe(onNext: { [weak self] text in
@@ -111,6 +115,7 @@ private extension HomeViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         textField.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
         let placeHolderGesture = UITapGestureRecognizer(target: self, action: #selector(tabPlaceholderLabel))
+        alertButton.addTarget(self, action: #selector(notiButtonPressed), for: .touchUpInside)
         textField.placeholderLabel.addGestureRecognizer(placeHolderGesture)
         recentSearchView.searchHistoryTableView.delegate = self
         recentSearchView.isHidden = UserDefaults.standard.searchHistory.isEmpty
