@@ -11,15 +11,15 @@ import SnapKit
 
 final class SearchHistoryView: SearchHistoryBaseView {
     
-    private var searchHistorys: [StationDTO]!
+    let viewModel: BaseViewModel
     
     private let divider = UIView().then {
         $0.backgroundColor = Pallete.dividerGray.color
     }
     
-    init(searchHistorys: [StationDTO]) {
+    init(viewModel: BaseViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
-        self.searchHistorys = searchHistorys
         self.backgroundColor = Pallete.backgroundGray.color
         configure()
         setupLayout()
@@ -62,13 +62,13 @@ private extension SearchHistoryView {
 
 extension SearchHistoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchHistorys.count
+        UserDefaults.standard.searchHistory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchHistoryBaseViewCell.searchHistoryViewCellId) as? SearchHistoryBaseViewCell else { return UITableViewCell() }
-        let searchHistory = searchHistorys[indexPath.row]
-        cell.configure(data: searchHistory)
+        let searchHistory = UserDefaults.standard.searchHistory[indexPath.row]
+        cell.configure(data: viewModel.getStationDTOWithId(id: searchHistory)!)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell

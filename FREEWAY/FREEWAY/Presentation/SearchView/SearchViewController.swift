@@ -21,7 +21,7 @@ final class SearchViewController: UIViewController {
     
     //TODO: 추후 userdefaults 변수로 변경 필요
     lazy var searchTextFieldView = SearchTextfieldView()
-    lazy var searchHistoryView = SearchHistoryView(searchHistorys: datas)
+    lazy var searchHistoryView = SearchHistoryView(viewModel: viewModel)
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     lazy var searchListView = SearchListView(datas: viewModel.stationDatas)
     lazy var emptySearchView = EmptyView()
@@ -48,6 +48,11 @@ final class SearchViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         searchTextFieldView.searchTextfield.becomeFirstResponder()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchHistoryView.searchHistoryTableView.reloadData()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

@@ -20,7 +20,7 @@ final class HomeViewController: UIViewController {
     private let alertButton = InAppAlertButtonView()
     private let homeTitle = HomeTitleView()
     private let textField = HomeSearchTextfieldView()
-    private let recentSearchView = RecentSearchView()
+    private lazy var recentSearchView = RecentSearchView(viewModel: viewModel)
     private let voiceSearchLottieView = VoiceSearchLottieView()
 
     init(viewModel: BaseViewModel) {
@@ -39,6 +39,11 @@ final class HomeViewController: UIViewController {
         voiceRecognitionManager.setViewModel(viewModel: viewModel)
         setupLayout()
         bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        recentSearchView.searchHistoryTableView.reloadData()
     }
     //TODO: BaseViewController 구현 후에 옮기기
     private func safeAreaTopInset() -> CGFloat? {

@@ -12,8 +12,8 @@ extension UserDefaults {
         case searchHistorys
     }
     
-    var searchHistory: [StationDetailDTO] {
-        get { return array(forKey: Key.searchHistorys.rawValue) as? [StationDetailDTO] ?? [] }
+    var searchHistory: [Int] {
+        get { return array(forKey: Key.searchHistorys.rawValue) as? [Int] ?? [] }
         set { set(newValue, forKey: Key.searchHistorys.rawValue) }
     }
 }
