@@ -11,10 +11,11 @@ import Then
 
 final class RecentSearchView: SearchHistoryBaseView {
     
-    let searchHistorys = MockData.mockStationDTOs
+    let viewModel: BaseViewModel
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: BaseViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         self.backgroundColor = .white
         configure()
         setupLayout()
@@ -49,13 +50,13 @@ private extension RecentSearchView {
 
 extension RecentSearchView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        searchHistorys.count
+        UserDefaults.standard.searchHistory.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchHistoryBaseViewCell.searchHistoryViewCellId) as? SearchHistoryBaseViewCell else { return UITableViewCell() }
-        let searchHistory = searchHistorys[indexPath.row]
-        cell.configure(data: searchHistory, false, 0)
+        let searchHistory = UserDefaults.standard.searchHistory[indexPath.row]
+        cell.configure(data: viewModel.getStationDTOWithId(id: searchHistory)!, false, 0)
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         return cell

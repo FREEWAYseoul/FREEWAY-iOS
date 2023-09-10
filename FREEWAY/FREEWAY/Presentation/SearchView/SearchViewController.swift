@@ -21,7 +21,8 @@ final class SearchViewController: UIViewController {
     
     //TODO: 추후 userdefaults 변수로 변경 필요
     lazy var searchTextFieldView = SearchTextfieldView()
-    lazy var searchHistoryView = SearchHistoryView(searchHistorys: datas)
+    lazy var searchHistoryView = SearchHistoryView(viewModel: viewModel)
+    private let emptyHistoryView = EmptyHistoryView()
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     lazy var searchListView = SearchListView(datas: viewModel.stationDatas)
     lazy var emptySearchView = EmptyView()
@@ -39,8 +40,8 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setDefaultNavigationBar()
-        setupLayout()
         configure()
+        setupLayout()
         voiceRecognitionManager.setViewModel(viewModel: viewModel)
         bind()
     }
@@ -48,6 +49,11 @@ final class SearchViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         searchTextFieldView.searchTextfield.becomeFirstResponder()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchHistoryView.searchHistoryTableView.reloadData()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -131,6 +137,7 @@ private extension SearchViewController {
         searchTextFieldView.searchTextfield.delegate = self
         searchListView.searchHistoryTableView.delegate = self
         searchHistoryView.searchHistoryTableView.delegate = self
+        searchHistoryView.isHidden = UserDefaults.standard.searchHistory.isEmpty
     }
     
     func setupLayout() {
@@ -144,6 +151,16 @@ private extension SearchViewController {
         searchHistoryView.snp.makeConstraints { make in
             make.top.equalTo(searchTextFieldView.snp.bottom).offset(22)
             make.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        if searchHistoryView.isHidden {
+            view.addSubview(emptySearchView)
+            emptySearchView.snp.makeConstraints { make in
+                make.top.equalTo(searchTextFieldView.snp.bottom).offset(22)
+                make.bottom.leading.trailing.equalToSuperview()
+            }
+        } else {
+            emptySearchView.removeFromSuperview()
         }
     }
     

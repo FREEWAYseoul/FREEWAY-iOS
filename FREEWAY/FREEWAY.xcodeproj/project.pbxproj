@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		016CB63B2A7D493D005C4882 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB63A2A7D493D005C4882 /* NetworkError.swift */; };
 		016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6402A7D49E4005C4882 /* NetworkService.swift */; };
 		016CB64E2A7D4B4D005C4882 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		016CB6562A87DB46005C4882 /* Literal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6552A87DB46005C4882 /* Literal.swift */; };
@@ -36,6 +35,7 @@
 		2A7A8BB92A96517C00D0FFC2 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */; };
 		2A7A8BBA2A96517C00D0FFC2 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */; };
 		2A9577852AAD952C00A8F8E4 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9577842AAD952C00A8F8E4 /* BottomSheetViewController.swift */; };
+		2A9577872AADBEBC00A8F8E4 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9577862AADBEBC00A8F8E4 /* UserDefaultsExtension.swift */; };
 		2AB2850C2A98B0370077ED7C /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2850B2A98B0370077ED7C /* EmptyView.swift */; };
 		2AB2850F2A98EF700077ED7C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2850E2A98EF700077ED7C /* HomeViewController.swift */; };
 		2AB285122A98EFB80077ED7C /* RecentSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285112A98EFB80077ED7C /* RecentSearchView.swift */; };
@@ -98,7 +98,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		016CB63A2A7D493D005C4882 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		016CB6402A7D49E4005C4882 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		016CB6552A87DB46005C4882 /* Literal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Literal.swift; sourceTree = "<group>"; };
 		10CC25F152549A99084FF2F4 /* Pods_FREEWAY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +118,7 @@
 		2A7A8BAA2A96517C00D0FFC2 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2A9577842AAD952C00A8F8E4 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		2A9577862AADBEBC00A8F8E4 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
 		2AB2850B2A98B0370077ED7C /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		2AB2850E2A98EF700077ED7C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		2AB285112A98EFB80077ED7C /* RecentSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchView.swift; sourceTree = "<group>"; };
@@ -259,14 +259,6 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		016CB6392A7D4879005C4882 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				016CB63A2A7D493D005C4882 /* NetworkError.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		016CB64A2A7D4B13005C4882 /* MapsView */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */,
+				2A9577862AADBEBC00A8F8E4 /* UserDefaultsExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -451,7 +444,6 @@
 		2AC755152A7BFD2F00099C2A /* FREEWAY */ = {
 			isa = PBXGroup;
 			children = (
-				016CB6392A7D4879005C4882 /* Util */,
 				016CB6382A7D4872005C4882 /* Resource */,
 				016CB6372A7D486B005C4882 /* Presentation */,
 				016CB6362A7D4863005C4882 /* Services */,
@@ -777,6 +769,7 @@
 				2AB285152A98F07D0077ED7C /* SearchHistoryBaseView.swift in Sources */,
 				2AB285172A98F41C0077ED7C /* HomeSearchTextfieldView.swift in Sources */,
 				2AB2851D2A990E070077ED7C /* EmptyRecentSearchView.swift in Sources */,
+				2A9577872AADBEBC00A8F8E4 /* UserDefaultsExtension.swift in Sources */,
 				2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */,
 				2AB285422A9F8AD50077ED7C /* StationDetailTitleView.swift in Sources */,
 				2AB285582AA8AD6D0077ED7C /* SearchListView.swift in Sources */,
@@ -797,7 +790,6 @@
 				016CB64E2A7D4B4D005C4882 /* (null) in Sources */,
 				2AB2853B2A9F8A460077ED7C /* StationDetailViewController.swift in Sources */,
 				2AB285122A98EFB80077ED7C /* RecentSearchView.swift in Sources */,
-				016CB63B2A7D493D005C4882 /* NetworkError.swift in Sources */,
 				2A6D6CFE2AAB8012004E2DDA /* ElevatorMarkerView.swift in Sources */,
 				016CB6562A87DB46005C4882 /* Literal.swift in Sources */,
 				016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */,

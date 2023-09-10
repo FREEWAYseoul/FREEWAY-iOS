@@ -62,6 +62,20 @@ class BaseViewModel {
         }
     }
     
+    func getStationDTOWithId(id: Int) -> StationDTO? {
+        do {
+            // StationName을 사용하여 StationDTO를 검색하고 반환
+            if let station = stationDatas.first(where: { $0.stationId == id }) {
+                self.currentStationData = station
+                return station
+            }
+            return nil // 찾을 수 없는 경우
+        } catch {
+            // BehaviorSubject에서 값을 가져오지 못한 경우
+            return nil
+        }
+    }
+    
     func getCurrentStationDetailData(stationData: StationDTO) {
         currentStationDetailData = (stationsDetailDatas.first{ $0.stationId == stationData.stationId}) ?? MockData.mockStationDetail
     }
