@@ -65,12 +65,13 @@ private extension StationDetailTitleView {
             make.top.equalToSuperview().offset(13)
             make.leading.equalToSuperview().offset(16)
             make.height.equalTo(21)
+            make.width.equalTo(lineButton.lineIcon.intrinsicContentSize.width)
         }
         
-        var prevSubLine: SubLineButton? // prevSubLine을 옵셔널로 변경
-
+        var prevSubLine: SubLineButton?
+        
         for idx in 0..<subLineButtons.count {
-            let subLineButton = subLineButtons[idx] // 현재 버튼을 가져옴
+            let subLineButton = subLineButtons[idx]
             self.addSubview(subLineButton)
             
             subLineButton.snp.makeConstraints { make in
@@ -82,9 +83,10 @@ private extension StationDetailTitleView {
                     make.leading.equalTo(prevSubLine!.snp.trailing).offset(9)
                 }
                 make.height.equalTo(21)
+                make.width.equalTo(subLineButton.intrinsicContentSize.width)
             }
             
-            prevSubLine = subLineButton // prevSubLine을 현재 버튼으로 갱신
+            prevSubLine = subLineButton
         }
         
         self.addSubview(backButton)
