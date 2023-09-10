@@ -84,7 +84,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
-        return MockData.mockStationDTOs.first { $0.stationName == stationName }
+        return viewModel.stationDatas.first { $0.stationName == stationName }
     }
     
     private func showInvalidStationNameAlert() {
@@ -96,6 +96,8 @@ final class HomeViewController: UIViewController {
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
         if findStationDetailDTO(searchText) != nil {
+            viewModel.currentStationData = viewModel.getStationDTO()!
+            viewModel.getCurrentStationDetailData(stationData: viewModel.currentStationData)
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
             showInvalidStationNameAlert()

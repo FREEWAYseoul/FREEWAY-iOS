@@ -52,8 +52,8 @@ class MapsViewController: UIViewController {
         data = viewModel.currentStationData
         viewModel.getCurrentStationDetailData(stationData: data!)
         var searchHistorys = UserDefaults.standard.searchHistory
-        searchHistorys = Array(Set(searchHistorys))
         searchHistorys.insert(viewModel.currentStationData.stationId, at: 0)
+        searchHistorys = Array(Set(searchHistorys))
         UserDefaults.standard.searchHistory = searchHistorys
         super.init(nibName: nil, bundle: nil)
     }
