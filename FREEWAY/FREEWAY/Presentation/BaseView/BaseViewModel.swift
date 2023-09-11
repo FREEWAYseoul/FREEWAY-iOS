@@ -11,6 +11,7 @@ import RxCocoa
 class BaseViewModel {
     var stationDatas: [StationDTO] = []
     var stationsDetailDatas: [StationDetailDTO] = []
+    var notificationDatas: [NotificationDTO] = []
     var currentStationData = MockData.mockStationDTO
     var currentStationDetailData = MockData.mockStationDetail
     

@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 final class NotificationViewController: UIViewController {
-    let data = MockData.mockNotiDTO
+    let data: [NotificationDTO]
     
     let notificationsTableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear
@@ -20,6 +20,15 @@ final class NotificationViewController: UIViewController {
     }
     
     let notificationTitle = NotificationTitleView()
+    
+    init(data: [NotificationDTO]) {
+        self.data = data
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

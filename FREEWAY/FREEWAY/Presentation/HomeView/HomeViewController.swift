@@ -72,7 +72,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func notiButtonPressed(_ sender: UIButton) {
-        self.navigationController?.pushViewController(NotificationViewController(), animated: true)
+        self.navigationController?.pushViewController(NotificationViewController(data: viewModel.notificationDatas), animated: true)
     }
     
     private func bind() {
