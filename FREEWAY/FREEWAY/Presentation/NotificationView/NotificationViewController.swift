@@ -14,9 +14,9 @@ final class NotificationViewController: UIViewController {
     
     let notificationsTableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear
-        $0.rowHeight = 57
         $0.isScrollEnabled = true
         $0.separatorStyle = .none
+        $0.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.notiCellId)
     }
     
     let notificationTitle = NotificationTitleView()
@@ -54,6 +54,8 @@ private extension NotificationViewController {
     func configure() {
         view.backgroundColor = .white
         notificationTitle.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        notificationsTableView.delegate = self
+        notificationsTableView.dataSource = self
     }
     
     func setupLayout() {
@@ -63,5 +65,49 @@ private extension NotificationViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(59)
         }
+        
+        view.addSubview(notificationsTableView)
+        notificationsTableView.snp.makeConstraints { make in
+            make.top.equalTo(notificationTitle.snp.bottom)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview()
+        }
     }
+}
+
+extension NotificationViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return data.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data[section].notifications.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.notiCellId) as? NotificationTableViewCell else { return UITableViewCell() }
+        let data = data[indexPath.section].notifications[indexPath.row]
+        print(data)
+        cell.configure(data: data, isToday: false, date: "")
+        return cell
+    }
+    
+    // MARK: - UITableViewDelegate Methods
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let dateSection = NotificationTableSection()
+        let date = data[section].date
+        dateSection.configure(date: date)
+        return dateSection
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
+
+extension NotificationViewController: UITableViewDelegate {
+    
 }

@@ -18,19 +18,19 @@ final class NotificationTableViewCell: UITableViewCell {
     
     private lazy var time = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Regular", size: 16)
-        $0.sizeToFit()
     }
     
     private var title = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Bold", size: 16)
         $0.textColor = Pallete.customBlack.color
-        $0.sizeToFit()
+        
     }
     
     private var body = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Regular", size: 16)
         $0.textColor = Pallete.customBlack.color
         $0.sizeToFit()
+        $0.numberOfLines = 0
     }
     
 
@@ -41,20 +41,8 @@ final class NotificationTableViewCell: UITableViewCell {
         }
     }
     var date = ""
-    var prevDate = ""
-    
-    private let dateLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-SemiBold", size: 16)
-        $0.textColor = .black
-        $0.alpha = 0.5
-    }
-    
-    private let separator = UIView().then {
-        $0.backgroundColor = Pallete.alertPrevTimeGray.color
-    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
     }
@@ -64,35 +52,20 @@ final class NotificationTableViewCell: UITableViewCell {
     }
 }
 
-private extension NotificationTableViewCell {
+extension NotificationTableViewCell {
     func configure(data: NotificationDataDTO, isToday: Bool, date: String) {
         self.isToday = isToday
         self.title.text = data.summary
         self.time.text = data.time
-        self.body.text = data.summary
-        self.dateLabel.text = date
+        self.body.text = data.content
         self.date = date
     }
     
-    func setupLayout() {
-        if prevDate != date {
-            self.addSubview(dateLabel)
-            dateLabel.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(40)
-                make.leading.trailing.equalToSuperview()
-            }
-            
-            self.addSubview(separator)
-            separator.snp.makeConstraints { make in
-                make.top.equalTo(dateLabel.snp.bottom).offset(10)
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(1)
-            }
-        }
+    private func setupLayout() {
         
         self.addSubview(timeDot)
         timeDot.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(10)
             make.leading.equalToSuperview()
             make.width.height.equalTo(12)
         }
@@ -109,11 +82,11 @@ private extension NotificationTableViewCell {
             make.leading.trailing.equalToSuperview()
         }
         
-        
         self.addSubview(body)
         body.snp.makeConstraints { make in
             make.top.equalTo(title.snp.bottom)
-            make.leading.trailing.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-10)
         }
     }
 }
