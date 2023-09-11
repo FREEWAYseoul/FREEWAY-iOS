@@ -41,6 +41,7 @@ final class SettingWebViewController: UIViewController {
         view.backgroundColor = .white
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         setWebView()
+        setDefaultNavigationBar()
         view.insetsLayoutMarginsFromSafeArea = true
     }
     
@@ -50,6 +51,21 @@ final class SettingWebViewController: UIViewController {
     
     deinit {
         observation = nil
+    }
+    
+    //MARK: Contraints
+    private func safeAreaTopInset() -> CGFloat? {
+        if #available(iOS 15.0, *) {
+            let topArea = UIApplication.shared.windows.first?.safeAreaInsets.top
+            return topArea
+        } else {
+            return nil
+        }
+    }
+    
+    private func setDefaultNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
 }
