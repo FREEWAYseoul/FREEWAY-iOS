@@ -40,7 +40,6 @@ final class NotificationTableViewCell: UITableViewCell {
             time.textColor = self.isToday ? Pallete.alertTimeRed.color : Pallete.alertPrevTimeGray.color
         }
     }
-    var date = ""
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,12 +52,11 @@ final class NotificationTableViewCell: UITableViewCell {
 }
 
 extension NotificationTableViewCell {
-    func configure(data: NotificationDataDTO, isToday: Bool, date: String) {
+    func configure(data: NotificationDataDTO, isToday: Bool) {
         self.isToday = isToday
         self.title.text = data.summary
         self.time.text = data.time
         self.body.text = data.content
-        self.date = date
     }
     
     private func setupLayout() {

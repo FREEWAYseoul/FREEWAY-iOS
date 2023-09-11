@@ -54,8 +54,8 @@ private extension NotificationViewController {
     func configure() {
         view.backgroundColor = .white
         notificationTitle.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        notificationsTableView.delegate = self
         notificationsTableView.dataSource = self
+        notificationsTableView.delegate = self
     }
     
     func setupLayout() {
@@ -76,7 +76,12 @@ private extension NotificationViewController {
     }
 }
 
-extension NotificationViewController: UITableViewDataSource {
+extension NotificationViewController: UITableViewDataSource, UITableViewDelegate {
+    func isSectionDateToday(section: Int) -> Bool {
+        let sectionDate = data[section].date.formatDate(from: "yyyy-MM-dd", to: "yyyy년 M월 d일 E요일")
+        return sectionDate?.isToday() ?? false
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return data.count
     }
@@ -87,18 +92,22 @@ extension NotificationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.notiCellId) as? NotificationTableViewCell else { return UITableViewCell() }
+        let isSectionToday = isSectionDateToday(section: indexPath.section)
         let data = data[indexPath.section].notifications[indexPath.row]
         print(data)
-        cell.configure(data: data, isToday: false, date: "")
+        cell.configure(data: data, isToday: isSectionToday)
         return cell
     }
     
     // MARK: - UITableViewDelegate Methods
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    private func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView {
         let dateSection = NotificationTableSection()
-        let date = data[section].date
-        dateSection.configure(date: date)
+        var date = data[section].date.formatDate(from: "yyyy-MM-dd", to: "yyyy년 M월 d일 E요일")
+        date = date!.isToday() ? "(오늘) " + date! : date
+        
+        dateSection.configure(date: date!)
+        dateSection.backgroundColor = .white
         return dateSection
     }
     
@@ -106,8 +115,4 @@ extension NotificationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-}
-
-extension NotificationViewController: UITableViewDelegate {
-    
 }

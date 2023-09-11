@@ -25,7 +25,6 @@ final class NotificationTableSection: UIView {
     init() {
         super.init(frame: .zero)
         setupLayout()
-        self.backgroundColor = .white 
     }
     
     required init?(coder: NSCoder) {

@@ -74,7 +74,7 @@ struct MockData {
     
     static let mockNotiDTO: [NotificationDTO] = [
         NotificationDTO (
-            date: "2023-07-30",
+            date: "2023-09-11",
             notifications: [
                 NotificationDataDTO(
                     summary: "금천구청역 간 1호선 열차 운행 재개됨.",
