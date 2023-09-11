@@ -44,6 +44,12 @@ final class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(viewModel.hasNewerDate())
+        if viewModel.hasNewerDate() {
+            alertButton.image = "alertDot"
+        } else {
+            alertButton.image = "alert"
+        }
         recentSearchView.searchHistoryTableView.reloadData()
     }
     //TODO: BaseViewController 구현 후에 옮기기
@@ -72,7 +78,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func notiButtonPressed(_ sender: UIButton) {
-        self.navigationController?.pushViewController(NotificationViewController(data: viewModel.notificationDatas), animated: true)
+        self.navigationController?.pushViewController(NotificationViewController(viewModel: viewModel), animated: true)
     }
     
     private func bind() {

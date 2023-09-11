@@ -10,7 +10,8 @@ import SnapKit
 import Then
 
 final class NotificationViewController: UIViewController {
-    let data: [NotificationDTO]
+    let viewModel: BaseViewModel
+    var data: [NotificationDTO] = []
     
     let notificationsTableView = UITableView(frame: .zero, style: .plain).then {
         $0.backgroundColor = .clear
@@ -21,8 +22,9 @@ final class NotificationViewController: UIViewController {
     
     let notificationTitle = NotificationTitleView()
     
-    init(data: [NotificationDTO]) {
-        self.data = data
+    init(viewModel: BaseViewModel) {
+        self.viewModel = viewModel
+        self.data = viewModel.notificationDatas
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -32,8 +34,14 @@ final class NotificationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setDefaultNavigationBar()
         configure()
         setupLayout()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UserDefaults.standard.lastVisitDate = Date()
     }
     
     //MARK: Contraints
@@ -86,10 +94,6 @@ private extension NotificationViewController {
 }
 
 extension NotificationViewController: UITableViewDataSource, UITableViewDelegate {
-    func isSectionDateToday(section: Int) -> Bool {
-        let sectionDate = data[section].date.formatDate(from: "yyyy-MM-dd", to: "yyyy년 M월 d일 E요일")
-        return sectionDate?.isToday() ?? false
-    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return data.count
@@ -101,10 +105,9 @@ extension NotificationViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.notiCellId) as? NotificationTableViewCell else { return UITableViewCell() }
-        let isSectionToday = isSectionDateToday(section: indexPath.section)
         let data = data[indexPath.section].notifications[indexPath.row]
-        print(data)
-        cell.configure(data: data, isToday: isSectionToday)
+        cell.selectionStyle = .none
+        cell.configure(data: data, isToday: viewModel.hasNewerDate())
         return cell
     }
     
