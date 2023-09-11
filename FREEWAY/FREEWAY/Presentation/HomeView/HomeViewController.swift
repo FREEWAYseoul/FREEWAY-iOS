@@ -44,6 +44,12 @@ final class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(viewModel.hasNewerDate())
+        if viewModel.hasNewerDate() {
+            alertButton.image = "alertDot"
+        } else {
+            alertButton.image = "alert"
+        }
         recentSearchView.searchHistoryTableView.reloadData()
     }
     //TODO: BaseViewController 구현 후에 옮기기
@@ -69,6 +75,10 @@ final class HomeViewController: UIViewController {
             voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
             voiceRecognitionManager.startRecognition()
         }
+    }
+    
+    @objc func notiButtonPressed(_ sender: UIButton) {
+        self.navigationController?.pushViewController(NotificationViewController(viewModel: viewModel), animated: true)
     }
     
     private func bind() {
@@ -111,6 +121,7 @@ private extension HomeViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         textField.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
         let placeHolderGesture = UITapGestureRecognizer(target: self, action: #selector(tabPlaceholderLabel))
+        alertButton.addTarget(self, action: #selector(notiButtonPressed), for: .touchUpInside)
         textField.placeholderLabel.addGestureRecognizer(placeHolderGesture)
         recentSearchView.searchHistoryTableView.delegate = self
         recentSearchView.isHidden = UserDefaults.standard.searchHistory.isEmpty

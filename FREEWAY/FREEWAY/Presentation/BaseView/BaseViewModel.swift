@@ -11,6 +11,8 @@ import RxCocoa
 class BaseViewModel {
     var stationDatas: [StationDTO] = []
     var stationsDetailDatas: [StationDetailDTO] = []
+    var notificationDatas: [NotificationDTO] = []
+    
     var currentStationData = MockData.mockStationDTO
     var currentStationDetailData = MockData.mockStationDetail
     
@@ -78,5 +80,13 @@ class BaseViewModel {
     
     func getCurrentStationDetailData(stationData: StationDTO) {
         currentStationDetailData = (stationsDetailDatas.first{ $0.stationId == stationData.stationId}) ?? MockData.mockStationDetail
+    }
+    
+    func hasNewerDate() -> Bool {
+        let lastVisitDate = UserDefaults.standard.lastVisitDate
+        if let newestNotificationDate = notificationDatas.first?.date.formatStringToDate() {
+            return lastVisitDate == nil || newestNotificationDate > lastVisitDate!
+        }
+        return lastVisitDate == nil
     }
 }

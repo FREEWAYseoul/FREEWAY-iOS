@@ -16,6 +16,8 @@ enum Pallete: String {
     case alertBackgroundRed
     case alertIconGray
     case alertDotRed
+    case alertTimeRed
+    case alertPrevTimeGray
     case voiceTextBackground
     case updatedTextGray
     case impossibleRed

@@ -20,7 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
         
-        var viewModel = BaseViewModel()
+        let viewModel = BaseViewModel()
+        NetworkService.shared.getNotifications { data, error in
+            if let data = data {
+                viewModel.notificationDatas = data
+            } else if error != nil {
+                print("알림 오류")
+            }
+        }
+        
         NetworkService.shared.getAllStationList { stations, error in
             if let stations = stations {
                 viewModel.stationDatas = stations
