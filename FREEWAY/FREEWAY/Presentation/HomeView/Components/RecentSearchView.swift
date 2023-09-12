@@ -50,7 +50,7 @@ private extension RecentSearchView {
 
 extension RecentSearchView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        UserDefaults.standard.searchHistory.count
+        return 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

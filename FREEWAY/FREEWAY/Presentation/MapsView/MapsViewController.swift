@@ -195,8 +195,7 @@ private extension MapsViewController {
     
     func addMarker(data: StationDTO, width: CGFloat, height: CGFloat) {
         let imageView = StationMarkerView(
-            line: data.lineId,
-            stationName: data.stationName
+            elevatorCount: String(data.availableElevatorsNumber), stationName: data.stationName, line: data.lineId
         )
         let position: CLLocationCoordinate2D = {
             CLLocationCoordinate2D(latitude: CLLocationDegrees(data.coordinate.latitude)!, longitude: CLLocationDegrees(data.coordinate.longitude)!)
