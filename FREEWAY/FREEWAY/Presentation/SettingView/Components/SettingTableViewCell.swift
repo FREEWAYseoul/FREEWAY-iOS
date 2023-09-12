@@ -24,6 +24,11 @@ final class SettingTableViewCell: UITableViewCell {
         return image
     }()
     
+    private let seperator = UIView().then {
+        $0.backgroundColor = Pallete.updatedTextGray.color
+        $0.layer.opacity = 0.5
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupLayout()
@@ -49,10 +54,18 @@ final class SettingTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-14)
             make.centerY.equalToSuperview()
         }
+        
+        addSubview(seperator)
+        seperator.snp.makeConstraints { make in
+            make.top.equalTo(settingTitleLabel.snp.bottom).offset(13)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+        }
     }
     
-    func configureUI(title: String) {
+    func configureUI(title: String, isLastCell: Bool) {
         self.settingTitleLabel.text = title
+        self.seperator.isHidden = isLastCell ? true : false
     }
 }
 

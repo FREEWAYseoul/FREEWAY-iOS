@@ -10,6 +10,7 @@ import Then
 import UIKit
 
 final class SettingViewController: UIViewController {
+    
     enum SettingTitle: String {
         case locationTermsOfService = "위치기반 서비스 이용약관"
         case privacyPolicy = "개인정보 정책"
@@ -19,17 +20,20 @@ final class SettingViewController: UIViewController {
     
     private let settingTitle: [SettingTitle] = [.locationTermsOfService, .privacyPolicy, .openSource, .question]
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.isScrollEnabled = false
-        tableView.rowHeight = 47
-        tableView.backgroundColor = .white
-        return tableView
-    }()
+    let settingTitleView = SettingTitleView()
+    
+    lazy var tableView = UITableView(frame: .zero, style: .plain).then {
+        $0.isScrollEnabled = false
+        $0.rowHeight = 48
+        $0.backgroundColor = .white
+        $0.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.settingId)
+        $0.separatorStyle = .none
+        $0.backgroundColor = Pallete.backgroundGray.color
+    }
     
     func webViewCellPressed(webURL: String) {
         let viewController = SettingWebViewController()
-            //viewController.webURL = webURL
+            viewController.webURL = webURL
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     
@@ -43,8 +47,9 @@ final class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = Pallete.backgroundGray.color
-        setTableViewLayout()
+        self.view.backgroundColor = .white
+        configure()
+        setupLayout()
     }
     
     //MARK: Contraints
@@ -62,6 +67,11 @@ final class SettingViewController: UIViewController {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
+    //MARK: Action
+    @objc func backButtonPressed(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 extension SettingViewController: UITableViewDataSource {
@@ -71,7 +81,7 @@ extension SettingViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.settingId) as? SettingTableViewCell else { return UITableViewCell() }
-        cell.configureUI(title: settingTitle[indexPath.item].rawValue)
+        cell.configureUI(title: settingTitle[indexPath.item].rawValue, isLastCell: indexPath.item == settingTitle.count-1)
         cell.backgroundColor = .white
         return cell
     }
@@ -95,13 +105,23 @@ extension SettingViewController: UITableViewDelegate {
 }
 
 private extension SettingViewController {
-    func setTableViewLayout() {
-        view.addSubview(tableView)
+    func configure() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.settingId)
+    }
+    
+    func setupLayout() {
+        view.addSubview(settingTitleView)
+        settingTitleView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(57)
+        }
+        
+        view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.top.equalTo(settingTitleView.snp.bottom)
+            make.leading.bottom.trailing.equalToSuperview()
         }
     }
 }

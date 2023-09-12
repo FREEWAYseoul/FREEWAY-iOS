@@ -23,6 +23,10 @@ final class HomeViewController: UIViewController {
     private lazy var recentSearchView = RecentSearchView(viewModel: viewModel)
     private let emptyRecentView = EmptyRecentSearchView()
     private let voiceSearchLottieView = VoiceSearchLottieView()
+    lazy var settingButton = UIButton().then {
+        $0.setImage(.init(named: "Setting"), for: .normal)
+        $0.addTarget(self, action: #selector(settingButtonPressed), for: .touchUpInside)
+    }
 
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
@@ -81,6 +85,10 @@ final class HomeViewController: UIViewController {
         self.navigationController?.pushViewController(NotificationViewController(viewModel: viewModel), animated: true)
     }
     
+    @objc func settingButtonPressed(_ sender: UIButton) {
+        self.navigationController?.pushViewController(SettingViewController(), animated: true)
+    }
+    
     private func bind() {
         viewModel.voiceStationName
             .subscribe(onNext: { [weak self] text in
@@ -131,8 +139,15 @@ private extension HomeViewController {
         view.addSubview(alertButton)
         alertButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 32.09)
-            make.trailing.equalToSuperview().offset(-20)
+            make.trailing.equalToSuperview().offset(-61.1)
             make.width.equalTo(29)
+        }
+        
+        view.addSubview(settingButton)
+        settingButton.snp.makeConstraints { make in
+            make.centerY.equalTo(alertButton)
+            make.leading.equalTo(alertButton.snp.trailing).offset(12.1)
+            make.height.width.equalTo(30)
         }
         
         view.addSubview(homeTitle)
