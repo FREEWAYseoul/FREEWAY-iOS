@@ -67,17 +67,16 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-        if voiceRecognitionManager.isRecognizing {
-            recentSearchView.isHidden = false
-            voiceRecognitionManager.stopRecognition()
-            voiceSearchLottieView.removeFromSuperview()
-            navigateToMapsViewControllerIfNeeded(voiceRecognitionManager.resultText ?? "")
-        } else {
             recentSearchView.isHidden = true
             setupLottieLayout()
             voiceSearchLottieView.voiceLottieView.play()
             voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
             voiceRecognitionManager.startRecognition()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.recentSearchView.isHidden = false
+            self.voiceRecognitionManager.stopRecognition()
+            self.voiceSearchLottieView.removeFromSuperview()
+            self.navigateToMapsViewControllerIfNeeded(self.voiceRecognitionManager.resultText ?? "")
         }
     }
     

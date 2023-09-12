@@ -83,19 +83,18 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-        if voiceRecognitionManager.isRecognizing {
-            searchHistoryView.isHidden = false
-            voiceRecognitionManager.stopRecognition()
-            voiceSearchLottieView.removeFromSuperview()
-            searchTextFieldView.searchTextfield.text = voiceRecognitionManager.resultText
-            navigateToMapsViewControllerIfNeeded(voiceRecognitionManager.resultText ?? "")
-        } else {
-            searchHistoryView.isHidden = true
-            searchTextFieldView.searchTextfield.resignFirstResponder()
-            setupLottieLayout()
-            voiceSearchLottieView.voiceLottieView.play()
-            voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
-            voiceRecognitionManager.startRecognition()
+        searchHistoryView.isHidden = true
+        searchListView.isHidden = true
+        setupLottieLayout()
+        voiceSearchLottieView.voiceLottieView.play()
+        voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
+        voiceRecognitionManager.startRecognition()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        self.searchListView.isHidden = false
+        self.searchHistoryView.isHidden = false
+        self.voiceRecognitionManager.stopRecognition()
+        self.voiceSearchLottieView.removeFromSuperview()
+        self.navigateToMapsViewControllerIfNeeded(self.viewModel.getStationName() ?? "강남")
         }
     }
     

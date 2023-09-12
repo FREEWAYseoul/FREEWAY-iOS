@@ -35,7 +35,6 @@ class BaseViewModel {
     }
     
     func updateVoiceText(_ text: String) {
-        inputText.onNext(text)
         inputVoice.onNext(text)
     }
     
