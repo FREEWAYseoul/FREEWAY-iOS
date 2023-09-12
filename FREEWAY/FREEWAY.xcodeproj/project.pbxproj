@@ -45,6 +45,7 @@
 		2A95779A2AAF5B3C00A8F8E4 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9577992AAF5B3C00A8F8E4 /* SettingTableViewCell.swift */; };
 		2A95779C2AAF5B4700A8F8E4 /* SettingWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A95779B2AAF5B4700A8F8E4 /* SettingWebViewController.swift */; };
 		2A9577A02AB0B36600A8F8E4 /* SettingTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A95779F2AB0B36600A8F8E4 /* SettingTitleView.swift */; };
+		2A9577A22AB0D23800A8F8E4 /* CombineExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9577A12AB0D23800A8F8E4 /* CombineExtension.swift */; };
 		2AB2850C2A98B0370077ED7C /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2850B2A98B0370077ED7C /* EmptyView.swift */; };
 		2AB2850F2A98EF700077ED7C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2850E2A98EF700077ED7C /* HomeViewController.swift */; };
 		2AB285122A98EFB80077ED7C /* RecentSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285112A98EFB80077ED7C /* RecentSearchView.swift */; };
@@ -137,6 +138,7 @@
 		2A9577992AAF5B3C00A8F8E4 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		2A95779B2AAF5B4700A8F8E4 /* SettingWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingWebViewController.swift; sourceTree = "<group>"; };
 		2A95779F2AB0B36600A8F8E4 /* SettingTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTitleView.swift; sourceTree = "<group>"; };
+		2A9577A12AB0D23800A8F8E4 /* CombineExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineExtension.swift; sourceTree = "<group>"; };
 		2AB2850B2A98B0370077ED7C /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		2AB2850E2A98EF700077ED7C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		2AB285112A98EFB80077ED7C /* RecentSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchView.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */,
 				2A9577862AADBEBC00A8F8E4 /* UserDefaultsExtension.swift */,
 				2A9577932AAF493100A8F8E4 /* StringExtension.swift */,
+				2A9577A12AB0D23800A8F8E4 /* CombineExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -859,6 +862,7 @@
 				2A9577972AAF5B2C00A8F8E4 /* SettingViewController.swift in Sources */,
 				2AB285122A98EFB80077ED7C /* RecentSearchView.swift in Sources */,
 				2A6D6CFE2AAB8012004E2DDA /* ElevatorMarkerView.swift in Sources */,
+				2A9577A22AB0D23800A8F8E4 /* CombineExtension.swift in Sources */,
 				016CB6562A87DB46005C4882 /* Literal.swift in Sources */,
 				016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */,
 				2AB2854C2AA23AE80077ED7C /* FacilitiesView.swift in Sources */,
