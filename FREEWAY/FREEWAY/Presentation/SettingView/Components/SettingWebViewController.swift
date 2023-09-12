@@ -16,15 +16,7 @@ final class SettingWebViewController: UIViewController {
     private var webView: WKWebView!
     private var observation: NSKeyValueObservation?
     
-    private let backButtonImage = UIImageView(frame: .zero).then {
-        $0.image = UIImage(named: "icon-arrow-right")
-        $0.tintColor = Pallete.customGray.color
-        $0.contentMode = .scaleAspectFit
-    }
-    
-    lazy var backButton = UIButton(frame: .zero).then {
-        $0.backgroundColor = .clear
-    }
+    var settingWebTitleView = SettingTitleView()
     
     lazy var progressView =  UIProgressView(progressViewStyle: .bar).then {
         $0.progressTintColor = Pallete.customBlue.color
@@ -38,11 +30,9 @@ final class SettingWebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        configure()
         setWebView()
         setDefaultNavigationBar()
-        //view.insetsLayoutMarginsFromSafeArea = true
         setupLayout()
     }
     
@@ -72,25 +62,24 @@ final class SettingWebViewController: UIViewController {
 }
 
 private extension SettingWebViewController {
+    func configure() {
+        view.backgroundColor = .white
+        settingWebTitleView.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        settingWebTitleView.seperator.removeFromSuperview()
+    }
     
     func setupLayout() {
     
-    view.addSubview(backButton)
-    backButton.snp.makeConstraints { make in
+    view.addSubview(settingWebTitleView)
+    settingWebTitleView.snp.makeConstraints { make in
         make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
-        make.leading.equalToSuperview().offset(10)
+        make.leading.trailing.equalToSuperview()
+        make.height.equalTo(50)
     }
-    
-    backButton.addSubview(backButtonImage)
-    backButtonImage.snp.makeConstraints { make in
-        make.bottom.top.leading.equalToSuperview()
-        make.width.equalTo(24)
-    }
-    backButtonImage.isUserInteractionEnabled = false
     
         view.addSubview(progressView)
         progressView.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(10)
+            make.top.equalTo(settingWebTitleView.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(2.5)
         }

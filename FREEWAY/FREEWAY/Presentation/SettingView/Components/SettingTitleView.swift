@@ -28,7 +28,7 @@ final class SettingTitleView: UIView {
         $0.backgroundColor = .clear
     }
     
-    private let seperator = UIView().then {
+    let seperator = UIView().then {
         $0.backgroundColor = Pallete.updatedTextGray.color
         $0.layer.opacity = 0.5
     }

@@ -108,6 +108,7 @@ private extension SettingViewController {
     func configure() {
         tableView.dataSource = self
         tableView.delegate = self
+        settingTitleView.backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
     
     func setupLayout() {
