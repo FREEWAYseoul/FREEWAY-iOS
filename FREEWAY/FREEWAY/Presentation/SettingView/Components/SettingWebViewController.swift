@@ -42,7 +42,8 @@ final class SettingWebViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         setWebView()
         setDefaultNavigationBar()
-        view.insetsLayoutMarginsFromSafeArea = true
+        //view.insetsLayoutMarginsFromSafeArea = true
+        setupLayout()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -76,7 +77,7 @@ private extension SettingWebViewController {
     
     view.addSubview(backButton)
     backButton.snp.makeConstraints { make in
-        make.top.equalToSuperview().offset(13)
+        make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 13)
         make.leading.equalToSuperview().offset(10)
     }
     
