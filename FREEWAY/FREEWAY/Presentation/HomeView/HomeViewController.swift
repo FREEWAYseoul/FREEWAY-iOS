@@ -140,7 +140,7 @@ private extension HomeViewController {
         alertButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 32.09)
             make.trailing.equalToSuperview().offset(-61.1)
-            make.width.equalTo(29)
+            make.width.equalTo(25)
         }
         
         view.addSubview(settingButton)
