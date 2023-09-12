@@ -251,7 +251,7 @@ private extension MapsViewController {
                         self.deleteStationDetailMarker()
                         self.mapsView.zoomLevel = 14
                         self.viewModel.updateText(stationMarker.stationData.stationName)
-                        self.data = self.viewModel.getStationDTO()
+                        self.data = self.viewModel.getStationDTOWithId(id: stationMarker.stationData.stationId)
                         self.viewModel.getCurrentStationDetailData(stationData: self.data!)
                         self.moveLocation()
                         self.setElevatorMarker()
