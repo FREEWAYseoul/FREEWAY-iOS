@@ -10,12 +10,14 @@ import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import Combine
 
 final class SearchViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
     let viewModel: BaseViewModel
     let disposeBag = DisposeBag()
+    private var cancelBag = Set<AnyCancellable>()
     var datas = MockData.mockStationDTOs
     let networkService = NetworkService.shared
     
@@ -83,6 +85,7 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
+        self.viewModel.inputVoice.send("듣고 있어요")
         searchHistoryView.isHidden = true
         searchListView.isHidden = true
         setupLottieLayout()
@@ -99,11 +102,10 @@ final class SearchViewController: UIViewController {
     }
     
     private func bind() {
-        viewModel.voiceStationName
-            .subscribe(onNext: { [weak self] text in
-                self?.voiceSearchLottieView.resultTextLabel.text = text
-            })
-            .disposed(by: disposeBag)
+        viewModel.inputVoice.withRetained(self)
+            .sink { `self`, resultText in
+                self.voiceSearchLottieView.resultTextLabel.text = resultText
+            }.store(in: &cancelBag)
         
         searchTextFieldView.searchTextfield.rx.text.orEmpty
             .subscribe(onNext: { [weak self] text in
@@ -165,6 +167,7 @@ private extension SearchViewController {
     
     func setupLottieLayout() {
         view.addSubview(voiceSearchLottieView)
+        voiceSearchLottieView.resultTextLabel.text = "듣고 있어요"
         voiceSearchLottieView.snp.makeConstraints { make in
             make.top.equalTo(searchTextFieldView.snp.bottom).offset(91)
             make.leading.trailing.bottom.equalToSuperview()

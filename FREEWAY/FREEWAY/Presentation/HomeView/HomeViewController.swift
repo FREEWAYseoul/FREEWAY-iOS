@@ -9,13 +9,13 @@ import UIKit
 import SnapKit
 import Then
 import RxSwift
-
+import Combine
 
 final class HomeViewController: UIViewController {
     
     private let voiceRecognitionManager = VoiceRecognitionManager.shared
     let viewModel: BaseViewModel
-    let disposeBag = DisposeBag()
+    private var cancelBag = Set<AnyCancellable>()
     
     private let alertButton = InAppAlertButtonView()
     private let homeTitle = HomeTitleView()
@@ -87,11 +87,10 @@ final class HomeViewController: UIViewController {
     }
     
     private func bind() {
-        viewModel.voiceStationName
-            .subscribe(onNext: { [weak self] text in
-                self?.voiceSearchLottieView.resultTextLabel.text = text
-            })
-            .disposed(by: disposeBag)
+        viewModel.inputVoice.withRetained(self)
+            .sink { `self`, resultText in
+                self.voiceSearchLottieView.resultTextLabel.text = resultText
+            }.store(in: &cancelBag)
     }
     
     @objc func tabPlaceholderLabel(sender: UITapGestureRecognizer){
@@ -167,6 +166,7 @@ private extension HomeViewController {
     
     func setupLottieLayout() {
         view.addSubview(voiceSearchLottieView)
+        voiceSearchLottieView.resultTextLabel.text = "듣고 있어요"
         voiceSearchLottieView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-200)
             make.leading.equalToSuperview().offset(-45)
