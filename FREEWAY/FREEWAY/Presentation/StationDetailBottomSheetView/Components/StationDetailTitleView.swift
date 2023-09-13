@@ -224,6 +224,7 @@ final class NextStationButton: UIButton {
         $0.text = stationName
         $0.textColor = .white
         $0.textAlignment = .right
+        $0.sizeToFit()
     }
     
     private let nextImage = UIImageView().then {
@@ -271,6 +272,7 @@ final class PrevStationButton: UIButton {
         $0.font = UIFont(name: "Pretendard-Regular", size: 16)
         $0.text = stationName
         $0.textColor = .white
+        $0.sizeToFit()
     }
     
     private let prevImage = UIImageView().then {
@@ -379,12 +381,15 @@ private extension StationTitle {
         prevStationTitleButton.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
+            make.height.equalToSuperview()
+            make.width.equalTo(70)
         }
         
         prevNextStationTitlebackground.addSubview(nextStationTitleButton)
         nextStationTitleButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
+            make.width.equalTo(70)
         }
         
         self.addSubview(stationTitleBackground)
