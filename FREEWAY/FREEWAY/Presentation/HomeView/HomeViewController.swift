@@ -68,9 +68,11 @@ final class HomeViewController: UIViewController {
         searchListModule.view.isHidden = true
         setupLottieLayout()
         voiceSearchLottieView.voiceLottieView.play()
+        textField.voiceImage = "waveform"
         voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
         voiceRecognitionManager.startRecognition()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.textField.voiceImage = "mic.fill"
             self.searchListModule.view.isHidden = false
             self.voiceRecognitionManager.stopRecognition()
             self.voiceSearchLottieView.removeFromSuperview()

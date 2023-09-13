@@ -13,6 +13,7 @@ final class MapsViewTitle: UIView {
     let currentTextLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
         $0.textColor = Pallete.customBlack.color
+        $0.isUserInteractionEnabled = true
     }
     
     var closeImage = UIImageView(frame: .zero).then {

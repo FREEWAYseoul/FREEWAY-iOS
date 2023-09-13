@@ -85,17 +85,18 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-        self.viewModel.inputVoice.send("듣고 있어요")
         searchHistoryView.isHidden = true
         searchListView.isHidden = true
         setupLottieLayout()
         voiceSearchLottieView.voiceLottieView.play()
+        searchTextFieldView.voiceImage = "waveform"
         voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
         voiceRecognitionManager.startRecognition()
     DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
         self.searchListView.isHidden = false
         self.searchHistoryView.isHidden = false
         self.voiceRecognitionManager.stopRecognition()
+        self.searchTextFieldView.voiceImage = "mic.fill"
         self.voiceSearchLottieView.removeFromSuperview()
         self.navigateToMapsViewControllerIfNeeded(self.viewModel.getStationName() ?? "강남")
         }
