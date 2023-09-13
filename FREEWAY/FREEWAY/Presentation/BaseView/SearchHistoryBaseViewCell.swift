@@ -45,6 +45,19 @@ final class SearchHistoryBaseViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+    
+    func getStationStatus(_ status: String) -> String {
+        switch status {
+        case "모두 사용 가능" :
+            return "possible"
+        case "일부 사용 가능" :
+            return "somePossible"
+        case "확인 불가" :
+            return "unableToVerify"
+        default :
+            return "impossible"
+        }
+    }
 }
 
 extension SearchHistoryBaseViewCell {
@@ -82,7 +95,7 @@ extension SearchHistoryBaseViewCell {
     func configure(data: StationDTO, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
         cellData = data
         stationTitleLabel.text = data.stationName
-        stationStateImage.image = UIImage(named: data.stationStatus == "사용 가능" ? "possible" : "impossible")
+        stationStateImage.image = UIImage(named: getStationStatus(data.stationStatus))
         stationLineImage.image = UIImage(named: data.lineId)
         if horizontalOffset == 0 {
             stationTitleLabel.snp.updateConstraints { make in
