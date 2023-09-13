@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import Then
+import Combine
+
 
 protocol SetStationDetailViewControllerDelegate: AnyObject {
     func showStationDetailView(_ isFacilities: Bool)
@@ -20,6 +22,8 @@ final class StationDetailViewController: UIViewController {
     
     var data: StationDetailDTO
     private let stationInfoItems: [(String, String)] = [("elevater", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("convenience", "편의시설")]
+    var setNextButtonPublisher = PassthroughSubject<Int, Never>()
+    var setPrevButtonPublisher = PassthroughSubject<Int, Never>()
     
     let stationDetailCollectionView = StationDetailCollectionView()
     lazy var stationDetailTitle = StationDetailTitleView(data: data)
@@ -37,6 +41,23 @@ final class StationDetailViewController: UIViewController {
         super.viewDidLoad()
         configure()
         setupLayout()
+        setAction()
+    }
+    
+    func setAction() {
+        stationDetailTitle.stationTitle.prevStationTitleButton.addTarget(self, action: #selector(prevStationButtonPressed), for: .touchUpInside)
+        stationDetailTitle.stationTitle.nextStationTitleButton.addTarget(self, action: #selector(nextStationButtonPressed), for: .touchUpInside)
+        
+    }
+    @objc func nextStationButtonPressed(_ sender: UIButton) {
+        let id = data.nextStation?.stationId
+        setNextButtonPublisher.send(id ?? data.stationId)
+    }
+    
+    @objc func prevStationButtonPressed(_ sender: UIButton) {
+        let id = data.previousStation?.stationId
+        setPrevButtonPublisher.send(id ?? data.stationId)
+        
     }
 }
 

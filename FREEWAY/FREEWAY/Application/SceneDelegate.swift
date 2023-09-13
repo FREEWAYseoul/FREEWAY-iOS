@@ -37,7 +37,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             stationDetail, error in
                             if let stationDetail = stationDetail {
                                 viewModel.stationsDetailDatas.append(stationDetail)
-                                //print(viewModel.stationsDetailDatas)
                             } else if error != nil {
                                 print("오류")
                             }

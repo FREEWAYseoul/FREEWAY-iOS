@@ -20,14 +20,14 @@ final class HomeViewController: UIViewController {
     private let alertButton = InAppAlertButtonView()
     private let homeTitle = HomeTitleView()
     private let textField = HomeSearchTextfieldView()
-    private lazy var recentSearchView = RecentSearchView(viewModel: viewModel)
-    private let emptyRecentView = EmptyRecentSearchView()
     private let voiceSearchLottieView = VoiceSearchLottieView()
+    
+    private lazy var searchListModule = HomeSearchListViewController(viewModel: self.viewModel)
     lazy var settingButton = UIButton().then {
         $0.setImage(.init(named: "Setting"), for: .normal)
         $0.addTarget(self, action: #selector(settingButtonPressed), for: .touchUpInside)
     }
-
+    
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -48,13 +48,11 @@ final class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(viewModel.hasNewerDate())
         if viewModel.hasNewerDate() {
             alertButton.image = "alertDot"
         } else {
             alertButton.image = "alert"
         }
-        recentSearchView.searchHistoryTableView.reloadData()
     }
     //TODO: BaseViewController 구현 후에 옮기기
     private func safeAreaTopInset() -> CGFloat? {
@@ -67,13 +65,13 @@ final class HomeViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-            recentSearchView.isHidden = true
-            setupLottieLayout()
-            voiceSearchLottieView.voiceLottieView.play()
-            voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
-            voiceRecognitionManager.startRecognition()
+        searchListModule.view.isHidden = true
+        setupLottieLayout()
+        voiceSearchLottieView.voiceLottieView.play()
+        voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
+        voiceRecognitionManager.startRecognition()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.recentSearchView.isHidden = false
+            self.searchListModule.view.isHidden = false
             self.voiceRecognitionManager.stopRecognition()
             self.voiceSearchLottieView.removeFromSuperview()
             self.navigateToMapsViewControllerIfNeeded(self.voiceRecognitionManager.resultText ?? "")
@@ -100,10 +98,6 @@ final class HomeViewController: UIViewController {
         self.navigationController?.pushViewController(SearchViewController(viewModel: viewModel), animated: true)
     }
     
-    private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
-        return viewModel.stationDatas.first { $0.stationName == stationName }
-    }
-    
     private func showInvalidStationNameAlert() {
         let alert = UIAlertController(title: "역 이름을 다시 한 번 확인해주세요!", message: "", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
@@ -112,8 +106,7 @@ final class HomeViewController: UIViewController {
     }
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
-        if findStationDetailDTO(searchText) != nil {
-            viewModel.currentStationData = viewModel.getStationDTO()!
+        if viewModel.getStationDTO() != nil {
             viewModel.getCurrentStationDetailData(stationData: viewModel.currentStationData)
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
@@ -130,8 +123,6 @@ private extension HomeViewController {
         let placeHolderGesture = UITapGestureRecognizer(target: self, action: #selector(tabPlaceholderLabel))
         alertButton.addTarget(self, action: #selector(notiButtonPressed), for: .touchUpInside)
         textField.placeholderLabel.addGestureRecognizer(placeHolderGesture)
-        recentSearchView.searchHistoryTableView.delegate = self
-        recentSearchView.isHidden = UserDefaults.standard.searchHistory.isEmpty
     }
     
     func setupLayout() {
@@ -163,23 +154,14 @@ private extension HomeViewController {
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(72)
         }
-        
-        view.addSubview(recentSearchView)
-        recentSearchView.snp.makeConstraints { make in
+        self.addChild(searchListModule)
+        self.view.addSubview(searchListModule.view)
+        searchListModule.didMove(toParent: self)
+        searchListModule.view.snp.makeConstraints { make in
             make.top.equalTo(textField.snp.bottom).offset(74)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview()
-        }
-        
-        if recentSearchView.isHidden {
-            view.addSubview(emptyRecentView)
-            emptyRecentView.snp.makeConstraints { make in
-                make.top.equalTo(textField.snp.bottom).offset(74)
-                make.leading.equalToSuperview().offset(24)
-                make.trailing.equalToSuperview().offset(-16)
-                make.bottom.equalToSuperview()
-            }
         }
     }
     
@@ -193,18 +175,3 @@ private extension HomeViewController {
     }
 }
 
-extension HomeViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if let cell = tableView.cellForRow(at: indexPath) as? SearchHistoryBaseViewCell {
-            if let cellData = cell.cellData {
-                viewModel.currentStationData = cellData
-                viewModel.updateText(cellData.stationName)
-                self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
-            }
-            else {
-                showInvalidStationNameAlert()
-            }
-        }
-    }
-}

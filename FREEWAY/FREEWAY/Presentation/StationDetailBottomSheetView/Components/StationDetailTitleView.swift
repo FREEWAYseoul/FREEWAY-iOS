@@ -119,7 +119,11 @@ private extension StationDetailTitleView {
 
 final class LineButton: UIButton {
     
-    var line: String
+    var line: String = "" {
+        didSet {
+            lineIcon.image = UIImage(named: self.line)
+        }
+    }
     
     lazy var lineIcon = UIImageView().then {
         $0.image = UIImage(named: line)
@@ -149,7 +153,11 @@ private extension LineButton {
 }
 
 final class SubLineButton: UIButton {
-    var line: String
+    var line: String = "" {
+        didSet {
+            lineLabel.text = line
+        }
+    }
     
     private lazy var lineBackground = UIView().then {
         $0.backgroundColor = .white
@@ -294,7 +302,13 @@ private extension PrevStationButton {
 
 
 final class StationTitle: UIView {
-    var lineImageName: String
+    var lineImageName: String = "" {
+        didSet {
+            stationTitleBackground.layer.borderColor = LinePallete(rawValue: self.lineImageName)?.color?.cgColor
+            prevNextStationTitlebackground.backgroundColor = LinePallete(rawValue: self.lineImageName)?.color
+            lineImage.image = UIImage(named: self.lineImageName)
+        }
+    }
     var stationName: String
     var nextStationName: String?
     var prevStationName: String?
@@ -310,7 +324,7 @@ final class StationTitle: UIView {
         $0.image = UIImage(named: lineImageName)
         $0.contentMode = .scaleAspectFit
     }
-    private lazy var stationLabel = UILabel().then {
+    lazy var stationLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Regular", size: 18)
         $0.text = stationName
         $0.textColor = .black
