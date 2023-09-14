@@ -30,7 +30,7 @@ final class FacilitiesView: UIView {
     let updateTimeLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
         $0.textColor = Pallete.updatedTextGray.color
-        $0.text = "0/00 0요일 00:00 업데이트 완료"
+        $0.text = "\(Date().getUpdateTime()) 업데이트 완료"
     }
     
     let tableView = UITableView(frame: .zero, style: .plain).then {

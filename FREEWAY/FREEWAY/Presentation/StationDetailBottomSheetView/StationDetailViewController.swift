@@ -108,6 +108,10 @@ extension StationDetailViewController: UICollectionViewDataSource {
           cell.isSelected = true
           collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
         }
+        if indexPath.item == 1 && data.stationContact == nil {
+            cell.unavailableButtonColor = Pallete.unavailableFacilitiesGray.color
+            cell.isUserInteractionEnabled = false
+        }
         return cell
     }
 }
@@ -115,22 +119,21 @@ extension StationDetailViewController: UICollectionViewDataSource {
 extension StationDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.cellForItem(at: indexPath) is StationDetailCollectionViewCell {
-            
             let selectedItem = stationInfoItems[indexPath.row].0
             switch selectedItem {
             case "elevater":
                 delegate?.removeStationDetailView()
             case "call":
-                //TODO: 번호 없을 시에 Alert가 필요할 듯
-                var url = ""
-                delegate?.removeStationDetailView()
-                if let number = data.stationContact {
-                    url = "tel://\(String(describing: number))"
-                }
-                 
-                if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
-                    UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
-                }
+                    var url = ""
+                    delegate?.removeStationDetailView()
+                    if let number = data.stationContact {
+                        print("안녕 ", number)
+                        url = "tel://\(String(describing: number))"
+                    }
+                    
+                    if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
+                        UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
+                    }
             case "map":
                 delegate?.showStationDetailView(false)
             case "convenience":

@@ -35,6 +35,7 @@
 		2A7A8BB92A96517C00D0FFC2 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */; };
 		2A7A8BBA2A96517C00D0FFC2 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */; };
 		2A7B8A2B2AB1F1F2002A6287 /* HomeSearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7B8A2A2AB1F1F2002A6287 /* HomeSearchListViewController.swift */; };
+		2A7B8A2D2AB20A9A002A6287 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7B8A2C2AB20A9A002A6287 /* DateExtension.swift */; };
 		2A9577852AAD952C00A8F8E4 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9577842AAD952C00A8F8E4 /* BottomSheetViewController.swift */; };
 		2A9577872AADBEBC00A8F8E4 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9577862AADBEBC00A8F8E4 /* UserDefaultsExtension.swift */; };
 		2A95778A2AADD01800A8F8E4 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9577892AADD01800A8F8E4 /* NotificationViewController.swift */; };
@@ -129,6 +130,7 @@
 		2A7A8BAA2A96517C00D0FFC2 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
 		2A7A8BAB2A96517C00D0FFC2 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
 		2A7B8A2A2AB1F1F2002A6287 /* HomeSearchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSearchListViewController.swift; sourceTree = "<group>"; };
+		2A7B8A2C2AB20A9A002A6287 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		2A9577842AAD952C00A8F8E4 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		2A9577862AADBEBC00A8F8E4 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
 		2A9577892AADD01800A8F8E4 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				2A9577862AADBEBC00A8F8E4 /* UserDefaultsExtension.swift */,
 				2A9577932AAF493100A8F8E4 /* StringExtension.swift */,
 				2A9577A12AB0D23800A8F8E4 /* CombineExtension.swift */,
+				2A7B8A2C2AB20A9A002A6287 /* DateExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -825,6 +828,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A26EA202A8E62F900FA355B /* CurrentStationMarkerView.swift in Sources */,
+				2A7B8A2D2AB20A9A002A6287 /* DateExtension.swift in Sources */,
 				2AB285382A9E36CB0077ED7C /* CurrentLocationButton.swift in Sources */,
 				2A26EA2C2A91244F00FA355B /* SearchHistoryBaseViewCell.swift in Sources */,
 				2A7B8A2B2AB1F1F2002A6287 /* HomeSearchListViewController.swift in Sources */,

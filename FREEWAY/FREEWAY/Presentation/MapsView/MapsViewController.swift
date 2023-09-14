@@ -417,7 +417,7 @@ extension MapsViewController: NMFMapViewCameraDelegate {
     }
     
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
-        if mapView.zoomLevel >= 13 {
+        if mapView.zoomLevel >= 15 {
             currentStationMarker?.hidden = false
             elevatorMarkers.forEach {
                 $0.hidden = false

@@ -13,9 +13,18 @@ final class StationDetailCollectionViewCell: UICollectionViewCell {
     
     static let stationDetailCollectionViewCellId = "stationDetailCollectionViewCellId"
     
+    var unavailableButtonColor = Pallete.unavailableFacilitiesGray.color {
+        didSet {
+            self.iconView.image = image?.withRenderingMode(.alwaysTemplate)
+            self.iconView.tintColor = self.unavailableButtonColor
+            self.iconLabel.textColor = self.unavailableButtonColor
+        }
+    }
+    
     var image: UIImage?
     
     private var iconView = UIImageView().then {
+        $0.tintColor = Pallete.unavailableFacilitiesGray.color
         $0.contentMode = .scaleAspectFit
     }
     
