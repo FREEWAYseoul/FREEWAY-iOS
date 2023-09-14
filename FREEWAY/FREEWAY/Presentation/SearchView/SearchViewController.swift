@@ -21,13 +21,11 @@ final class SearchViewController: UIViewController {
     var datas = MockData.mockStationDTOs
     let networkService = NetworkService.shared
     
-    //TODO: 추후 userdefaults 변수로 변경 필요
     lazy var searchTextFieldView = SearchTextfieldView()
-    lazy var searchHistoryView = SearchHistoryView(viewModel: viewModel)
-    private let emptyHistoryView = EmptyHistoryView()
     lazy var voiceSearchLottieView = VoiceSearchLottieView()
     lazy var searchListView = SearchListView(datas: viewModel.stationDatas)
     lazy var emptySearchView = EmptyView()
+    lazy var searchListViewModule = SearchListViewController(viewModel: self.viewModel)
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
@@ -51,11 +49,6 @@ final class SearchViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         searchTextFieldView.searchTextfield.becomeFirstResponder()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        searchHistoryView.searchHistoryTableView.reloadData()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -85,16 +78,14 @@ final class SearchViewController: UIViewController {
     }
     
     @objc func voiceButtonPressed(_ sender: UIButton) {
-        searchHistoryView.isHidden = true
-        searchListView.isHidden = true
+        searchListViewModule.view.isHidden = true
         setupLottieLayout()
         voiceSearchLottieView.voiceLottieView.play()
         searchTextFieldView.voiceImage = "waveform"
         voiceSearchLottieView.voiceLottieView.loopMode = .loop //무한 반복
         voiceRecognitionManager.startRecognition()
     DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-        self.searchListView.isHidden = false
-        self.searchHistoryView.isHidden = false
+        self.searchListViewModule.view.isHidden = false
         self.voiceRecognitionManager.stopRecognition()
         self.searchTextFieldView.voiceImage = "mic.fill"
         self.voiceSearchLottieView.removeFromSuperview()
@@ -122,8 +113,17 @@ final class SearchViewController: UIViewController {
     
     func handleTextFieldInput(_ text: String) {
         if !text.isEmpty {
-            searchListView.datas = self.viewModel.stationDatas.filter{ $0.stationName.hasPrefix(text) }
-            setupSearchListLayout(view: searchListView.datas.isEmpty ? emptySearchView : searchListView)
+            let filteredStations = self.viewModel.stationDatas.filter { station in
+                let stationName = station.stationName
+                if text.hasSuffix("역") {
+                    let trimmedText = String(text.dropLast())
+                    return stationName.hasPrefix(trimmedText)
+                } else {
+                    return stationName.hasPrefix(text)
+                }
+            }
+            searchListView.datas = filteredStations
+            setupSearchListLayout(view: filteredStations.isEmpty ? emptySearchView : searchListView)
             searchListView.searchHistoryTableView.reloadData()
         } else {
             searchListView.removeFromSuperview()
@@ -138,8 +138,6 @@ private extension SearchViewController {
         searchTextFieldView.voiceRecognitionButton.addTarget(self, action: #selector(voiceButtonPressed), for: .touchUpInside)
         searchTextFieldView.searchTextfield.delegate = self
         searchListView.searchHistoryTableView.delegate = self
-        searchHistoryView.searchHistoryTableView.delegate = self
-        searchHistoryView.isHidden = UserDefaults.standard.searchHistory.isEmpty
     }
     
     func setupLayout() {
@@ -149,20 +147,12 @@ private extension SearchViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        view.addSubview(searchHistoryView)
-        searchHistoryView.snp.makeConstraints { make in
+        self.addChild(searchListViewModule)
+        view.addSubview(searchListViewModule.view)
+        searchListViewModule.didMove(toParent: self)
+        searchListViewModule.view.snp.makeConstraints { make in
             make.top.equalTo(searchTextFieldView.snp.bottom).offset(22)
             make.bottom.leading.trailing.equalToSuperview()
-        }
-        
-        if searchHistoryView.isHidden {
-            view.addSubview(emptySearchView)
-            emptySearchView.snp.makeConstraints { make in
-                make.top.equalTo(searchTextFieldView.snp.bottom).offset(22)
-                make.bottom.leading.trailing.equalToSuperview()
-            }
-        } else {
-            emptySearchView.removeFromSuperview()
         }
     }
     
