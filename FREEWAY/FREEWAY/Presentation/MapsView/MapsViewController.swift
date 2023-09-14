@@ -455,8 +455,18 @@ extension MapsViewController: CLLocationManagerDelegate {
             }
             
         case .restricted, .notDetermined:
+            DispatchQueue.main.async { [weak self] in
+                if let self = self {
+                    self.moveLocation()
+                }
+            }
             print("GPS 권한 설정되지 않음")
         case .denied:
+            DispatchQueue.main.async { [weak self] in
+                if let self = self {
+                    self.moveLocation()
+                }
+            }
             print("GPS 권한 요청 거부됨")
         default:
             print("GPS: Default")
