@@ -114,9 +114,7 @@ class MapsViewController: UIViewController {
             let okAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             let settingAction = UIAlertAction(title: "설정", style: .default) {  _ in
                 
-                let settingsURLScheme = "App-Prefs:"
-                
-                if let url = URL(string: settingsURLScheme) {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
                     if UIApplication.shared.canOpenURL(url) {
                         if #available(iOS 10.0, *) {
                             UIApplication.shared.open(url, options: [:], completionHandler: nil)
