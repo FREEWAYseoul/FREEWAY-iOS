@@ -24,6 +24,7 @@ final class NotificationTableSection: UIView {
     
     init() {
         super.init(frame: .zero)
+        self.backgroundColor = .white
         setupLayout()
     }
     
@@ -51,6 +52,7 @@ extension NotificationTableSection {
             make.top.equalTo(dateLabel.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(1)
+            make.bottom.equalToSuperview()
         }
     }
 }

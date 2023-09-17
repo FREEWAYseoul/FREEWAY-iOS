@@ -77,13 +77,15 @@ extension NotificationTableViewCell {
         self.addSubview(title)
         title.snp.makeConstraints { make in
             make.top.equalTo(timeDot.snp.bottom).offset(4)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(22)
+            make.trailing.equalToSuperview()
         }
         
         self.addSubview(body)
         body.snp.makeConstraints { make in
             make.top.equalTo(title.snp.bottom)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(22)
+            make.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-10)
         }
     }

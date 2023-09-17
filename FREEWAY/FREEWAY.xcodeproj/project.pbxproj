@@ -10,6 +10,7 @@
 		016CB6412A7D49E4005C4882 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6402A7D49E4005C4882 /* NetworkService.swift */; };
 		016CB64E2A7D4B4D005C4882 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		016CB6562A87DB46005C4882 /* Literal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016CB6552A87DB46005C4882 /* Literal.swift */; };
+		2A0854E02AB706AA0069A45B /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A0854DF2AB706AA0069A45B /* UILabelExtension.swift */; };
 		2A26EA202A8E62F900FA355B /* CurrentStationMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA1F2A8E62F900FA355B /* CurrentStationMarkerView.swift */; };
 		2A26EA232A8E6B6300FA355B /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */; };
 		2A26EA282A9120E000FA355B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A26EA272A9120E000FA355B /* SearchViewController.swift */; };
@@ -116,6 +117,7 @@
 		10CC25F152549A99084FF2F4 /* Pods_FREEWAY.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8CCA570A4E0238769A7DFB /* Pods_FREEWAYTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAYTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B019DCAF33D6AEE416BE0D /* Pods_FREEWAY_FREEWAYUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREEWAY_FREEWAYUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A0854DF2AB706AA0069A45B /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		2A26EA1F2A8E62F900FA355B /* CurrentStationMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentStationMarkerView.swift; sourceTree = "<group>"; };
 		2A26EA222A8E6B6300FA355B /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		2A26EA272A9120E000FA355B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				2A9577932AAF493100A8F8E4 /* StringExtension.swift */,
 				2A9577A12AB0D23800A8F8E4 /* CombineExtension.swift */,
 				2A7B8A2C2AB20A9A002A6287 /* DateExtension.swift */,
+				2A0854DF2AB706AA0069A45B /* UILabelExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -846,6 +849,7 @@
 				2AB2851D2A990E070077ED7C /* EmptyRecentSearchView.swift in Sources */,
 				2A9577872AADBEBC00A8F8E4 /* UserDefaultsExtension.swift in Sources */,
 				2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */,
+				2A0854E02AB706AA0069A45B /* UILabelExtension.swift in Sources */,
 				2AB285422A9F8AD50077ED7C /* StationDetailTitleView.swift in Sources */,
 				2AB285582AA8AD6D0077ED7C /* SearchListView.swift in Sources */,
 				2A9577942AAF493100A8F8E4 /* StringExtension.swift in Sources */,
