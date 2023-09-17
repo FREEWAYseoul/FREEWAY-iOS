@@ -60,7 +60,7 @@ extension RecentSearchView: UITableViewDataSource {
         let searchHistory = UserDefaults.standard.searchHistory[indexPath.row]
         cell.configure(data: viewModel.getStationDTOWithId(id: searchHistory)!, false, 0)
         cell.backgroundColor = .clear
-        cell.selectionStyle = .none
+        cell.selectionStyle = .default
         return cell
     }
 }
