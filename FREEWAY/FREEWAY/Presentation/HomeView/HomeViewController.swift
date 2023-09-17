@@ -106,9 +106,18 @@ final class HomeViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
+        var stationName = stationName
+            if stationName.hasSuffix("역") {
+                stationName = String(stationName.dropLast())
+            }
+        return viewModel.stationDatas.first { $0.stationName == stationName }
+    }
+    
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
-        if viewModel.getStationDTO() != nil {
-            viewModel.getCurrentStationDetailData(stationData: viewModel.currentStationData)
+        if let currentStation = findStationDetailDTO(searchText) {
+            viewModel.currentStationData = currentStation
+            viewModel.getCurrentStationDetailData(stationData: currentStation)
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
             showInvalidStationNameAlert()

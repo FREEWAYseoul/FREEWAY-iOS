@@ -188,6 +188,10 @@ extension SearchViewController: UITextFieldDelegate {
     }
     
     private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
+        var stationName = stationName
+            if stationName.hasSuffix("역") {
+                stationName = String(stationName.dropLast())
+            }
         return viewModel.stationDatas.first { $0.stationName == stationName }
     }
     
@@ -199,8 +203,8 @@ extension SearchViewController: UITextFieldDelegate {
     }
     
     func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
-        if findStationDetailDTO(searchText) != nil {
-            viewModel.currentStationData = viewModel.getStationDTO()!
+        if let currentStation = findStationDetailDTO(searchText) {
+            viewModel.currentStationData = currentStation
             viewModel.getCurrentStationDetailData(stationData: viewModel.currentStationData)
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
         } else {
