@@ -23,7 +23,6 @@ final class NotificationTableViewCell: UITableViewCell {
     private var title = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Bold", size: 16)
         $0.textColor = Pallete.customBlack.color
-        
     }
     
     private var body = UILabel().then {
@@ -57,6 +56,8 @@ extension NotificationTableViewCell {
         self.title.text = data.summary
         self.time.text = data.time
         self.body.text = data.content
+        title.setLineSpacing(spacing: 3)
+        body.setLineSpacing(spacing: 3)
     }
     
     private func setupLayout() {
@@ -83,7 +84,7 @@ extension NotificationTableViewCell {
         
         self.addSubview(body)
         body.snp.makeConstraints { make in
-            make.top.equalTo(title.snp.bottom)
+            make.top.equalTo(title.snp.bottom).offset(1.5)
             make.leading.equalToSuperview().offset(22)
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-10)

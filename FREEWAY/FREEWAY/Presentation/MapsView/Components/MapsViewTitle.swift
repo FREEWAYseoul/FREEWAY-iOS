@@ -17,7 +17,7 @@ final class MapsViewTitle: UIView {
     }
     
     var closeImage = UIImageView(frame: .zero).then {
-        $0.image = UIImage(systemName: "x.circle.fill")
+        $0.image = UIImage(named: "close")
         $0.tintColor = Pallete.customGray.color
         $0.contentMode = .scaleAspectFit
     }

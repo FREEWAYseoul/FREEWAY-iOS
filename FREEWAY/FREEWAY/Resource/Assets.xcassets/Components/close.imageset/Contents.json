@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Group 143.svg",
+      "filename" : "closeButton.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "dOne 1.svg",
+      "filename" : "closeButton 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "dOne 2.svg",
+      "filename" : "closeButton 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

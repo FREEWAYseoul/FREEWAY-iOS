@@ -220,7 +220,7 @@ final class NextStationButton: UIButton {
     }
     
     lazy var stationLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-Regular", size: 16)
+        $0.font = UIFont(name: "Pretendard-Regular", size: 15)
         $0.text = stationName
         $0.textColor = .white
         $0.textAlignment = .right
@@ -269,7 +269,7 @@ final class PrevStationButton: UIButton {
     }
     
     lazy var stationLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-Regular", size: 16)
+        $0.font = UIFont(name: "Pretendard-Regular", size: 15)
         $0.text = stationName
         $0.textColor = .white
         $0.sizeToFit()
@@ -325,6 +325,7 @@ final class StationTitle: UIView {
     private lazy var lineImage = UIImageView().then {
         $0.image = UIImage(named: lineImageName)
         $0.contentMode = .scaleAspectFit
+        $0.clipsToBounds = true
     }
     lazy var stationLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Regular", size: 18)
@@ -396,7 +397,7 @@ private extension StationTitle {
         stationTitleBackground.snp.makeConstraints { make in
             make.centerX.centerY.equalTo(prevNextStationTitlebackground)
             //텍스트 길이에 따라 옵셔널로 들어가야할 부분
-            if stationLabel.text!.count <= 5 {make.width.equalTo(stationLabel.intrinsicContentSize.width + lineImage.intrinsicContentSize.width + 62) }
+            if stationLabel.text!.count <= 5 { make.width.equalTo(stationLabel.intrinsicContentSize.width + lineImage.intrinsicContentSize.width + 62) }
             else { make.width.equalTo(150) }
             make.height.equalTo(39.9)
             make.center.equalToSuperview()
@@ -409,7 +410,7 @@ private extension StationTitle {
         stackView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.height.equalTo(20)
-            if stationLabel.text!.count > 5 { make.width.equalTo(120) }
+            if stationLabel.text!.count > 6 { make.width.equalTo(120) }
         }
     }
 }
