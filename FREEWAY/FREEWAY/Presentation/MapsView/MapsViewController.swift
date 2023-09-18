@@ -166,7 +166,7 @@ private extension MapsViewController {
         stationDetailView.stationDetailTitle.lineButton.line = viewModel.currentStationDetailData.lineId
         facilitiesView?.data = viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities!
         facilitiesView?.bind()
-        stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
+        stationMapWebView?.bind(newURL: viewModel.currentStationDetailData.stationImageUrl ?? "")
         self.deleteStationDetailMarker()
         self.moveLocation()
         self.setElevatorMarker()
@@ -185,7 +185,7 @@ private extension MapsViewController {
         let textLabelGesture = UITapGestureRecognizer(target: self, action: #selector(titleLabelPressed))
         mapsTitleView.currentTextLabel.addGestureRecognizer(textLabelGesture)
         facilitiesView = FacilitiesView((viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities)!)
-        stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
+        stationMapWebView = StationMapWebView(viewModel.currentStationDetailData.stationImageUrl ?? "")
     }
     
     func setupLayout() {
