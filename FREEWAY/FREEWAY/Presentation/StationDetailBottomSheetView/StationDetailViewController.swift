@@ -20,16 +20,16 @@ final class StationDetailViewController: UIViewController {
     
     weak var delegate: SetStationDetailViewControllerDelegate?
     
-    var data: StationDetailDTO
+    var viewModel: BaseViewModel
     private let stationInfoItems: [(String, String)] = [("elevater", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("convenience", "편의시설")]
     var setNextButtonPublisher = PassthroughSubject<Int, Never>()
     var setPrevButtonPublisher = PassthroughSubject<Int, Never>()
     
     let stationDetailCollectionView = StationDetailCollectionView()
-    lazy var stationDetailTitle = StationDetailTitleView(data: data)
+    lazy var stationDetailTitle = StationDetailTitleView(viewModel: viewModel)
 
-    init(_ data: StationDetailDTO) {
-        self.data = data
+    init(viewModel: BaseViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,13 +50,13 @@ final class StationDetailViewController: UIViewController {
         
     }
     @objc func nextStationButtonPressed(_ sender: UIButton) {
-        let id = data.nextStation?.stationId
-        setNextButtonPublisher.send(id ?? data.stationId)
+        let id = viewModel.currentStationDetailData.nextStation?.stationId
+        setNextButtonPublisher.send(id ?? viewModel.currentStationDetailData.stationId)
     }
     
     @objc func prevStationButtonPressed(_ sender: UIButton) {
-        let id = data.previousStation?.stationId
-        setPrevButtonPublisher.send(id ?? data.stationId)
+        let id = viewModel.currentStationDetailData.previousStation?.stationId
+        setPrevButtonPublisher.send(id ?? viewModel.currentStationDetailData.stationId)
         
     }
 }
@@ -108,7 +108,7 @@ extension StationDetailViewController: UICollectionViewDataSource {
           cell.isSelected = true
           collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
         }
-        if indexPath.item == 1 && data.stationContact == nil {
+        if indexPath.item == 1 && viewModel.currentStationDetailData.stationContact == nil {
             cell.unavailableButtonColor = Pallete.unavailableFacilitiesGray.color
             cell.isUserInteractionEnabled = false
         }
@@ -126,7 +126,7 @@ extension StationDetailViewController: UICollectionViewDelegate {
             case "call":
                     var url = ""
                     delegate?.removeStationDetailView()
-                    if let number = data.stationContact {
+                if let number = viewModel.currentStationDetailData.stationContact {
                         print("안녕 ", number)
                         url = "tel://\(String(describing: number))"
                     }

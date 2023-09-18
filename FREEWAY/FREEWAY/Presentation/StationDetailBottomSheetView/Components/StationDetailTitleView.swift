@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 final class StationDetailTitleView: UIView {
-    var data: StationDetailDTO
+    let viewModel: BaseViewModel
     
     private let closeButtonImage = UIImageView(frame: .zero).then {
         $0.image = UIImage(systemName: "xmark")
@@ -26,22 +26,22 @@ final class StationDetailTitleView: UIView {
         $0.backgroundColor = Pallete.dividerGray.color
     }
     
-    lazy var lineButton = LineButton(data.lineId)
+    lazy var lineButton = LineButton(viewModel.currentStationDetailData.lineId)
 
     lazy var subLineButtons = [SubLineButton]()
     
     func setSubLineButtons() {
-        data.transferStations.forEach {
+        viewModel.currentStationDetailData.transferStations.forEach {
             let subLine = SubLineButton($0.lineId)
             subLineButtons.append(subLine)
         }
     }
 
-    lazy var stationTitle = StationTitle(data: data)
+    lazy var stationTitle = StationTitle(viewModel: viewModel)
     
     
-    init(data: StationDetailDTO) {
-        self.data = data
+    init(viewModel: BaseViewModel ) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
         self.setSubLineButtons()
         
@@ -351,7 +351,8 @@ final class StationTitle: UIView {
     
     
     
-    init(data: StationDetailDTO) {
+    init(viewModel: BaseViewModel) {
+        let data = viewModel.currentStationDetailData
         self.lineImageName = data.lineId
         self.stationName = data.stationName
         self.nextStationName = data.nextStation?.stationName
@@ -363,6 +364,10 @@ final class StationTitle: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bind() {
+        
     }
 }
 

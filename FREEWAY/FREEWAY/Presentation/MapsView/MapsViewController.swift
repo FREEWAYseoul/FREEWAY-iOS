@@ -50,7 +50,7 @@ class MapsViewController: UIViewController {
     private var currentStationMarker: NMFMarker?
     private var elevatorMarkers: [NMFMarker] = []
     
-    lazy var stationDetailView = StationDetailViewController(self.viewModel.currentStationDetailData)
+    lazy var stationDetailView = StationDetailViewController(viewModel: self.viewModel)
     
     
     init(viewModel: BaseViewModel) {
@@ -158,13 +158,14 @@ private extension MapsViewController {
     func setStationDetailView(_ id: Int) {
         self.data = viewModel.getStationDTOWithId(id: id)
         viewModel.getCurrentStationDetailData(stationData: self.data!)
-        stationDetailView.data = viewModel.currentStationDetailData
+        stationDetailView.viewModel = viewModel
         stationDetailView.stationDetailTitle.stationTitle.stationLabel.text = viewModel.currentStationDetailData.stationName
-        stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.stationLabel.text = stationDetailView.data.previousStation?.stationName
-        stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.stationLabel.text = stationDetailView.data.nextStation?.stationName
+        stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.stationLabel.text = viewModel.currentStationDetailData.previousStation?.stationName
+        stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.stationLabel.text = viewModel.currentStationDetailData.nextStation?.stationName
         stationDetailView.stationDetailTitle.stationTitle.lineImageName = viewModel.currentStationDetailData.lineId
         stationDetailView.stationDetailTitle.lineButton.line = viewModel.currentStationDetailData.lineId
-        facilitiesView = FacilitiesView((viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities)!)
+        facilitiesView?.data = viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities!
+        facilitiesView?.bind()
         stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
         self.deleteStationDetailMarker()
         self.moveLocation()
@@ -183,7 +184,8 @@ private extension MapsViewController {
         mapsTitleView.backButton.addTarget(self, action: #selector(closeButtonPressed), for: .touchUpInside)
         let textLabelGesture = UITapGestureRecognizer(target: self, action: #selector(titleLabelPressed))
         mapsTitleView.currentTextLabel.addGestureRecognizer(textLabelGesture)
-        
+        facilitiesView = FacilitiesView((viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities)!)
+        stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
     }
     
     func setupLayout() {
@@ -371,8 +373,6 @@ private extension MapsViewController {
         bottomSheetVC.set(contentViewController: stationDetailView)
         bottomSheetVC.addPanel(toParent: self)
         bottomSheetVC.show()
-        facilitiesView = FacilitiesView((viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities)!)
-        stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
     }
     
     func deleteBottomSheet() {
