@@ -26,5 +26,6 @@ private extension HomeTitleView {
         self.textColor = .black
         self.numberOfLines = 2
         self.text = "엘리베이터가\n궁금한 지하철역은?"
+        self.setLineSpacing(spacing: 15)
     }
 }

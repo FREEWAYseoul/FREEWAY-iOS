@@ -11,6 +11,12 @@ import Then
 
 final class HomeSearchTextfieldView: UIView {
     
+    var voiceImage = "mic.fill" {
+        didSet {
+            self.voiceRecognitionImage.image = UIImage(systemName: voiceImage)
+        }
+    }
+    
     lazy var placeholderLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Medium", size: 18)
         $0.textColor = Pallete.customBlack.color
@@ -19,8 +25,8 @@ final class HomeSearchTextfieldView: UIView {
         $0.isUserInteractionEnabled = true
     }
     
-    private let voiceRecognitionImage = UIImageView(frame: .zero).then {
-        $0.image = UIImage(systemName: "mic.fill")
+    private lazy var voiceRecognitionImage = UIImageView(frame: .zero).then {
+        $0.image = UIImage(systemName: self.voiceImage)
         $0.tintColor = .white
     }
     

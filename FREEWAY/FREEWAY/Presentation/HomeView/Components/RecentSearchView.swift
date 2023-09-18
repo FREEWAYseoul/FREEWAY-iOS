@@ -50,7 +50,9 @@ private extension RecentSearchView {
 
 extension RecentSearchView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        UserDefaults.standard.searchHistory.count
+        let searchHistory = UserDefaults.standard.searchHistory
+        let maxItemCount = 4  // 최대 아이템 개수를 설정
+        return Array(searchHistory.prefix(maxItemCount)).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,7 +60,7 @@ extension RecentSearchView: UITableViewDataSource {
         let searchHistory = UserDefaults.standard.searchHistory[indexPath.row]
         cell.configure(data: viewModel.getStationDTOWithId(id: searchHistory)!, false, 0)
         cell.backgroundColor = .clear
-        cell.selectionStyle = .none
+        cell.selectionStyle = .default
         return cell
     }
 }

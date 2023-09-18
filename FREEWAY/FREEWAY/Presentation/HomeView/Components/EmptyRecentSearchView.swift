@@ -36,7 +36,7 @@ final class EmptyRecentSearchView: SearchHistoryBaseView {
 
 private extension EmptyRecentSearchView {
     func configure() {
-        searchHistoryLabel.text = "혜택 챙겨가세요!"
+        searchHistoryLabel.text = ""//"혜택 챙겨가세요!"
     }
     
     func setupLayout() {

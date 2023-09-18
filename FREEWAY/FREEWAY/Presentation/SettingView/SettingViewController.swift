@@ -145,7 +145,7 @@ extension SettingViewController: MFMailComposeViewControllerDelegate {
                                  문의 내용을 입력해주세요
                                  """
                 
-                composeViewController.setToRecipients([""])
+                composeViewController.setToRecipients(["freeway.seoul@gamil.com"])
                 composeViewController.setSubject("[문의]")
                 composeViewController.setMessageBody(bodyString, isHTML: false)
                 

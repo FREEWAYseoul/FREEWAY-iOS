@@ -48,7 +48,6 @@ final class NetworkService {
             switch response.result {
             case .success(let notifications):
                 // 성공적으로 디코딩된 데이터를 사용할 수 있습니다.
-                print("불러온 알림 목록: \(notifications)")
                 completion(notifications, nil)
                 // 여기에서 데이터를 처리하거나 ViewModel 등으로 전달할 수 있습니다.
             case .failure(let error):

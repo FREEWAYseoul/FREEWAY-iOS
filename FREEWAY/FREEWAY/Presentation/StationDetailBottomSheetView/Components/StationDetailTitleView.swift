@@ -119,7 +119,11 @@ private extension StationDetailTitleView {
 
 final class LineButton: UIButton {
     
-    var line: String
+    var line: String = "" {
+        didSet {
+            lineIcon.image = UIImage(named: self.line)
+        }
+    }
     
     lazy var lineIcon = UIImageView().then {
         $0.image = UIImage(named: line)
@@ -149,7 +153,11 @@ private extension LineButton {
 }
 
 final class SubLineButton: UIButton {
-    var line: String
+    var line: String = "" {
+        didSet {
+            lineLabel.text = line
+        }
+    }
     
     private lazy var lineBackground = UIView().then {
         $0.backgroundColor = .white
@@ -198,19 +206,12 @@ private extension SubLineButton {
     }
 }
 
-final class PrevNextStationButton: UIButton {
+final class NextStationButton: UIButton {
     var stationName: String
-    var isPrev: Bool
     
-    init(_ stationName: String, _ isPrev: Bool) {
+    init(_ stationName: String) {
         self.stationName = stationName
-        self.isPrev = isPrev
         super.init(frame: .zero)
-        if isPrev {
-            nextImage.isHidden = true
-        } else {
-            prevImage.isHidden = true
-        }
         setupLayout()
     }
     
@@ -218,16 +219,12 @@ final class PrevNextStationButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var stationLabel = UILabel().then {
-        $0.font = UIFont(name: "Pretendard-Regular", size: 16)
+    lazy var stationLabel = UILabel().then {
+        $0.font = UIFont(name: "Pretendard-Regular", size: 15)
         $0.text = stationName
         $0.textColor = .white
-    }
-    
-    private let prevImage = UIImageView().then {
-        $0.image = UIImage(systemName: "chevron.left")
-        $0.tintColor = .white
-        $0.contentMode = .scaleAspectFit
+        $0.textAlignment = .right
+        $0.sizeToFit()
     }
     
     private let nextImage = UIImageView().then {
@@ -237,7 +234,55 @@ final class PrevNextStationButton: UIButton {
     }
 }
 
-private extension PrevNextStationButton {
+private extension NextStationButton {
+    func setupLayout() {
+        self.addSubview(nextImage)
+        nextImage.snp.makeConstraints { make in
+            make.height.equalTo(18)
+            make.trailing.equalToSuperview().offset(-8)
+            make.centerY.equalToSuperview()
+        }
+        nextImage.isUserInteractionEnabled = false
+        
+        self.addSubview(stationLabel)
+        stationLabel.snp.makeConstraints { make in
+            make.top.height.equalToSuperview()
+            make.trailing.equalTo(nextImage.snp.leading).offset(-5)
+            make.width.equalTo(54)
+        }
+        stationLabel.isUserInteractionEnabled = false
+
+    }
+}
+
+final class PrevStationButton: UIButton {
+    var stationName: String
+    
+    init(_ stationName: String) {
+        self.stationName = stationName
+        super.init(frame: .zero)
+        setupLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    lazy var stationLabel = UILabel().then {
+        $0.font = UIFont(name: "Pretendard-Regular", size: 15)
+        $0.text = stationName
+        $0.textColor = .white
+        $0.sizeToFit()
+    }
+    
+    private let prevImage = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.left")
+        $0.tintColor = .white
+        $0.contentMode = .scaleAspectFit
+    }
+}
+
+private extension PrevStationButton {
     func setupLayout() {
             self.addSubview(prevImage)
             prevImage.snp.makeConstraints { make in
@@ -254,22 +299,18 @@ private extension PrevNextStationButton {
             make.width.equalTo(54)
         }
         stationLabel.isUserInteractionEnabled = false
-            
-            stationLabel.snp.updateConstraints { make in
-                make.leading.equalTo(prevImage.snp.trailing).offset(5)
-            }
-            self.addSubview(nextImage)
-            nextImage.snp.makeConstraints { make in
-                make.height.equalTo(18)
-                make.leading.equalTo(stationLabel.snp.trailing).offset(5)
-                make.centerY.equalToSuperview()
-            }
-            nextImage.isUserInteractionEnabled = false
     }
 }
 
+
 final class StationTitle: UIView {
-    var lineImageName: String
+    var lineImageName: String = "" {
+        didSet {
+            stationTitleBackground.layer.borderColor = LinePallete(rawValue: self.lineImageName)?.color?.cgColor
+            prevNextStationTitlebackground.backgroundColor = LinePallete(rawValue: self.lineImageName)?.color
+            lineImage.image = UIImage(named: self.lineImageName)
+        }
+    }
     var stationName: String
     var nextStationName: String?
     var prevStationName: String?
@@ -284,8 +325,9 @@ final class StationTitle: UIView {
     private lazy var lineImage = UIImageView().then {
         $0.image = UIImage(named: lineImageName)
         $0.contentMode = .scaleAspectFit
+        $0.clipsToBounds = true
     }
-    private lazy var stationLabel = UILabel().then {
+    lazy var stationLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Regular", size: 18)
         $0.text = stationName
         $0.textColor = .black
@@ -304,8 +346,8 @@ final class StationTitle: UIView {
         $0.distribution = .fillProportionally
     }
     
-    lazy var prevStationTitleButton = PrevNextStationButton(prevStationName ?? "", true)
-    lazy var nextStationTitleButton = PrevNextStationButton(nextStationName ?? "", false)
+    lazy var prevStationTitleButton = PrevStationButton(prevStationName ?? "")
+    lazy var nextStationTitleButton = NextStationButton(nextStationName ?? "")
     
     
     
@@ -338,21 +380,24 @@ private extension StationTitle {
         
         prevNextStationTitlebackground.addSubview(prevStationTitleButton)
         prevStationTitleButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(8)
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
+            make.height.equalToSuperview()
+            make.width.equalTo(70)
         }
         
         prevNextStationTitlebackground.addSubview(nextStationTitleButton)
         nextStationTitleButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-78)
+            make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
+            make.width.equalTo(70)
         }
         
         self.addSubview(stationTitleBackground)
         stationTitleBackground.snp.makeConstraints { make in
             make.centerX.centerY.equalTo(prevNextStationTitlebackground)
             //텍스트 길이에 따라 옵셔널로 들어가야할 부분
-            if stationLabel.text!.count <= 5 {make.width.equalTo(stationLabel.intrinsicContentSize.width + lineImage.intrinsicContentSize.width + 62) }
+            if stationLabel.text!.count <= 5 { make.width.equalTo(stationLabel.intrinsicContentSize.width + lineImage.intrinsicContentSize.width + 62) }
             else { make.width.equalTo(150) }
             make.height.equalTo(39.9)
             make.center.equalToSuperview()
@@ -365,7 +410,7 @@ private extension StationTitle {
         stackView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.height.equalTo(20)
-            if stationLabel.text!.count > 5 { make.width.equalTo(120) }
+            if stationLabel.text!.count > 6 { make.width.equalTo(120) }
         }
     }
 }

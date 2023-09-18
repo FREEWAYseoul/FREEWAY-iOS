@@ -11,6 +11,12 @@ import Then
 
 final class SearchTextfieldView: UIView {
     
+    var voiceImage = "mic.fill" {
+        didSet {
+            self.voiceRecognitionImage.image = UIImage(systemName: self.voiceImage)
+        }
+    }
+    
     let searchTextfield = UITextField().then {
         $0.borderStyle = .none
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
@@ -18,8 +24,8 @@ final class SearchTextfieldView: UIView {
         $0.attributedPlaceholder = NSAttributedString(string: "역 이름을 입력해주세요", attributes: [NSAttributedString.Key.foregroundColor : Pallete.customGray.color?.withAlphaComponent(0.5) ?? UIColor.gray, NSAttributedString.Key.font: UIFont(name: "Pretendard-SemiBold", size: 18) ?? UIFont.systemFont(ofSize: 18)])
     }
     
-    var voiceRecognitionImage = UIImageView(frame: .zero).then {
-        $0.image = UIImage(systemName: "mic.fill")
+    private lazy var voiceRecognitionImage = UIImageView(frame: .zero).then {
+        $0.image = UIImage(systemName: self.voiceImage)
         $0.tintColor = Pallete.customBlue.color
         $0.contentMode = .scaleAspectFit
     }

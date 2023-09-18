@@ -11,6 +11,7 @@ import Then
 
 final class StationMarkerView: UIView {
     var line: String
+    var elevatorCount: String
     var stationColor: UIColor
     var stationName: String
     
@@ -25,7 +26,7 @@ final class StationMarkerView: UIView {
         $0.layer.cornerRadius = 10
     }
     private lazy var lineLabel = UILabel().then {
-        $0.text = line
+        $0.text = elevatorCount != "-1" ? elevatorCount : "-"
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
         $0.textColor = .black
         $0.sizeToFit()
@@ -51,7 +52,8 @@ final class StationMarkerView: UIView {
         path.fill()
     }
     
-    init(line: String, stationName: String) {
+    init(elevatorCount: String, stationName: String, line: String) {
+        self.elevatorCount = elevatorCount
         self.line = line
         self.stationColor = (LinePallete(rawValue: line)?.color)!
         self.stationName = stationName

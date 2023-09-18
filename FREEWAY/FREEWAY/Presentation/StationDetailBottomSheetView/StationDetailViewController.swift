@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import Then
+import Combine
+
 
 protocol SetStationDetailViewControllerDelegate: AnyObject {
     func showStationDetailView(_ isFacilities: Bool)
@@ -20,6 +22,8 @@ final class StationDetailViewController: UIViewController {
     
     var data: StationDetailDTO
     private let stationInfoItems: [(String, String)] = [("elevater", "엘리베이터"),("call", "안내전화"),("map", "역사지도"),("convenience", "편의시설")]
+    var setNextButtonPublisher = PassthroughSubject<Int, Never>()
+    var setPrevButtonPublisher = PassthroughSubject<Int, Never>()
     
     let stationDetailCollectionView = StationDetailCollectionView()
     lazy var stationDetailTitle = StationDetailTitleView(data: data)
@@ -37,6 +41,23 @@ final class StationDetailViewController: UIViewController {
         super.viewDidLoad()
         configure()
         setupLayout()
+        setAction()
+    }
+    
+    func setAction() {
+        stationDetailTitle.stationTitle.prevStationTitleButton.addTarget(self, action: #selector(prevStationButtonPressed), for: .touchUpInside)
+        stationDetailTitle.stationTitle.nextStationTitleButton.addTarget(self, action: #selector(nextStationButtonPressed), for: .touchUpInside)
+        
+    }
+    @objc func nextStationButtonPressed(_ sender: UIButton) {
+        let id = data.nextStation?.stationId
+        setNextButtonPublisher.send(id ?? data.stationId)
+    }
+    
+    @objc func prevStationButtonPressed(_ sender: UIButton) {
+        let id = data.previousStation?.stationId
+        setPrevButtonPublisher.send(id ?? data.stationId)
+        
     }
 }
 
@@ -87,6 +108,10 @@ extension StationDetailViewController: UICollectionViewDataSource {
           cell.isSelected = true
           collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .init())
         }
+        if indexPath.item == 1 && data.stationContact == nil {
+            cell.unavailableButtonColor = Pallete.unavailableFacilitiesGray.color
+            cell.isUserInteractionEnabled = false
+        }
         return cell
     }
 }
@@ -94,22 +119,21 @@ extension StationDetailViewController: UICollectionViewDataSource {
 extension StationDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView.cellForItem(at: indexPath) is StationDetailCollectionViewCell {
-            
             let selectedItem = stationInfoItems[indexPath.row].0
             switch selectedItem {
             case "elevater":
                 delegate?.removeStationDetailView()
             case "call":
-                //TODO: 번호 없을 시에 Alert가 필요할 듯
-                var url = ""
-                delegate?.removeStationDetailView()
-                if let number = data.stationContact {
-                    url = "tel://\(String(describing: number))"
-                }
-                 
-                if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
-                    UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
-                }
+                    var url = ""
+                    delegate?.removeStationDetailView()
+                    if let number = data.stationContact {
+                        print("안녕 ", number)
+                        url = "tel://\(String(describing: number))"
+                    }
+                    
+                    if let openApp = URL(string: url), UIApplication.shared.canOpenURL(openApp) {
+                        UIApplication.shared.open(openApp, options: [:], completionHandler: nil)
+                    }
             case "map":
                 delegate?.showStationDetailView(false)
             case "convenience":

@@ -12,6 +12,7 @@ import SnapKit
 import CoreLocation
 import RxSwift
 import RxCocoa
+import Combine
 
 struct StationMarker {
     let stationData: StationDTO
@@ -23,6 +24,7 @@ class MapsViewController: UIViewController {
     let viewModel: BaseViewModel
     let disposeBag = DisposeBag()
     let networkService = NetworkService.shared
+    private var cancelBag = Set<AnyCancellable>()
     
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
@@ -36,6 +38,7 @@ class MapsViewController: UIViewController {
         $0.allowsZooming = true
         $0.logoInteractionEnabled = false
         $0.allowsScrolling = true
+        $0.minZoomLevel = 14
         locationOverlay = $0.locationOverlay
     }
     private let mapsTitleView = MapsViewTitle()
@@ -46,6 +49,9 @@ class MapsViewController: UIViewController {
     private lazy var stationMarkers: [StationMarker] = []
     private var currentStationMarker: NMFMarker?
     private var elevatorMarkers: [NMFMarker] = []
+    
+    lazy var stationDetailView = StationDetailViewController(self.viewModel.currentStationDetailData)
+    
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
@@ -74,6 +80,7 @@ class MapsViewController: UIViewController {
         setElevatorMarker()
         setDefaultNavigationBar()
         showBottomSheet()
+        bind()
     }
     
     //MARK: Contraints
@@ -107,9 +114,7 @@ class MapsViewController: UIViewController {
             let okAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
             let settingAction = UIAlertAction(title: "설정", style: .default) {  _ in
                 
-                let settingsURLScheme = "App-Prefs:"
-                
-                if let url = URL(string: settingsURLScheme) {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
                     if UIApplication.shared.canOpenURL(url) {
                         if #available(iOS 10.0, *) {
                             UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -137,6 +142,37 @@ class MapsViewController: UIViewController {
 }
 //MARK: Set MapsView
 private extension MapsViewController {
+    
+    func bind() {
+        stationDetailView.setPrevButtonPublisher.withRetained(self)
+            .sink { [self] `self`, id in
+                setStationDetailView(id)
+            }.store(in: &cancelBag)
+        
+        stationDetailView.setNextButtonPublisher.withRetained(self)
+            .sink { [self] `self`, id in
+                setStationDetailView(id)
+            }.store(in: &cancelBag)
+    }
+    
+    func setStationDetailView(_ id: Int) {
+        self.data = viewModel.getStationDTOWithId(id: id)
+        viewModel.getCurrentStationDetailData(stationData: self.data!)
+        stationDetailView.data = viewModel.currentStationDetailData
+        stationDetailView.stationDetailTitle.stationTitle.stationLabel.text = viewModel.currentStationDetailData.stationName
+        stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.stationLabel.text = stationDetailView.data.previousStation?.stationName
+        stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.stationLabel.text = stationDetailView.data.nextStation?.stationName
+        stationDetailView.stationDetailTitle.stationTitle.lineImageName = viewModel.currentStationDetailData.lineId
+        stationDetailView.stationDetailTitle.lineButton.line = viewModel.currentStationDetailData.lineId
+        facilitiesView = FacilitiesView((viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities)!)
+        stationMapWebView = StationMapWebView(data: viewModel.currentStationDetailData)
+        self.deleteStationDetailMarker()
+        self.moveLocation()
+        self.setElevatorMarker()
+        self.setStationDetailMarker()
+        self.deleteBottomSheet()
+        self.showBottomSheet()
+    }
     
     func configure() {
         mapsTitleView.currentTextLabel.text = viewModel.currentStationData.stationName
@@ -195,8 +231,7 @@ private extension MapsViewController {
     
     func addMarker(data: StationDTO, width: CGFloat, height: CGFloat) {
         let imageView = StationMarkerView(
-            line: data.lineId,
-            stationName: data.stationName
+            elevatorCount: String(data.availableElevatorsNumber), stationName: data.stationName, line: data.lineId
         )
         let position: CLLocationCoordinate2D = {
             CLLocationCoordinate2D(latitude: CLLocationDegrees(data.coordinate.latitude)!, longitude: CLLocationDegrees(data.coordinate.longitude)!)
@@ -250,15 +285,9 @@ private extension MapsViewController {
                     markerImage.mapView = self.mapsView
                     markerImage.touchHandler = { (overlay: NMFOverlay) -> Bool in
                         self.deleteStationDetailMarker()
-                        self.mapsView.zoomLevel = 14
+                        self.mapsView.zoomLevel = 17
                         self.viewModel.updateText(stationMarker.stationData.stationName)
-                        self.data = self.viewModel.getStationDTO()
-                        self.viewModel.getCurrentStationDetailData(stationData: self.data!)
-                        self.moveLocation()
-                        self.setElevatorMarker()
-                        self.setStationDetailMarker()
-                        self.deleteBottomSheet()
-                        self.showBottomSheet()
+                        self.setStationDetailView(stationMarker.stationData.stationId)
                         return true
                     }
                 }
@@ -272,7 +301,6 @@ private extension MapsViewController {
             $0.mapView = nil
         }
         elevatorMarkers.removeAll()
-        
     }
     
     func setStationDetailMarker() {
@@ -281,7 +309,6 @@ private extension MapsViewController {
                 self.currentStationMarker = self.addDetailMarker(width: 94.5, height: 49.3)
                 self.currentStationMarker?.mapView = self.mapsView
                 self.currentStationMarker?.touchHandler = { (overlay: NMFOverlay) -> Bool in
-                    //self.bottomSheetState ? self.hideBottomSheet() : self.showBottomSheet()
                     return true
                 }
             }
@@ -305,13 +332,13 @@ private extension MapsViewController {
               let longitude = CLLocationDegrees(longitudeString) else {
             // 값이 없는 경우 강남역의 위치로 설정
             let gangnamStationLocation = NMGLatLng(lat: 37.498085, lng: 127.027548)
-            let cameraUpdate = NMFCameraUpdate(scrollTo: gangnamStationLocation, zoomTo: 14)
+            let cameraUpdate = NMFCameraUpdate(scrollTo: gangnamStationLocation, zoomTo: 17)
             cameraUpdate.animation = .easeIn
             mapsView.moveCamera(cameraUpdate)
             return
         }
         
-        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 17)
         cameraUpdate.animation = .easeIn
         mapsView.moveCamera(cameraUpdate)
         bottomSheetVC.move(to: .half, animated: true)
@@ -326,7 +353,7 @@ private extension MapsViewController {
             print("위치 서비스 On 상태")
             currentLocation.startUpdatingLocation()
             
-            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 14)
+            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: latitude, lng: longitude), zoomTo: 17)
             cameraUpdate.animation = .easeIn
             mapsView.moveCamera(cameraUpdate)
             guard let locationOverlay = locationOverlay else { return }
@@ -340,7 +367,6 @@ private extension MapsViewController {
 //MARK: SetBottomSheet
 private extension MapsViewController {
     func showBottomSheet() {
-        let stationDetailView = StationDetailViewController(viewModel.currentStationDetailData)
         stationDetailView.delegate = self
         bottomSheetVC.set(contentViewController: stationDetailView)
         bottomSheetVC.addPanel(toParent: self)
@@ -389,7 +415,7 @@ extension MapsViewController: NMFMapViewCameraDelegate {
     }
     
     func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
-        if mapView.zoomLevel >= 13 {
+        if mapView.zoomLevel >= 15 {
             currentStationMarker?.hidden = false
             elevatorMarkers.forEach {
                 $0.hidden = false
@@ -427,8 +453,18 @@ extension MapsViewController: CLLocationManagerDelegate {
             }
             
         case .restricted, .notDetermined:
+            DispatchQueue.main.async { [weak self] in
+                if let self = self {
+                    self.moveLocation()
+                }
+            }
             print("GPS 권한 설정되지 않음")
         case .denied:
+            DispatchQueue.main.async { [weak self] in
+                if let self = self {
+                    self.moveLocation()
+                }
+            }
             print("GPS 권한 요청 거부됨")
         default:
             print("GPS: Default")

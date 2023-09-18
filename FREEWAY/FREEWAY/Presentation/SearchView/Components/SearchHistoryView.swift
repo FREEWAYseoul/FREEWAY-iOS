@@ -70,7 +70,7 @@ extension SearchHistoryView: UITableViewDataSource {
         let searchHistory = UserDefaults.standard.searchHistory[indexPath.row]
         cell.configure(data: viewModel.getStationDTOWithId(id: searchHistory)!)
         cell.backgroundColor = .clear
-        cell.selectionStyle = .none
+        cell.selectionStyle = .default
         return cell
     }
 }
