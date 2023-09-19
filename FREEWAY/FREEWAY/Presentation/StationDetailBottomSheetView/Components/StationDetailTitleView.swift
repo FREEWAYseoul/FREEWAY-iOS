@@ -234,6 +234,14 @@ final class NextStationButton: UIButton {
         $0.sizeToFit()
     }
     
+    let emptyLabel = UILabel().then {
+        $0.font = UIFont(name: "Pretendard-Regular", size: 15)
+        $0.text = "다음역 없음"
+        $0.textColor = .white
+        $0.sizeToFit()
+        $0.layer.opacity = 0.5
+    }
+    
     private let nextImage = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.right")
         $0.tintColor = .white
@@ -243,21 +251,33 @@ final class NextStationButton: UIButton {
 
 private extension NextStationButton {
     func setupLayout() {
-        self.addSubview(nextImage)
-        nextImage.snp.makeConstraints { make in
-            make.height.equalTo(18)
-            make.trailing.equalToSuperview().offset(-8)
-            make.centerY.equalToSuperview()
+        if stationName != "" {
+            self.addSubview(nextImage)
+            nextImage.snp.makeConstraints { make in
+                make.height.equalTo(18)
+                make.trailing.equalToSuperview().offset(-8)
+                make.centerY.equalToSuperview()
+            }
+            nextImage.isUserInteractionEnabled = false
+            
+            self.addSubview(stationLabel)
+            stationLabel.snp.makeConstraints { make in
+                make.top.height.equalToSuperview()
+                make.trailing.equalTo(nextImage.snp.leading).offset(-5)
+                make.width.equalTo(54)
+            }
+            stationLabel.isUserInteractionEnabled = false
         }
-        nextImage.isUserInteractionEnabled = false
-        
-        self.addSubview(stationLabel)
-        stationLabel.snp.makeConstraints { make in
-            make.top.height.equalToSuperview()
-            make.trailing.equalTo(nextImage.snp.leading).offset(-5)
-            make.width.equalTo(54)
+        else {
+            self.addSubview(emptyLabel)
+            emptyLabel.snp.makeConstraints { make in
+                make.top.height.equalToSuperview()
+                make.trailing.equalToSuperview().offset(-8)
+                make.centerY.equalToSuperview()
+                //make.width.equalTo(54)
+            }
+            emptyLabel.isUserInteractionEnabled = false
         }
-        stationLabel.isUserInteractionEnabled = false
 
     }
 }
@@ -282,6 +302,14 @@ final class PrevStationButton: UIButton {
         $0.sizeToFit()
     }
     
+    let emptyLabel = UILabel().then {
+        $0.font = UIFont(name: "Pretendard-Regular", size: 15)
+        $0.text = "이전역 없음"
+        $0.textColor = .white
+        $0.sizeToFit()
+        $0.layer.opacity = 0.5
+    }
+    
     private let prevImage = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.left")
         $0.tintColor = .white
@@ -291,6 +319,7 @@ final class PrevStationButton: UIButton {
 
 private extension PrevStationButton {
     func setupLayout() {
+        if stationName != "" {
             self.addSubview(prevImage)
             prevImage.snp.makeConstraints { make in
                 make.height.equalTo(18)
@@ -298,14 +327,24 @@ private extension PrevStationButton {
                 make.centerY.equalToSuperview()
             }
             prevImage.isUserInteractionEnabled = false
-        
-        self.addSubview(stationLabel)
-        stationLabel.snp.makeConstraints { make in
-            make.top.height.equalToSuperview()
-            make.leading.equalTo(prevImage.snp.trailing).offset(5)
-            make.width.equalTo(54)
+            
+            self.addSubview(stationLabel)
+            stationLabel.snp.makeConstraints { make in
+                make.top.height.equalToSuperview()
+                make.leading.equalTo(prevImage.snp.trailing).offset(5)
+                make.width.equalTo(54)
+            }
+            stationLabel.isUserInteractionEnabled = false
+        } else {
+            self.addSubview(emptyLabel)
+            emptyLabel.snp.makeConstraints { make in
+                make.top.height.equalToSuperview()
+                make.leading.equalToSuperview().offset(8)
+                make.centerY.equalToSuperview()
+                //make.width.equalTo(54)
+            }
+            emptyLabel.isUserInteractionEnabled = false
         }
-        stationLabel.isUserInteractionEnabled = false
     }
 }
 
