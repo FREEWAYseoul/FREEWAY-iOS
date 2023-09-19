@@ -26,13 +26,20 @@ final class StationDetailTitleView: UIView {
         $0.backgroundColor = Pallete.dividerGray.color
     }
     
+    let stackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.alignment = .center
+        $0.spacing = 9
+        $0.distribution = .equalSpacing
+    }
+    
     lazy var lineButton = LineButton(viewModel.currentStationDetailData.lineId)
 
-    lazy var subLineButtons = [SubLineButton]()
+    lazy var subLineButtons = [LineButton]()
     
     func setSubLineButtons() {
         viewModel.currentStationDetailData.transferStations.forEach {
-            let subLine = SubLineButton($0.lineId)
+            let subLine = LineButton($0.lineId)
             subLineButtons.append(subLine)
         }
     }
@@ -46,6 +53,7 @@ final class StationDetailTitleView: UIView {
         self.setSubLineButtons()
         
         configure()
+        setupSublineButtonsLayout()
         setupLayout()
         self.backgroundColor = .clear
     }
@@ -53,58 +61,61 @@ final class StationDetailTitleView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    func bind() {
+        resetStackView()
+        let newTransferStations = viewModel.currentStationDetailData.transferStations
+        lineButton = LineButton(viewModel.currentStationDetailData.lineId)
+        lineButton.isCurrentLine = true
+        lineButton.setContentHuggingPriority(.required, for: .horizontal)
+        subLineButtons = newTransferStations.map { LineButton($0.lineId) }
+        stackView.addArrangedSubview(lineButton)
+        for subLineButton in subLineButtons {
+            subLineButton.setContentHuggingPriority(.required, for: .horizontal)
+            stackView.addArrangedSubview(subLineButton)
+        }
+        setupSublineButtonsLayout()
+    }
+    
+    func resetStackView() {
+        stackView.removeArrangedSubview(lineButton)
+        lineButton.removeFromSuperview()
+        for subLineButton in subLineButtons {
+            stackView.removeArrangedSubview(subLineButton)
+            subLineButton.removeFromSuperview()
+        }
+    }
+
 }
 
 private extension StationDetailTitleView {
     func configure() {
+        lineButton.isCurrentLine = true
+        lineButton.setContentHuggingPriority(.required, for: .horizontal)
+        stackView.addArrangedSubview(lineButton)
+        for subLineButton in subLineButtons {
+            subLineButton.setContentHuggingPriority(.required, for: .horizontal)
+            stackView.addArrangedSubview(subLineButton)
+        }
     }
     
     func setupLayout() {
-        self.addSubview(lineButton)
-        lineButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(13)
-            make.leading.equalToSuperview().offset(16)
-            make.height.equalTo(21)
-            make.width.equalTo(lineButton.lineIcon.intrinsicContentSize.width)
-        }
-        
-        var prevSubLine: SubLineButton?
-        
-        for idx in 0..<subLineButtons.count {
-            let subLineButton = subLineButtons[idx]
-            self.addSubview(subLineButton)
-            
-            subLineButton.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(13)
-                if idx == 0 {
-                    make.leading.equalTo(lineButton.snp.trailing).offset(9)
-                }
-                else {
-                    make.leading.equalTo(prevSubLine!.snp.trailing).offset(9)
-                }
-                make.height.equalTo(21)
-                make.width.equalTo(subLineButton.intrinsicContentSize.width)
-            }
-            
-            prevSubLine = subLineButton
-        }
-        
-        self.addSubview(backButton)
-        backButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(13)
-            make.trailing.equalToSuperview().offset(-24)
-            make.height.equalTo(21)
-        }
-        
-        backButton.addSubview(closeButtonImage)
-        closeButtonImage.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        closeButtonImage.isUserInteractionEnabled = false
+        //MARK: 제외된 부분
+//        self.addSubview(backButton)
+//        backButton.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(13)
+//            make.trailing.equalToSuperview().offset(-24)
+//            make.height.equalTo(21)
+//        }
+//
+//        backButton.addSubview(closeButtonImage)
+//        closeButtonImage.snp.makeConstraints { make in
+//            make.edges.equalToSuperview()
+//        }
+//        closeButtonImage.isUserInteractionEnabled = false
         
         self.addSubview(separator)
         separator.snp.makeConstraints { make in
-            make.top.equalTo(lineButton.snp.bottom).offset(12)
+            make.top.equalTo(stackView.snp.bottom).offset(12)
             make.height.equalTo(1)
             make.leading.trailing.equalToSuperview()
         }
@@ -115,47 +126,28 @@ private extension StationDetailTitleView {
             make.leading.trailing.equalToSuperview()
         }
     }
+    
+    func setupSublineButtonsLayout() {
+        self.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(13)
+            make.leading.equalToSuperview().offset(16)
+            make.height.equalTo(21)
+        }
+    }
 }
 
 final class LineButton: UIButton {
-    
     var line: String = "" {
         didSet {
-            lineIcon.image = UIImage(named: self.line)
+            lineLabel.text = setLineText(line)
         }
     }
     
-    lazy var lineIcon = UIImageView().then {
-        $0.image = UIImage(named: line)
-        $0.contentMode = .scaleAspectFit
-        $0.sizeToFit()
-    }
-    
-    init(_ line: String) {
-        self.line = line
-        super.init(frame: .zero)
-        setupLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-private extension LineButton {
-    func setupLayout() {
-        self.addSubview(lineIcon)
-        lineIcon.snp.makeConstraints { make in
-            make.height.equalTo(20)
-        }
-        lineIcon.isUserInteractionEnabled = false
-    }
-}
-
-final class SubLineButton: UIButton {
-    var line: String = "" {
+    var isCurrentLine: Bool = false {
         didSet {
-            lineLabel.text = line
+            lineBackground.backgroundColor = self.isCurrentLine ? LinePallete(rawValue: self.line)?.color : .white
+            lineLabel.textColor = self.isCurrentLine ? .white : LinePallete(rawValue: line)?.color
         }
     }
     
@@ -168,13 +160,14 @@ final class SubLineButton: UIButton {
         $0.layer.borderColor = LinePallete(rawValue: self.line)?.color?.cgColor
     }
     private lazy var lineLabel = UILabel().then {
-        $0.text = line
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
+        $0.text = setLineText(line)
         $0.textColor = LinePallete(rawValue: line)?.color
         $0.sizeToFit()
     }
     
-    init(_ line: String) {
+    init(_ line: String, _ isCurrentLine: Bool = false) {
+        self.isCurrentLine = isCurrentLine
         self.line = line
         super.init(frame: .zero)
         setupLayout()
@@ -183,15 +176,29 @@ final class SubLineButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setLineText(_ line: String) -> String {
+        switch line {
+        case "D1":
+            return "신분당"
+        case "K1":
+            return "수인분당"
+        case "K4":
+            return "경의중앙"
+        default :
+            return line
+        }
+    }
 }
 
-private extension SubLineButton {
+private extension LineButton {
     func setupLayout() {
         self.addSubview(lineBackground)
         lineBackground.snp.makeConstraints { make in
             make.height.equalTo(20)
             if line.count > 1 {
                 make.width.equalTo(lineLabel.intrinsicContentSize.width + 12)
+                print(lineLabel.intrinsicContentSize.width)
             }
             else {
                 make.width.equalTo(20)

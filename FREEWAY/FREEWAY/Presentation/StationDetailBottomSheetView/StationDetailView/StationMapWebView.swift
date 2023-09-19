@@ -37,7 +37,7 @@ final class StationMapWebView: UIView {
     func bind(newURL: String) {
         webURL = newURL
         if webURL != "" {
-            webView.removeFromSuperview()
+            webView?.removeFromSuperview()
             webView = nil
             setWebView()
             setupLayout()

@@ -163,10 +163,10 @@ private extension MapsViewController {
         stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.stationLabel.text = viewModel.currentStationDetailData.previousStation?.stationName
         stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.stationLabel.text = viewModel.currentStationDetailData.nextStation?.stationName
         stationDetailView.stationDetailTitle.stationTitle.lineImageName = viewModel.currentStationDetailData.lineId
-        stationDetailView.stationDetailTitle.lineButton.line = viewModel.currentStationDetailData.lineId
         facilitiesView?.data = viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities!
         facilitiesView?.bind()
         stationMapWebView?.bind(newURL: viewModel.currentStationDetailData.stationImageUrl ?? "")
+        stationDetailView.stationDetailTitle.bind()
         self.deleteStationDetailMarker()
         self.moveLocation()
         self.setElevatorMarker()
