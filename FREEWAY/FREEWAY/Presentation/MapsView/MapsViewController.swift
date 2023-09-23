@@ -25,6 +25,7 @@ class MapsViewController: UIViewController {
     let disposeBag = DisposeBag()
     let networkService = NetworkService.shared
     private var cancelBag = Set<AnyCancellable>()
+
     
     private var currentLocation: CLLocationManager!
     private var locationOverlay: NMFLocationOverlay?
@@ -106,6 +107,7 @@ class MapsViewController: UIViewController {
     }
     
     @objc func titleLabelPressed(_ sender: UITapGestureRecognizer) {
+        viewModel.searchPublisher.send(viewModel.currentStationDetailData.stationName)
         self.navigationController?.popViewController(animated: true)
     }
     

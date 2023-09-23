@@ -26,6 +26,7 @@ final class SearchViewController: UIViewController {
     lazy var searchListView = SearchListView(datas: viewModel.stationDatas)
     lazy var emptySearchView = EmptyView()
     lazy var searchListViewModule = SearchListViewController(viewModel: self.viewModel)
+    private lazy var mapsViewController = MapsViewController(viewModel: self.viewModel)
     
     init(viewModel: BaseViewModel) {
         self.viewModel = viewModel
@@ -109,6 +110,12 @@ final class SearchViewController: UIViewController {
         searchTextFieldView.searchTextfield.rx.text.orEmpty
             .bind(to: viewModel.inputText)
             .disposed(by: disposeBag)
+        
+        viewModel.searchPublisher.withRetained(self)
+            .sink { `self`, currentStationName in
+                self.viewModel.updateText(currentStationName)
+                self.searchTextFieldView.searchText = currentStationName
+            }.store(in: &cancelBag)
     }
     
     func handleTextFieldInput(_ text: String) {
@@ -228,7 +235,7 @@ extension SearchViewController: UITableViewDelegate {
             if let cellData = cell.cellData {
                 viewModel.currentStationData = cellData
                 viewModel.updateText(cellData.stationName)
-                self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
+                self.navigationController?.pushViewController(mapsViewController, animated: true)
             }
             else {
                 showInvalidStationNameAlert()

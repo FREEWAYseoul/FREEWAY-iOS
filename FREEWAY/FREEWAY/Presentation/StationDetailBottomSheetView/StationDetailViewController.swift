@@ -132,7 +132,6 @@ extension StationDetailViewController: UICollectionViewDelegate {
                     var url = ""
                     delegate?.removeStationDetailView()
                 if let number = viewModel.currentStationDetailData.stationContact {
-                        print("안녕 ", number)
                         url = "tel://\(String(describing: number))"
                     }
                     

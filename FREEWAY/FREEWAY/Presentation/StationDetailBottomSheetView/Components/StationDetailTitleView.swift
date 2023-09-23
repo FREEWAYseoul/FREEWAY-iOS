@@ -380,6 +380,7 @@ final class StationTitle: UIView {
     var stationName: String
     var nextStationName: String?
     var prevStationName: String?
+    let data: StationDetailDTO!
     
     private lazy var stationTitleBackground = UIView().then {
         $0.backgroundColor = .white
@@ -393,12 +394,17 @@ final class StationTitle: UIView {
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
     }
+    
+    
+    lazy var lineButton = LineButton(data.lineId, data.stationId, true)
+    
+    
     lazy var stationLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-Regular", size: 18)
         $0.text = stationName
         $0.textColor = .black
         $0.sizeToFit()
-        $0.lineBreakMode = .byTruncatingTail
+        //$0.lineBreakMode = .byTruncatingTail
     }
     private lazy var prevNextStationTitlebackground = UIView().then {
         $0.backgroundColor = LinePallete(rawValue: lineImageName)?.color
@@ -408,7 +414,6 @@ final class StationTitle: UIView {
     let stackView = UIStackView().then {
         $0.axis = .horizontal
         $0.alignment = .center
-        $0.spacing = 2
         $0.distribution = .fillProportionally
     }
     
@@ -418,7 +423,7 @@ final class StationTitle: UIView {
     
     
     init(viewModel: BaseViewModel) {
-        let data = viewModel.currentStationDetailData
+        self.data = viewModel.currentStationDetailData
         self.lineImageName = data.lineId
         self.stationName = data.stationName
         self.nextStationName = data.nextStation?.stationName
@@ -469,6 +474,9 @@ private extension StationTitle {
             make.centerX.centerY.equalTo(prevNextStationTitlebackground)
             //텍스트 길이에 따라 옵셔널로 들어가야할 부분
             if stationLabel.text!.count <= 5 { make.width.equalTo(stationLabel.intrinsicContentSize.width + lineImage.intrinsicContentSize.width + 62) }
+            else if stationLabel.text!.count == 6 {
+                make.width.equalTo(stationLabel.intrinsicContentSize.width + lineImage.intrinsicContentSize.width + 20)
+            }
             else { make.width.equalTo(150) }
             make.height.equalTo(39.9)
             make.center.equalToSuperview()
@@ -476,6 +484,7 @@ private extension StationTitle {
 
         stackView.addArrangedSubview(lineImage)
         stackView.addArrangedSubview(stationLabel)
+        stackView.spacing = self.stationName.count > 6 ? 2 : .zero
 
         stationTitleBackground.addSubview(stackView)
         stackView.snp.makeConstraints { make in
