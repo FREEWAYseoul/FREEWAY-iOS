@@ -59,6 +59,11 @@ final class StationDetailViewController: UIViewController {
         setPrevButtonPublisher.send(id ?? viewModel.currentStationDetailData.stationId)
         
     }
+    
+    @objc func subLineButtonPressed(_ sender: UIButton) {
+        
+        
+    }
 }
 
 private extension StationDetailViewController {

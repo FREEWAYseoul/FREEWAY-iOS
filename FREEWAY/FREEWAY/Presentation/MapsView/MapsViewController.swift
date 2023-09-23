@@ -155,6 +155,11 @@ private extension MapsViewController {
             .sink { [self] `self`, id in
                 setStationDetailView(id)
             }.store(in: &cancelBag)
+        
+        stationDetailView.stationDetailTitle.subLineButtonPublisher.withRetained(self)
+            .sink { [self] `self`, id in
+                setStationDetailView(id)
+            }.store(in: &cancelBag)
     }
     
     func setStationDetailView(_ id: Int) {

@@ -8,9 +8,11 @@
 import UIKit
 import SnapKit
 import Then
+import Combine
 
 final class StationDetailTitleView: UIView {
     let viewModel: BaseViewModel
+    var subLineButtonPublisher = PassthroughSubject<Int, Never>()
     
     private let closeButtonImage = UIImageView(frame: .zero).then {
         $0.image = UIImage(systemName: "xmark")
@@ -33,18 +35,19 @@ final class StationDetailTitleView: UIView {
         $0.distribution = .equalSpacing
     }
     
-    lazy var lineButton = LineButton(viewModel.currentStationDetailData.lineId)
-
+    lazy var lineButton = LineButton(viewModel.currentStationDetailData.lineId, viewModel.currentStationDetailData.stationId)
+    
     lazy var subLineButtons = [LineButton]()
     
     func setSubLineButtons() {
         subLineButtons.append(lineButton)
         viewModel.currentStationDetailData.transferStations.forEach {
-            let subLine = LineButton($0.lineId)
+            let subLine = LineButton($0.lineId, $0.stationId)
+            subLine.addTarget(self, action: #selector(subLineButtonTapped), for: .touchUpInside)
             subLineButtons.append(subLine)
         }
     }
-
+    
     lazy var stationTitle = StationTitle(viewModel: viewModel)
     
     
@@ -65,15 +68,19 @@ final class StationDetailTitleView: UIView {
     func bind() {
         resetSublineButton()
     }
-
+    
     func resetSublineButton() {
         for subLineButton in subLineButtons {
             subLineButton.removeFromSuperview()
         }
+        lineButton.removeFromSuperview()
         subLineButtons.removeAll()
+        lineButton = LineButton(viewModel.currentStationDetailData.lineId, viewModel.currentStationDetailData.stationId)
+        lineButton.isCurrentLine = true
         subLineButtons.append(lineButton)
         viewModel.currentStationDetailData.transferStations.forEach {
-            let subLine = LineButton($0.lineId)
+            let subLine = LineButton($0.lineId, $0.stationId)
+            subLine.addTarget(self, action: #selector(subLineButtonTapped), for: .touchUpInside)
             subLineButtons.append(subLine)
         }
         setupSublineButtonsLayout()
@@ -81,19 +88,15 @@ final class StationDetailTitleView: UIView {
             addSubview(subLineButton)
         }
     }
-
-
+    
+    @objc func subLineButtonTapped(_ sender: LineButton) {
+        subLineButtonPublisher.send(sender.stationNumber)
+    }
 }
 
 private extension StationDetailTitleView {
     func configure() {
         lineButton.isCurrentLine = true
-        lineButton.setContentHuggingPriority(.required, for: .horizontal)
-        stackView.addArrangedSubview(lineButton)
-        for subLineButton in subLineButtons {
-            subLineButton.setContentHuggingPriority(.required, for: .horizontal)
-            stackView.addArrangedSubview(subLineButton)
-        }
     }
     
     func setupLayout() {
@@ -153,9 +156,10 @@ final class LineButton: UIButton {
     var line: String = "" {
         didSet {
             lineLabel.text = setLineText(line)
-            layoutIfNeeded() // 크기 조절을 위한 레이아웃 업데이트
         }
     }
+    
+    var stationNumber: Int!
     
     var isCurrentLine: Bool = false {
         didSet {
@@ -172,6 +176,7 @@ final class LineButton: UIButton {
         $0.layer.borderWidth = 1.0
         $0.layer.borderColor = LinePallete(rawValue: self.line)?.color?.cgColor
     }
+    
     lazy var lineLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
         $0.text = setLineText(line)
@@ -180,9 +185,10 @@ final class LineButton: UIButton {
         $0.frame.size = $0.intrinsicContentSize
     }
     
-    init(_ line: String, _ isCurrentLine: Bool = false) {
+    init(_ line: String, _ stationNumber: Int, _ isCurrentLine: Bool = false) {
         self.isCurrentLine = isCurrentLine
         self.line = line
+        self.stationNumber = stationNumber
         super.init(frame: .zero)
         setupLayout()
     }
