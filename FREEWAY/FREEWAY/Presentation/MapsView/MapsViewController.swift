@@ -173,7 +173,7 @@ private extension MapsViewController {
         stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.stationName = viewModel.currentStationDetailData.nextStation?.stationName ?? ""
         stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.bind()
         stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.bind()
-        if viewModel.currentStationDetailData.stationName.count > 6 {
+        if viewModel.currentStationDetailData.stationName.count > 5 {
             stationDetailView.stationDetailTitle.stationTitle.updateLayout()
         }
         stationDetailView.stationDetailTitle.stationTitle.lineImageName = viewModel.currentStationDetailData.lineId

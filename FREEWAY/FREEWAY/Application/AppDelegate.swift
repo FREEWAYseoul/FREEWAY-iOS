@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         NMFAuthManager.shared().clientId = "55zvlyrm0c"
-        sleep(1)
+        sleep(UInt32(2))
 
         return true
     }
