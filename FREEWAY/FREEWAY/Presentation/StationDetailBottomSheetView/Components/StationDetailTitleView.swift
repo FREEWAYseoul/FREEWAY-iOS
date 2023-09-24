@@ -67,6 +67,7 @@ final class StationDetailTitleView: UIView {
     }
     func bind() {
         resetSublineButton()
+        //stationTitle.bind()
     }
     
     func resetSublineButton() {
@@ -234,7 +235,11 @@ private extension LineButton {
 }
 
 final class NextStationButton: UIButton {
-    var stationName: String
+    var stationName: String {
+        didSet {
+            stationLabel.text = self.stationName
+        }
+    }
     
     init(_ stationName: String) {
         self.stationName = stationName
@@ -266,6 +271,12 @@ final class NextStationButton: UIButton {
         $0.image = UIImage(systemName: "chevron.right")
         $0.tintColor = .white
         $0.contentMode = .scaleAspectFit
+    }
+    func bind() {
+        emptyLabel.removeFromSuperview()
+        stationLabel.removeFromSuperview()
+        nextImage.removeFromSuperview()
+        setupLayout()
     }
 }
 
@@ -303,12 +314,17 @@ private extension NextStationButton {
 }
 
 final class PrevStationButton: UIButton {
-    var stationName: String
+    var stationName: String {
+        didSet {
+            stationLabel.text = self.stationName
+        }
+    }
     
     init(_ stationName: String) {
         self.stationName = stationName
         super.init(frame: .zero)
         setupLayout()
+        print(stationName)
     }
     
     required init?(coder: NSCoder) {
@@ -334,6 +350,13 @@ final class PrevStationButton: UIButton {
         $0.image = UIImage(systemName: "chevron.left")
         $0.tintColor = .white
         $0.contentMode = .scaleAspectFit
+    }
+    
+    func bind() {
+        emptyLabel.removeFromSuperview()
+        stationLabel.removeFromSuperview()
+        prevImage.removeFromSuperview()
+        setupLayout()
     }
 }
 
@@ -404,7 +427,7 @@ final class StationTitle: UIView {
         $0.text = stationName
         $0.textColor = .black
         $0.sizeToFit()
-        //$0.lineBreakMode = .byTruncatingTail
+        $0.lineBreakMode = .byTruncatingTail
     }
     private lazy var prevNextStationTitlebackground = UIView().then {
         $0.backgroundColor = LinePallete(rawValue: lineImageName)?.color
@@ -438,8 +461,16 @@ final class StationTitle: UIView {
     }
     
     func bind() {
-        
+        prevStationTitleButton.stationName = data.previousStation?.stationName ?? ""
+        nextStationTitleButton.stationName = data.nextStation?.stationName ?? ""
+        prevStationTitleButton.bind()
+        nextStationTitleButton.bind()
     }
+    
+    func updateLayout() {
+        stackView.widthAnchor.constraint(equalToConstant: 120).isActive = true
+    }
+
 }
 
 

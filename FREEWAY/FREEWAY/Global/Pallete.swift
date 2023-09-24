@@ -25,6 +25,7 @@ enum Pallete: String {
     case unavailableGray
     case grabberGray
     case unavailableFacilitiesGray
+    case alertbgGray
 }
 
 enum LinePallete: String {

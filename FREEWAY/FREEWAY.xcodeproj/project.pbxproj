@@ -77,6 +77,7 @@
 		2AB285502AA7761C0077ED7C /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2854F2AA7761C0077ED7C /* BaseViewModel.swift */; };
 		2AB285562AA85D360077ED7C /* MapsViewTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285552AA85D360077ED7C /* MapsViewTitle.swift */; };
 		2AB285582AA8AD6D0077ED7C /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB285572AA8AD6D0077ED7C /* SearchListView.swift */; };
+		2ABF051C2AC055DE003B7F58 /* NotificationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABF051B2AC055DE003B7F58 /* NotificationAlertView.swift */; };
 		2AC755172A7BFD2F00099C2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755162A7BFD2F00099C2A /* AppDelegate.swift */; };
 		2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */; };
 		2AC7551B2A7BFD2F00099C2A /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7551A2A7BFD2F00099C2A /* MapsViewController.swift */; };
@@ -174,6 +175,7 @@
 		2AB2854F2AA7761C0077ED7C /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		2AB285552AA85D360077ED7C /* MapsViewTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewTitle.swift; sourceTree = "<group>"; };
 		2AB285572AA8AD6D0077ED7C /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
+		2ABF051B2AC055DE003B7F58 /* NotificationAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAlertView.swift; sourceTree = "<group>"; };
 		2AC755132A7BFD2F00099C2A /* FREEWAY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FREEWAY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC755162A7BFD2F00099C2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC755182A7BFD2F00099C2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -369,6 +371,7 @@
 			children = (
 				2A95778C2AADD02100A8F8E4 /* Components */,
 				2A9577892AADD01800A8F8E4 /* NotificationViewController.swift */,
+				2ABF051B2AC055DE003B7F58 /* NotificationAlertView.swift */,
 			);
 			path = NotificationView;
 			sourceTree = "<group>";
@@ -869,6 +872,7 @@
 				2A9577902AADD09F00A8F8E4 /* NotificationTitleView.swift in Sources */,
 				2A9577852AAD952C00A8F8E4 /* BottomSheetViewController.swift in Sources */,
 				2A7B8A2F2AB3387A002A6287 /* SearchListViewController.swift in Sources */,
+				2ABF051C2AC055DE003B7F58 /* NotificationAlertView.swift in Sources */,
 				2AC755192A7BFD2F00099C2A /* SceneDelegate.swift in Sources */,
 				2A9577922AAF40A000A8F8E4 /* NotificationTableSection.swift in Sources */,
 				2A26EA232A8E6B6300FA355B /* UIViewExtension.swift in Sources */,
@@ -1064,6 +1068,8 @@
 				DEVELOPMENT_TEAM = 25YUTG4RN5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FREEWAY/Global/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "프리웨이";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1094,6 +1100,8 @@
 				DEVELOPMENT_TEAM = 25YUTG4RN5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FREEWAY/Global/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "프리웨이";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

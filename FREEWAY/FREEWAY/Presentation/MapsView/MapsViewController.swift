@@ -169,8 +169,13 @@ private extension MapsViewController {
         viewModel.getCurrentStationDetailData(stationData: self.data!)
         stationDetailView.viewModel = viewModel
         stationDetailView.stationDetailTitle.stationTitle.stationLabel.text = viewModel.currentStationDetailData.stationName
-        stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.stationLabel.text = viewModel.currentStationDetailData.previousStation?.stationName
-        stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.stationLabel.text = viewModel.currentStationDetailData.nextStation?.stationName
+        stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.stationName = viewModel.currentStationDetailData.previousStation?.stationName ?? ""
+        stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.stationName = viewModel.currentStationDetailData.nextStation?.stationName ?? ""
+        stationDetailView.stationDetailTitle.stationTitle.nextStationTitleButton.bind()
+        stationDetailView.stationDetailTitle.stationTitle.prevStationTitleButton.bind()
+        if viewModel.currentStationDetailData.stationName.count > 6 {
+            stationDetailView.stationDetailTitle.stationTitle.updateLayout()
+        }
         stationDetailView.stationDetailTitle.stationTitle.lineImageName = viewModel.currentStationDetailData.lineId
         facilitiesView?.data = viewModel.currentStationDetailData.facilities ?? MockData.mockStationDetail.facilities!
         facilitiesView?.bind()
@@ -226,6 +231,11 @@ private extension MapsViewController {
         }
     }
     
+    private func hideAllMarkers() {
+        for stationMarker in stationMarkers {
+            stationMarker.markerImage.mapView = nil
+        }
+    }
 }
 
 //MARK: SetMarker
