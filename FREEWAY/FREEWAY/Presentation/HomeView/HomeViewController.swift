@@ -18,6 +18,7 @@ final class HomeViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     
     private let alertButton = InAppAlertButtonView()
+    private lazy var notiAlert = NotificationAlertView(data: self.viewModel.notificationDatas)
     private let homeTitle = HomeTitleView()
     private let textField = HomeSearchTextfieldView()
     private let voiceSearchLottieView = VoiceSearchLottieView()
@@ -50,8 +51,12 @@ final class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         if viewModel.hasNewerDate() {
             alertButton.image = "alertDot"
+            setupAlertLayout()
+            showNotificationAlert()
+            hideNotificationAlert()
         } else {
             alertButton.image = "alert"
+            notiAlert.removeFromSuperview()
         }
     }
     //TODO: BaseViewController 구현 후에 옮기기
@@ -183,6 +188,39 @@ private extension HomeViewController {
             make.leading.equalToSuperview().offset(-45)
             make.trailing.equalToSuperview().offset(45)
         }
+    }
+    
+    func setupAlertLayout() {
+        view.addSubview(notiAlert)
+        notiAlert.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset((safeAreaTopInset() ?? 50) + 162)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+        notiAlert.alpha = 0.0
+        
+    }
+}
+
+private extension HomeViewController {
+    func showNotificationAlert() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.notiAlert.alpha = 1.0 // 알파 값을 1로 변경하여 표시
+        }) { (completed) in
+            if completed {
+                // 2초 후에 알림을 사라지도록 함
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    self.hideNotificationAlert()
+                }
+            }
+        }
+    }
+
+    // 알림을 숨기는 함수
+    func hideNotificationAlert() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.notiAlert.alpha = 0.0 // 알파 값을 0으로 변경하여 숨김
+        })
+        notiAlert.removeFromSuperview()
     }
 }
 

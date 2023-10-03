@@ -16,7 +16,7 @@ final class NetworkService {
     }
 
     func getAllStationList(completion: @escaping ([StationDTO]?, Error?) -> Void) {
-        AF.request("http://freeway.ap-northeast-2.elasticbeanstalk.com/api/stations").responseDecodable(of: [StationDTO].self) { response in
+        AF.request("http://freeway-env.eba-mpxrzw3w.ap-northeast-2.elasticbeanstalk.com/api/stations").responseDecodable(of: [StationDTO].self) { response in
             switch response.result {
             case .success(let stations):
                 // 성공적으로 디코딩된 데이터를 사용할 수 있습니다.
@@ -30,7 +30,7 @@ final class NetworkService {
     }
     
     func getStationDetail(stationId: String = "", completion: @escaping (StationDetailDTO?, Error?) -> Void) {
-        AF.request("http://freeway.ap-northeast-2.elasticbeanstalk.com/api/stations/\(stationId)").responseDecodable(of: StationDetailDTO.self) { response in
+        AF.request("http://freeway-env.eba-mpxrzw3w.ap-northeast-2.elasticbeanstalk.com/api/stations/\(stationId)").responseDecodable(of: StationDetailDTO.self) { response in
             switch response.result {
             case .success(let stations):
                 // 성공적으로 디코딩된 데이터를 사용할 수 있습니다.
@@ -44,7 +44,7 @@ final class NetworkService {
     }
     
     func getNotifications(completion: @escaping ([NotificationDTO]?, Error?) -> Void) {
-        AF.request("http://freeway.ap-northeast-2.elasticbeanstalk.com/api/notifications").responseDecodable(of: [NotificationDTO].self) { response in
+        AF.request("http://freeway-env.eba-mpxrzw3w.ap-northeast-2.elasticbeanstalk.com/api/notifications").responseDecodable(of: [NotificationDTO].self) { response in
             switch response.result {
             case .success(let notifications):
                 // 성공적으로 디코딩된 데이터를 사용할 수 있습니다.

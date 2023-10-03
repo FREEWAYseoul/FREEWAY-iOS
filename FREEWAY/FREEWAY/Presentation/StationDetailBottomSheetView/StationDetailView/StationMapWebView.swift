@@ -11,9 +11,7 @@ import Then
 import WebKit
 
 final class StationMapWebView: UIView {
-    
-    private var data: StationDetailDTO
-    lazy var webURL: String = data.stationImageUrl ?? ""
+    var webURL: String
     private var webView: WKWebView!
     private let GuidanceLabel = UILabel().then {
         $0.text = "손으로 확대, 축소가 가능해요"
@@ -23,8 +21,8 @@ final class StationMapWebView: UIView {
     }
     private var emptyView = EmptyView()
     
-    init(data: StationDetailDTO) {
-        self.data = data
+    init(_ url: String) {
+        webURL = url
         super.init(frame: .zero)
         backgroundColor = Pallete.backgroundGray.color
         if webURL != "" { setWebView() }
@@ -35,6 +33,20 @@ final class StationMapWebView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func bind(newURL: String) {
+        webURL = newURL      
+        if webURL != "" {
+            webView?.removeFromSuperview()
+            webView = nil
+            setWebView()
+            setupLayout()
+        } else {
+            emptyView.isHidden = false
+            GuidanceLabel.isHidden = true
+        }
+    }
+
 }
 
 private extension StationMapWebView {

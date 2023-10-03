@@ -10,15 +10,15 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>위치정보 권한이 필요합니다.</string>
+	<string>지도에서 내 위치를 확인하여 근처 역 정보를 이용하기 위해 권한이 필요합니다.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>위치정보 권한이 필요합니다.</string>
+	<string>지도에서 내 위치를 확인하여 근처 역 정보를 이용하기 위해 권한이 필요합니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>위치정보 권한이 필요합니다.</string>
+	<string>지도에서 내 위치를 확인하여 근처 역 정보를 이용하기 위해 권한이 필요합니다.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>FREEWAY</string>
+	<string>음성을 검색 하려면 마이크가 필요해요.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>test</string>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Bold.otf</string>

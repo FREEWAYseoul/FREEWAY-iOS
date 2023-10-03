@@ -18,14 +18,17 @@ final class FacilitiesView: UIView {
         let status: Bool
     }
     
-    private lazy var facilitieDatas: [FailitiesData] = [
-        FailitiesData(title: "장애인 화장실", imageName: "disabledToilet", status: data.disabledToilet ?? false),
-        FailitiesData(title: "휠체어 리프트", imageName: "wheelchairLift", status: data.wheelchairLift ?? false),
-        FailitiesData(title: "유아수유방", imageName: "feedingRoom", status: data.feedingRoom ?? false),
-        FailitiesData(title: "환전키오스크", imageName: "currencyExchangeKiosk", status: data.currencyExchangeKiosk ?? false),
-        FailitiesData(title: "무인민원발급기", imageName: "unmannedCivilApplicationIssuingMachine", status: data.unmannedCivilApplicationIssuingMachine ?? false),
-        FailitiesData(title: "환승주차장", imageName: "transitParkingLot", status: data.transitParkingLot ?? false)
-    ]
+    private lazy var facilitieDatas: [FailitiesData] = []
+    private func createFacilitiesData(from facilities: Facilities) -> [FailitiesData] {
+        return [
+            FailitiesData(title: "장애인 화장실", imageName: "disabledToilet", status: facilities.disabledToilet ?? false),
+            FailitiesData(title: "휠체어 리프트", imageName: "wheelchairLift", status: facilities.wheelchairLift ?? false),
+            FailitiesData(title: "유아수유방", imageName: "feedingRoom", status: facilities.feedingRoom ?? false),
+            FailitiesData(title: "환전키오스크", imageName: "currencyExchangeKiosk", status: facilities.currencyExchangeKiosk ?? false),
+            FailitiesData(title: "무인민원발급기", imageName: "unmannedCivilApplicationIssuingMachine", status: facilities.unmannedCivilApplicationIssuingMachine ?? false),
+            FailitiesData(title: "환승주차장", imageName: "transitParkingLot", status: facilities.transitParkingLot ?? false)
+        ]
+    }
     
     let updateTimeLabel = UILabel().then {
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 12)
@@ -44,12 +47,19 @@ final class FacilitiesView: UIView {
         self.data = data
         super.init(frame: .zero)
         self.backgroundColor = .white
+        facilitieDatas = createFacilitiesData(from: data)
         configure()
         setupLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bind() {
+        facilitieDatas = createFacilitiesData(from: data)
+        self.tableView.reloadData()
+        updateTimeLabel.text = "\(Date().getUpdateTime()) 업데이트 완료"
     }
 }
 

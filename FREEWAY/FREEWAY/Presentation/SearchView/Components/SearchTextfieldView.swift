@@ -17,6 +17,12 @@ final class SearchTextfieldView: UIView {
         }
     }
     
+    var searchText = "" {
+        didSet {
+            self.searchTextfield.text = self.searchText
+        }
+    }
+    
     let searchTextfield = UITextField().then {
         $0.borderStyle = .none
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
