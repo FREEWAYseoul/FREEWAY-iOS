@@ -36,4 +36,11 @@ extension String {
         dateFormatter.locale = Locale(identifier: "ko_KR")
         return dateFormatter.date(from: self)
     }
+    
+    func removeStationSuffix() -> String {
+        if self.hasSuffix("역") {
+            return String(self.dropLast())
+        }
+        return self
+    }
 }

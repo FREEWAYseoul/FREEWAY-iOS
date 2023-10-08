@@ -186,19 +186,21 @@ extension SearchViewController: UITextFieldDelegate {
                 return true
             }
         }
-        guard textField.text!.count < 10 else { return false }
-        viewModel.inputTextPublisher.send(textField.text ?? "")
-        return true
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        return updatedText.count < 10
     }
     
-    private func findStationDetailDTO(_ stationName: String) -> StationDTO? {
-        var stationName = stationName
-            if stationName.hasSuffix("역") {
-                stationName = String(stationName.dropLast())
-            }
-        return viewModel.stationDatas.first { $0.stationName == stationName }
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField.text?.isEmpty == true {
+            viewModel.inputTextPublisher.send("")
+        } else {
+            viewModel.inputTextPublisher.send(textField.text ?? "")
+        }
     }
-    
+
+    //TODO: 추후 AlertManager로 들어갈 부분
     private func showInvalidStationNameAlert() {
         let alert = UIAlertController(title: "역 이름을 다시 한 번 확인해주세요!", message: "", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
@@ -206,12 +208,14 @@ extension SearchViewController: UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func navigateToMapsViewControllerIfNeeded(_ searchText: String) {
-        if let currentStation = findStationDetailDTO(searchText) {
+    func navigateToMapsViewControllerIfNeeded(_ inputText: String) {
+        let currentStationName = inputText.removeStationSuffix()
+        if let currentStation = viewModel.getStationDTO(currentStationName) {
             viewModel.currentStationData = currentStation
             viewModel.getCurrentStationDetailData(stationData: viewModel.currentStationData)
             self.navigationController?.pushViewController(MapsViewController(viewModel: viewModel), animated: true)
-        } else {
+        }
+        else {
             showInvalidStationNameAlert()
         }
     }

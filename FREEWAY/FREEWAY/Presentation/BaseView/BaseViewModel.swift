@@ -40,19 +40,13 @@ class BaseViewModel {
         }
     }
     
-    func getStationDTO() -> StationDTO? {
-        do {
-            let stationName = try inputText.value()
+    func getStationDTO(_ stationName: String) -> StationDTO? {
             // StationName을 사용하여 StationDTO를 검색하고 반환
             if let station = stationDatas.first(where: { $0.stationName == stationName }) {
                 self.currentStationData = station
                 return station
             }
             return nil // 찾을 수 없는 경우
-        } catch {
-            // BehaviorSubject에서 값을 가져오지 못한 경우
-            return nil
-        }
     }
     
     func getStationDTOWithId(id: Int) -> StationDTO? {
