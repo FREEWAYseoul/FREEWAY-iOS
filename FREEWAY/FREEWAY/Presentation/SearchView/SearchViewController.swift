@@ -78,7 +78,7 @@ final class SearchViewController: UIViewController {
     @objc func backButtonPressed(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
     }
-    
+    //TODO: Combine으로 상태 수정
     @objc func voiceButtonPressed(_ sender: UIButton) {
         searchListViewModule.view.isHidden = true
         setupLottieLayout()
@@ -91,12 +91,13 @@ final class SearchViewController: UIViewController {
         self.voiceRecognitionManager.stopRecognition()
         self.searchTextFieldView.voiceImage = "mic.fill"
         self.voiceSearchLottieView.removeFromSuperview()
+        //TODO: 옵셔널 타입 제거 강남으로 이동하지 못하도록 설정
         self.navigateToMapsViewControllerIfNeeded(self.viewModel.getStationName() ?? "강남")
         }
     }
     
     private func bind() {
-        viewModel.inputVoice.withRetained(self)
+        viewModel.inputVoicePublisher.withRetained(self)
             .sink { `self`, resultText in
                 self.voiceSearchLottieView.resultTextLabel.text = resultText
             }.store(in: &cancelBag)
@@ -199,7 +200,15 @@ extension SearchViewController: UITextFieldDelegate {
             viewModel.inputTextPublisher.send(textField.text ?? "")
         }
     }
-
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let searchText = textField.text {
+            navigateToMapsViewControllerIfNeeded(searchText)
+        }
+        return true
+    }
+    //MARK: UITextFieldDelegate와는 관련 없지만 사용되는 로직
+    
     //TODO: 추후 AlertManager로 들어갈 부분
     private func showInvalidStationNameAlert() {
         let alert = UIAlertController(title: "역 이름을 다시 한 번 확인해주세요!", message: "", preferredStyle: .alert)
@@ -219,14 +228,6 @@ extension SearchViewController: UITextFieldDelegate {
             showInvalidStationNameAlert()
         }
     }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let searchText = textField.text {
-            navigateToMapsViewControllerIfNeeded(searchText)
-        }
-        return true
-    }
-    
 }
 
 extension SearchViewController: UITableViewDelegate {

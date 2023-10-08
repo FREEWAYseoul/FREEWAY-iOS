@@ -94,7 +94,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func bind() {
-        viewModel.inputVoice.withRetained(self)
+        viewModel.inputVoicePublisher.withRetained(self)
             .sink { `self`, resultText in
                 self.voiceSearchLottieView.resultTextLabel.text = resultText
             }.store(in: &cancelBag)

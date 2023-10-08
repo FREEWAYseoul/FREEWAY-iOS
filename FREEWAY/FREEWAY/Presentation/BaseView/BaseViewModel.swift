@@ -20,7 +20,7 @@ class BaseViewModel {
     
     // 입력된 데이터를 저장하는 BehaviorSubject
     let inputText = BehaviorSubject<String>(value: "")
-    let inputVoice = PassthroughSubject<String, Never>()
+    let inputVoicePublisher = PassthroughSubject<String, Never>()
     //TODO: MapsViewController의 ViewModel에 들어갈 부분
     let searchPublisher = PassthroughSubject<String, Never>()
     let inputTextPublisher = PassthroughSubject<String, Never>()

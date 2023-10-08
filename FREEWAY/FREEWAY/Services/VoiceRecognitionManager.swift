@@ -57,7 +57,7 @@ class VoiceRecognitionManager: NSObject, SFSpeechRecognizerDelegate {
             guard let self = self else { return }
             if let result = result {
                 self.resultText = result.bestTranscription.formattedString
-                self.viewModel?.inputVoice.send(self.resultText ?? "")
+                self.viewModel?.inputVoicePublisher.send(self.resultText ?? "")
                 self.viewModel?.updateText(self.resultText)
                 self.delegate?.didRecognizeVoice(text: self.resultText ?? "")
             }
