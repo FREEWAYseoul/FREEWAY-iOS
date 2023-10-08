@@ -10,6 +10,7 @@ import RxCocoa
 import Combine
 
 class BaseViewModel {
+    //MARK: 네트워크 작업 후에 받아오는 데이터
     var stationDatas: [StationDTO] = []
     var stationsDetailDatas: [StationDetailDTO] = []
     var notificationDatas: [NotificationDTO] = []
@@ -20,7 +21,9 @@ class BaseViewModel {
     // 입력된 데이터를 저장하는 BehaviorSubject
     let inputText = BehaviorSubject<String>(value: "")
     let inputVoice = PassthroughSubject<String, Never>()
+    //TODO: MapsViewController의 ViewModel에 들어갈 부분
     let searchPublisher = PassthroughSubject<String, Never>()
+    let inputTextPublisher = PassthroughSubject<String, Never>()
     let disposeBag = DisposeBag()
     // 사용자 입력을 업데이트하는 함수
     func updateText(_ text: String? = nil) {

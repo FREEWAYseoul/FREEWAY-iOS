@@ -101,21 +101,16 @@ final class SearchViewController: UIViewController {
                 self.voiceSearchLottieView.resultTextLabel.text = resultText
             }.store(in: &cancelBag)
         
-        searchTextFieldView.searchTextfield.rx.text.orEmpty
-            .subscribe(onNext: { [weak self] text in
-                self?.handleTextFieldInput(text)
-                self?.emptySearchView.searchText = text
-            })
-            .disposed(by: disposeBag)
-        
-        searchTextFieldView.searchTextfield.rx.text.orEmpty
-            .bind(to: viewModel.inputText)
-            .disposed(by: disposeBag)
-        
         viewModel.searchPublisher.withRetained(self)
             .sink { `self`, currentStationName in
                 self.viewModel.updateText(currentStationName)
-                self.searchTextFieldView.searchText = currentStationName
+                self.searchTextFieldView.searchTextfield.text = currentStationName
+            }.store(in: &cancelBag)
+        
+        viewModel.inputTextPublisher.withRetained(self)
+            .sink { `self`, inputText in
+                self.handleTextFieldInput(inputText)
+                self.emptySearchView.searchText = inputText
             }.store(in: &cancelBag)
     }
     
@@ -192,6 +187,7 @@ extension SearchViewController: UITextFieldDelegate {
             }
         }
         guard textField.text!.count < 10 else { return false }
+        viewModel.inputTextPublisher.send(textField.text ?? "")
         return true
     }
     

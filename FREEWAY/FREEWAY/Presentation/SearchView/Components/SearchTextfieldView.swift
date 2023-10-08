@@ -17,12 +17,6 @@ final class SearchTextfieldView: UIView {
         }
     }
     
-    var searchText = "" {
-        didSet {
-            self.searchTextfield.text = self.searchText
-        }
-    }
-    
     let searchTextfield = UITextField().then {
         $0.borderStyle = .none
         $0.font = UIFont(name: "Pretendard-SemiBold", size: 18)
@@ -56,7 +50,6 @@ final class SearchTextfieldView: UIView {
         setupLayout()
     }
     
-    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
