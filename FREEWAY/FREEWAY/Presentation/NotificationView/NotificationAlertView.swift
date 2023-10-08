@@ -35,7 +35,7 @@ final class NotificationAlertView: UIView {
         configure(data: data)
         setupLayout()
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

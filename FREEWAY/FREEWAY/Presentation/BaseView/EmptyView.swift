@@ -10,7 +10,6 @@ import Then
 import SnapKit
 
 final class EmptyView: UIView {
-    //추후에 TextField와 데이터 바인딩 필요
     var searchText: String = "" {
         didSet {
             emptySearchTitleLabel.text = "\"\(searchText)\" 검색 결과가 없습니다."
@@ -33,7 +32,7 @@ final class EmptyView: UIView {
         self.backgroundColor = Pallete.backgroundGray.color
         setupLayout()
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

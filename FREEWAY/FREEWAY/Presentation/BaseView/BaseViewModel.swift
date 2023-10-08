@@ -22,10 +22,6 @@ class BaseViewModel {
     let inputVoice = PassthroughSubject<String, Never>()
     let searchPublisher = PassthroughSubject<String, Never>()
     let disposeBag = DisposeBag()
-    // Observable로 변환하여 ViewController에서 사용할 수 있도록
-    var stationName: Observable<String> {
-        return inputText.asObservable()
-    }
     // 사용자 입력을 업데이트하는 함수
     func updateText(_ text: String? = nil) {
         inputText.onNext(text ?? currentStationDetailData.stationName)

@@ -28,7 +28,7 @@ final class InAppAlertButtonView: UIButton {
         setupLayout()
         //TODO: 알람이 있을 시에 대한 분기처리가 필요한 부분
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

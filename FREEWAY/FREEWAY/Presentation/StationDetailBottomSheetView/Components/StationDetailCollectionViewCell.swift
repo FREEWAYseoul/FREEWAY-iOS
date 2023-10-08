@@ -53,7 +53,7 @@ final class StationDetailCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupLayout()
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

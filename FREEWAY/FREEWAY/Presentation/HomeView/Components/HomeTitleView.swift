@@ -14,7 +14,7 @@ final class HomeTitleView: UILabel {
         super.init(frame: frame)
         configure()
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

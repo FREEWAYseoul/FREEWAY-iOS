@@ -61,7 +61,7 @@ final class StationDetailTitleView: UIView {
         setupLayout()
         self.backgroundColor = .clear
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -193,7 +193,7 @@ final class LineButton: UIButton {
         super.init(frame: .zero)
         setupLayout()
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -246,7 +246,7 @@ final class NextStationButton: UIButton {
         super.init(frame: .zero)
         setupLayout()
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -326,7 +326,7 @@ final class PrevStationButton: UIButton {
         setupLayout()
         print(stationName)
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -455,7 +455,7 @@ final class StationTitle: UIView {
         setupLayout()
         self.backgroundColor = .clear
     }
-    
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
