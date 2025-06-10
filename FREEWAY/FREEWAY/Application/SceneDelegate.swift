@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if let data = data {
                 viewModel.notificationDatas = data
             } else if error != nil {
-                print("알림 오류")
+                viewModel.notificationDatas = MockData.mockNotiDTO
             }
         }
         
@@ -42,11 +42,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             }
                         }
                 }
-                let rootViewController = HomeViewController(viewModel: viewModel)
-                self.window?.rootViewController = UINavigationController(rootViewController: rootViewController)
+                self.window?.rootViewController = UINavigationController(rootViewController: HomeViewController(viewModel: viewModel))
             }
             else if error != nil {
-                
+                viewModel.stationDatas = MockData.mockStationDTOs
+                viewModel.stationsDetailDatas = MockData.mockStationDetails
+                self.window?.rootViewController = UINavigationController(rootViewController: HomeViewController(viewModel: viewModel))
             }
         }
     }

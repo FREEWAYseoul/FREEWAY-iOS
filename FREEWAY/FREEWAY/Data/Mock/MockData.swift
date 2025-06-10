@@ -8,47 +8,187 @@
 import Foundation
 
 struct MockData {
-    static let mockStationDetail: StationDetailDTO = {
-        let coordinate = StationCoordinate(latitude: "37.56462215427451", longitude: "127.00579179092047")
-        let nextStation = NextStation(stationId: 217, stationName: "청구")
-        let previousStation = PreviousStation(stationId: 215, stationName: "을지로4가")
-        
-        let facilities = Facilities(
-            elevator: false,
-            wheelchairLift: false,
-            disabledToilet: false,
-            transitParkingLot: false,
-            unmannedCivilApplicationIssuingMachine: false,
-            currencyExchangeKiosk: false,
-            trainTicketOffice: false,
-            feedingRoom: false
-        )
-        
-        let elevators = [
-            Elevator(elevatorId: 165, elevatorCoordinate: StationCoordinate(latitude: "37.565868382504576", longitude: "127.00909956240862"), elevatorStatus: "사용 가능", exitNumber: "1"),
-            Elevator(elevatorId: 521, elevatorCoordinate: StationCoordinate(latitude: "37.564649986201594", longitude: "127.00754393215446"), elevatorStatus: "사용 가능", exitNumber: "4")
-        ]
-        
-        return StationDetailDTO(
-            stationId: 216,
-            stationName: "동대문역사문화공원",
-            lineId: "5",
-            lineName: "5호선",
-            stationCoordinate: coordinate,
-            stationStatus: "모두 사용 가능",
-            stationContact: "02-6311-5361",
-            stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_5_27.jpg",
-            nextStation: nextStation,
-            previousStation: previousStation,
-            facilities: facilities,
+    static let mockStationDetails: [StationDetailDTO] = [
+        // 서울역
+        StationDetailDTO(
+            stationId: 201,
+            stationName: "서울역",
+            lineId: "2",
+            lineName: "2호선",
+            stationCoordinate: StationCoordinate(latitude: "37.555134", longitude: "126.970626"),
+            stationStatus: "사용 가능",
+            stationContact: "02-1234-5678",
+            stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_2_1.jpg",
+            nextStation: NextStation(stationId: 202, stationName: "충정로"),
+            previousStation: PreviousStation(stationId: 200, stationName: "시청"),
+            facilities: Facilities(
+                elevator: true,
+                wheelchairLift: false,
+                disabledToilet: true,
+                transitParkingLot: true,
+                unmannedCivilApplicationIssuingMachine: true,
+                currencyExchangeKiosk: true,
+                trainTicketOffice: true,
+                feedingRoom: false
+            ),
             transferStations: [
-                TransferStation(stationId: 84, lineId: "2"),
-                TransferStation(stationId: 177, lineId: "4")
+                TransferStation(stationId: 100, lineId: "1")
             ],
-            elevators: elevators
+            elevators: [
+                Elevator(elevatorId: 101, elevatorCoordinate: StationCoordinate(latitude: "37.5555", longitude: "126.9710"), elevatorStatus: "사용 가능", exitNumber: "1")
+            ]
+        ),
+        
+        // 을지로입구
+        StationDetailDTO(
+            stationId: 203,
+            stationName: "을지로입구",
+            lineId: "2",
+            lineName: "2호선",
+            stationCoordinate: StationCoordinate(latitude: "37.566014", longitude: "126.982684"),
+            stationStatus: "사용 가능",
+            stationContact: "02-1234-5679",
+            stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_2_2.jpg",
+            nextStation: NextStation(stationId: 204, stationName: "을지로3가"),
+            previousStation: PreviousStation(stationId: 202, stationName: "시청"),
+            facilities: Facilities(
+                elevator: true,
+                wheelchairLift: true,
+                disabledToilet: false,
+                transitParkingLot: false,
+                unmannedCivilApplicationIssuingMachine: false,
+                currencyExchangeKiosk: false,
+                trainTicketOffice: true,
+                feedingRoom: true
+            ),
+            transferStations: [
+                TransferStation(stationId: 102, lineId: "1")
+            ],
+            elevators: [
+                Elevator(elevatorId: 102, elevatorCoordinate: StationCoordinate(latitude: "37.5661", longitude: "126.9830"), elevatorStatus: "사용 가능", exitNumber: "2")
+            ]
+        ),
+
+        // 왕십리
+        StationDetailDTO(
+            stationId: 206,
+            stationName: "왕십리",
+            lineId: "2",
+            lineName: "2호선",
+            stationCoordinate: StationCoordinate(latitude: "37.561533", longitude: "127.037732"),
+            stationStatus: "사용 가능",
+            stationContact: "02-1234-5680",
+            stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_2_3.jpg",
+            nextStation: NextStation(stationId: 207, stationName: "한양대"),
+            previousStation: PreviousStation(stationId: 205, stationName: "상왕십리"),
+            facilities: Facilities(
+                elevator: true,
+                wheelchairLift: true,
+                disabledToilet: true,
+                transitParkingLot: true,
+                unmannedCivilApplicationIssuingMachine: true,
+                currencyExchangeKiosk: true,
+                trainTicketOffice: true,
+                feedingRoom: false
+            ),
+            transferStations: [
+                TransferStation(stationId: 103, lineId: "5"),
+                TransferStation(stationId: 104, lineId: "경의중앙선")
+            ],
+            elevators: [
+                Elevator(elevatorId: 103, elevatorCoordinate: StationCoordinate(latitude: "37.5617", longitude: "127.0379"), elevatorStatus: "사용 가능", exitNumber: "3")
+            ]
+        ),
+
+        // 잠실
+        StationDetailDTO(
+            stationId: 208,
+            stationName: "잠실",
+            lineId: "2",
+            lineName: "2호선",
+            stationCoordinate: StationCoordinate(latitude: "37.513950", longitude: "127.102234"),
+            stationStatus: "사용 가능",
+            stationContact: "02-1234-5681",
+            stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_2_4.jpg",
+            nextStation: NextStation(stationId: 209, stationName: "잠실나루"),
+            previousStation: PreviousStation(stationId: 207, stationName: "잠실새내"),
+            facilities: Facilities(
+                elevator: true,
+                wheelchairLift: false,
+                disabledToilet: true,
+                transitParkingLot: true,
+                unmannedCivilApplicationIssuingMachine: false,
+                currencyExchangeKiosk: false,
+                trainTicketOffice: true,
+                feedingRoom: true
+            ),
+            transferStations: [
+                TransferStation(stationId: 105, lineId: "8")
+            ],
+            elevators: [
+                Elevator(elevatorId: 104, elevatorCoordinate: StationCoordinate(latitude: "37.5141", longitude: "127.1025"), elevatorStatus: "사용 가능", exitNumber: "5")
+            ]
+        ),
+
+        // 신촌
+        StationDetailDTO(
+            stationId: 210,
+            stationName: "신촌",
+            lineId: "2",
+            lineName: "2호선",
+            stationCoordinate: StationCoordinate(latitude: "37.556021", longitude: "126.936854"),
+            stationStatus: "사용 가능",
+            stationContact: "02-1234-5682",
+            stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_2_5.jpg",
+            nextStation: NextStation(stationId: 211, stationName: "이대"),
+            previousStation: PreviousStation(stationId: 209, stationName: "홍대입구"),
+            facilities: Facilities(
+                elevator: true,
+                wheelchairLift: true,
+                disabledToilet: true,
+                transitParkingLot: true,
+                unmannedCivilApplicationIssuingMachine: false,
+                currencyExchangeKiosk: true,
+                trainTicketOffice: true,
+                feedingRoom: false
+            ),
+            transferStations: [
+                TransferStation(stationId: 106, lineId: "경의중앙선")
+            ],
+            elevators: [
+                Elevator(elevatorId: 105, elevatorCoordinate: StationCoordinate(latitude: "37.5561", longitude: "126.9370"), elevatorStatus: "사용 가능", exitNumber: "2")
+            ]
         )
-    }()
+    ]
     
+    static let mockStationDetail: StationDetailDTO = StationDetailDTO(
+        stationId: 201,
+        stationName: "서울역",
+        lineId: "2",
+        lineName: "2호선",
+        stationCoordinate: StationCoordinate(latitude: "37.555134", longitude: "126.970626"),
+        stationStatus: "사용 가능",
+        stationContact: "02-1234-5678",
+        stationImageUrl: "http://data.seoul.go.kr/contents/stn_img/image_2_1.jpg",
+        nextStation: NextStation(stationId: 202, stationName: "충정로"),
+        previousStation: PreviousStation(stationId: 200, stationName: "시청"),
+        facilities: Facilities(
+            elevator: true,
+            wheelchairLift: false,
+            disabledToilet: true,
+            transitParkingLot: true,
+            unmannedCivilApplicationIssuingMachine: true,
+            currencyExchangeKiosk: true,
+            trainTicketOffice: true,
+            feedingRoom: false
+        ),
+        transferStations: [
+            TransferStation(stationId: 100, lineId: "1")
+        ],
+        elevators: [
+            Elevator(elevatorId: 101, elevatorCoordinate: StationCoordinate(latitude: "37.5555", longitude: "126.9710"), elevatorStatus: "사용 가능", exitNumber: "1")
+        ]
+    )
     
     
     static let mockStationDTOs: [StationDTO] = [

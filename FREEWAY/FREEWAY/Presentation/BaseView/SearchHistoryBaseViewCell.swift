@@ -92,7 +92,8 @@ extension SearchHistoryBaseViewCell {
         }
     }
     
-    func configure(data: StationDTO, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
+    func configure(data: StationDTO?, _ separaterState: Bool? = true, _ horizontalOffset: Int? = 20) {
+        guard let data else { return }
         cellData = data
         stationTitleLabel.text = data.stationName
         stationStateImage.image = UIImage(named: getStationStatus(data.stationStatus))

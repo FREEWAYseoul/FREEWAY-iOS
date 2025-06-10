@@ -12,6 +12,7 @@ import Combine
 class BaseViewModel {
     //MARK: 네트워크 작업 후에 받아오는 데이터
     var stationDatas: [StationDTO] = []
+    var drawingStation: [StationDTO] = []
     var stationsDetailDatas: [StationDetailDTO] = []
     var notificationDatas: [NotificationDTO] = []
     
@@ -40,7 +41,31 @@ class BaseViewModel {
         }
     }
     
-    func getStationDTO(_ stationName: String) -> StationDTO? {
+    func getDrawingStations() -> [StationDTO] {
+        var drawingStations = [StationDTO]()
+        
+        guard let longitude = Double(currentStationDetailData.stationCoordinate.longitude),
+              let latitude = Double(currentStationDetailData.stationCoordinate.latitude) else {
+            return drawingStations
+        }
+        
+        stationDatas.forEach {
+            guard let stationLongitude = Double($0.coordinate.longitude),
+                  let stationLatitude = Double($0.coordinate.latitude) else {
+                return
+            }
+            
+            if abs(longitude - stationLongitude) < 0.005 || abs(latitude - stationLatitude) < 0.005 {
+                drawingStations.append($0)
+            }
+        }
+        
+        return drawingStations
+    }
+    
+    func getStationDTO() -> StationDTO? {
+        do {
+            let stationName = try inputText.value()
             // StationName을 사용하여 StationDTO를 검색하고 반환
             if let station = stationDatas.first(where: { $0.stationName == stationName }) {
                 self.currentStationData = station

@@ -299,7 +299,8 @@ private extension MapsViewController {
     func setStationMarker() {
         DispatchQueue.main.async { [weak self] in
             if let self = self {
-                self.viewModel.stationDatas.forEach {
+                let stations = viewModel.getDrawingStations()
+                stations.forEach {
                     self.addMarker(data: $0, width: 72, height: 39.74)
                 }
                 self.stationMarkers.forEach { stationMarker in
